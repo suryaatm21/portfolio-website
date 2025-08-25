@@ -1,9 +1,37 @@
 "use client"
 
+import type React from "react"
+
+import { motion } from "framer-motion"
+import { AnimatedButton } from "@/components/animations/AnimatedButton"
+import { ArrowRight, Github, Linkedin, Mail, ExternalLink } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { ArrowRight, Code } from "lucide-react"
+import { useState, useEffect } from "react"
 
 export function Hero() {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+  const [isReducedMotion, setIsReducedMotion] = useState(false)
+
+  // Check for reduced motion preference
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
+    setIsReducedMotion(mediaQuery.matches)
+
+    const handleChange = () => setIsReducedMotion(mediaQuery.matches)
+    mediaQuery.addEventListener("change", handleChange)
+    return () => mediaQuery.removeEventListener("change", handleChange)
+  }, [])
+
+  // Track mouse position for parallax effect
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (isReducedMotion) return
+
+    const rect = e.currentTarget.getBoundingClientRect()
+    const x = (e.clientX - rect.left - rect.width / 2) / rect.width
+    const y = (e.clientY - rect.top - rect.height / 2) / rect.height
+    setMousePosition({ x: x * 4, y: y * 4 })
+  }
+
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId)
     if (element) {
@@ -12,59 +40,157 @@ export function Hero() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center relative overflow-hidden">
-      {/* Background decoration */}
+    <div
+      className="min-h-screen flex items-center justify-center relative overflow-hidden"
+      onMouseMove={handleMouseMove}
+    >
       <div className="absolute inset-0 -z-10">
-        <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-brand-accent/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-brand-secondary/5 rounded-full blur-3xl" />
+        <motion.div
+          className="absolute top-1/4 left-1/4 w-72 h-72 bg-accent/5 rounded-full blur-3xl"
+          animate={{
+            scale: [1, 1.1, 1],
+            opacity: [0.3, 0.5, 0.3],
+          }}
+          transition={{
+            duration: 8,
+            repeat: Number.POSITIVE_INFINITY,
+            ease: "easeInOut",
+          }}
+        />
+        <motion.div
+          className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary/5 rounded-full blur-3xl"
+          animate={{
+            scale: [1, 1.2, 1],
+            opacity: [0.2, 0.4, 0.2],
+          }}
+          transition={{
+            duration: 10,
+            repeat: Number.POSITIVE_INFINITY,
+            ease: "easeInOut",
+            delay: 2,
+          }}
+        />
       </div>
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <div className="max-w-4xl mx-auto">
-          {/* Main headline */}
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-bold text-brand-primary mb-6 leading-tight">
-            Full Stack Developer
-            <span className="block text-brand-accent">Building Modern Web</span>
-            <span className="block">Experiences</span>
-          </h1>
-
-          {/* Subheading */}
-          <p className="text-lg sm:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed">
-            Passionate about creating scalable applications and solving complex problems with clean, efficient code.
-            Currently expanding the browser productivity space.
-          </p>
-
-          {/* Mission line */}
-          <p className="text-sm font-medium text-brand-secondary mb-10 tracking-wide uppercase">
-            Solve first, refine later.
-          </p>
-
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button
-              size="lg"
-              onClick={() => scrollToSection("contact")}
-              className="bg-brand-cta hover:bg-brand-cta-hover text-white px-8 py-3 text-base font-medium group"
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex flex-col xl:flex-row items-center gap-12 xl:gap-16">
+            <motion.div
+              className="flex-shrink-0"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{
+                opacity: 1,
+                scale: 1,
+                x: isReducedMotion ? 0 : mousePosition.x,
+                y: isReducedMotion ? 0 : mousePosition.y,
+              }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
             >
-              Get In Touch
-              <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-            </Button>
+              <div className="relative">
+                <div className="absolute inset-0 bg-accent/20 rounded-full blur-xl scale-110" />
+                <img
+                  src="https://i.imgur.com/0QUH8nY.jpg"
+                  alt="Profile picture"
+                  className="relative w-48 h-48 xl:w-56 xl:h-56 rounded-full object-cover border-4 border-accent/30 shadow-2xl"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement
+                    if (target.src.includes(".jpg")) {
+                      target.src = "https://i.imgur.com/0QUH8nY.png"
+                    } else {
+                      target.src = "/diverse-group-profile.png"
+                    }
+                  }}
+                />
+              </div>
+            </motion.div>
 
-            <Button
-              variant="outline"
-              size="lg"
-              onClick={() => scrollToSection("projects")}
-              className="border-brand-accent/20 text-brand-primary hover:bg-brand-accent hover:text-white px-8 py-3 text-base font-medium group"
-            >
-              <Code className="mr-2 h-4 w-4 group-hover:rotate-12 transition-transform" />
-              View Projects
-            </Button>
-          </div>
+            <div className="flex-1 text-center xl:text-left">
+              <motion.h1
+                className="text-4xl sm:text-5xl xl:text-6xl font-sans font-bold mb-6 leading-tight"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, ease: "easeOut" }}
+              >
+                <span className="bg-gradient-to-r from-accent to-secondary bg-clip-text text-slate-100 font-mono">
+                  Surya Atmuri 🦅
+                </span>
+              </motion.h1>
 
-          {/* Scroll indicator */}
-          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-            <div className="w-6 h-10 border-2 border-brand-accent/30 rounded-full flex justify-center">
-              <div className="w-1 h-3 bg-brand-accent rounded-full mt-2 animate-pulse" />
+              <motion.p
+                className="text-lg sm:text-xl text-muted-foreground mb-8 max-w-2xl xl:max-w-none leading-relaxed font-mono"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
+              >
+                Junior in cs @ georgia tech building solutions to real problems. Currently scaling Untab and sharing recruitment resources on LinkedIn 😁
+              </motion.p>
+
+              <motion.div
+                className="flex flex-col sm:flex-row items-center xl:items-start xl:justify-start justify-center gap-4 mb-6"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
+              >
+                <AnimatedButton
+                  size="lg"
+                  asChild
+                  className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 text-base font-medium group shadow-lg hover:shadow-xl transition-shadow"
+                >
+                  <a href="mailto:surya@theuntab.com" className="flex items-center">
+                    Get in touch
+                    <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                  </a>
+                </AnimatedButton>
+
+                <AnimatedButton
+                  variant="outline"
+                  size="lg"
+                  asChild
+                  className="border-border/50 text-foreground hover:bg-accent/10 px-8 py-3 text-base font-medium group"
+                >
+                  <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" className="flex items-center">
+                    <ExternalLink className="mr-2 h-4 w-4 group-hover:rotate-12 transition-transform" />
+                    See resume
+                  </a>
+                </AnimatedButton>
+              </motion.div>
+
+              <motion.div
+                className="flex items-center xl:justify-start justify-center gap-3 mb-8"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.6, ease: "easeOut" }}
+              >
+                <Button variant="ghost" size="icon" asChild className="hover:bg-accent/10 hover:text-accent">
+                  <a href="https://github.com/suryaatm21" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                    <Github className="h-5 w-5" />
+                  </a>
+                </Button>
+                <Button variant="ghost" size="icon" asChild className="hover:bg-accent/10 hover:text-accent">
+                  <a
+                    href="https://linkedin.com/in/surya-atmuri"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="LinkedIn"
+                  >
+                    <Linkedin className="h-5 w-5" />
+                  </a>
+                </Button>
+                <Button variant="ghost" size="icon" asChild className="hover:bg-accent/10 hover:text-accent">
+                  <a href="mailto:surya@theuntab.com" aria-label="Email">
+                    <Mail className="h-5 w-5" />
+                  </a>
+                </Button>
+              </motion.div>
+
+              <motion.p
+                className="text-sm font-medium text-secondary tracking-wide uppercase"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.8, ease: "easeOut" }}
+              >
+                Solve first, refine later.
+              </motion.p>
             </div>
           </div>
         </div>

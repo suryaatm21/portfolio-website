@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/ui/ThemeToggle"
 import { Socials } from "@/components/Socials"
@@ -53,7 +54,10 @@ export function NavBar() {
   }
 
   return (
-    <nav
+    <motion.nav
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
         isScrolled ? "bg-background/80 backdrop-blur-md border-b border-border/50 shadow-sm" : "bg-transparent",
@@ -65,31 +69,43 @@ export function NavBar() {
         <div className="flex items-center justify-between h-16">
           {/* Logo/Name */}
           <div className="flex-shrink-0">
-            <button
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={() => scrollToSection("#home")}
               className="text-xl font-heading font-semibold text-brand-primary hover:text-brand-accent transition-colors focus:outline-none focus:ring-2 focus:ring-brand-accent focus:ring-offset-2 rounded-md px-2 py-1"
               aria-label="Go to home section"
             >
               Surya
-            </button>
+            </motion.button>
           </div>
 
           {/* Navigation Links - Hidden on mobile */}
           <div className="hidden md:flex items-center space-x-1">
-            {navItems.map((item) => (
-              <Button
+            {navItems.map((item, index) => (
+              <motion.div
                 key={item.href}
-                variant="ghost"
-                size="sm"
-                onClick={() => scrollToSection(item.href)}
-                className={cn(
-                  "text-sm font-medium transition-colors hover:text-brand-accent hover:bg-brand-accent/10 focus:ring-2 focus:ring-brand-accent focus:ring-offset-2",
-                  activeSection === item.href.slice(1) ? "text-brand-accent bg-brand-accent/10" : "text-brand-primary",
-                )}
-                aria-current={activeSection === item.href.slice(1) ? "page" : undefined}
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1, duration: 0.3 }}
               >
-                {item.label}
-              </Button>
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => scrollToSection(item.href)}
+                    className={cn(
+                      "text-sm font-medium transition-colors hover:text-brand-accent hover:bg-brand-accent/10 focus:ring-2 focus:ring-brand-accent focus:ring-offset-2",
+                      activeSection === item.href.slice(1)
+                        ? "text-brand-accent bg-brand-accent/10"
+                        : "text-brand-primary",
+                    )}
+                    aria-current={activeSection === item.href.slice(1) ? "page" : undefined}
+                  >
+                    {item.label}
+                  </Button>
+                </motion.div>
+              </motion.div>
             ))}
           </div>
 
@@ -101,48 +117,63 @@ export function NavBar() {
             <ThemeToggle />
 
             {/* Mobile menu button */}
-            <Button
-              variant="ghost"
-              size="sm"
-              className="md:hidden w-9 px-0"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              aria-expanded={isMobileMenuOpen}
-              aria-controls="mobile-menu"
-              aria-label="Toggle mobile menu"
-            >
-              {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-            </Button>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="md:hidden w-9 px-0"
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                aria-expanded={isMobileMenuOpen}
+                aria-controls="mobile-menu"
+                aria-label="Toggle mobile menu"
+              >
+                {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              </Button>
+            </motion.div>
           </div>
         </div>
 
         {/* Mobile menu */}
         {isMobileMenuOpen && (
-          <div id="mobile-menu" className="md:hidden border-t border-border/50 bg-background/95 backdrop-blur-md">
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.2 }}
+            id="mobile-menu"
+            className="md:hidden border-t border-border/50 bg-background/95 backdrop-blur-md"
+          >
             <div className="px-2 pt-2 pb-3 space-y-1">
-              {navItems.map((item) => (
-                <Button
+              {navItems.map((item, index) => (
+                <motion.div
                   key={item.href}
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => scrollToSection(item.href)}
-                  className={cn(
-                    "w-full justify-start text-sm font-medium transition-colors hover:text-brand-accent hover:bg-brand-accent/10",
-                    activeSection === item.href.slice(1)
-                      ? "text-brand-accent bg-brand-accent/10"
-                      : "text-brand-primary",
-                  )}
-                  aria-current={activeSection === item.href.slice(1) ? "page" : undefined}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.05, duration: 0.2 }}
                 >
-                  {item.label}
-                </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => scrollToSection(item.href)}
+                    className={cn(
+                      "w-full justify-start text-sm font-medium transition-colors hover:text-brand-accent hover:bg-brand-accent/10",
+                      activeSection === item.href.slice(1)
+                        ? "text-brand-accent bg-brand-accent/10"
+                        : "text-brand-primary",
+                    )}
+                    aria-current={activeSection === item.href.slice(1) ? "page" : undefined}
+                  >
+                    {item.label}
+                  </Button>
+                </motion.div>
               ))}
               <div className="pt-2 border-t border-border/50 mt-2">
                 <Socials />
               </div>
             </div>
-          </div>
+          </motion.div>
         )}
       </div>
-    </nav>
+    </motion.nav>
   )
 }

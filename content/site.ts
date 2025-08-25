@@ -27,6 +27,14 @@ export const experience = [
 
 export const projects = [
   {
+    title: "Spoiler Alert",
+    summary:
+      "Spoiler Alert helps you track what's in your fridge, reduce food waste, and make meal planning effortless.",
+    repo: "https://github.com/suryaatm21/spoiler_alert",
+    demo: "",
+    tech: ["Next.js", "PostgreSQL", "Tailwind"],
+  },
+  {
     title: "Spotify Playlist Optimizer",
     summary: "Clusters tracks by audio features",
     repo: "https://github.com/xxxxxxxxx",

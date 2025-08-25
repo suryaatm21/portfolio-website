@@ -44,6 +44,9 @@
   --brand-accent: #38b2ac;
   --brand-cta: #16a34a;
   --brand-cta-hover: #15803d;
+
+  /* Added page background token */
+  --bg-page: #131b23;     
 }
 
 .dark {
@@ -86,6 +89,9 @@
   --brand-accent: #4fd1c7;
   --brand-cta: #22c55e;
   --brand-cta-hover: #16a34a;
+
+  /* Same dark background for consistency */
+  --bg-page: #131b23;
 }
 
 @theme inline {
@@ -133,9 +139,12 @@
   --color-brand-cta: var(--brand-cta);
   --color-brand-cta-hover: var(--brand-cta-hover);
 
-  /* Custom font families */
-  --font-heading: var(--font-figtree);
-  --font-body: var(--font-urbanist);
+  /* Updated font family mappings */
+  --font-heading: var(--font-urbanist);
+  --font-body: var(--font-inter);
+
+  /* Added page background token */
+  --color-bg-page: var(--bg-page);
 }
 
 @layer base {
@@ -144,8 +153,8 @@
   }
   body {
     @apply bg-background text-foreground font-body;
-    /* Added warm gradient background */
-    background: linear-gradient(180deg, #fffbf0 0%, #fff8e1 100%);
+    /* Solid dark background as specified */
+    background: #131b23;
   }
   .dark body {
     background: linear-gradient(180deg, #1a202c 0%, #2d3748 100%);
@@ -159,6 +168,7 @@
   h5,
   h6 {
     font-family: var(--font-heading);
+    /* SemiBold weight for headings */
     font-weight: 600;
   }
 
@@ -173,6 +183,16 @@
 
   .max-w-ch {
     @apply max-w-3xl;
+  }
+
+  /* Added scrollbar hiding utility */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
   }
 
   /* Smooth scrolling and reduced motion support */

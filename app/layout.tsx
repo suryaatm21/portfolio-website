@@ -1,22 +1,23 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Figtree, Urbanist } from "next/font/google"
+import { Inter, Urbanist } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/toaster"
+import AnimatedBackground from "@/components/AnimatedBackground"
 
-const figtree = Figtree({
+const inter = Inter({
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-figtree",
-  weight: ["400", "500", "600", "700"],
+  variable: "--font-inter",
+  weight: ["400"],
 })
 
 const urbanist = Urbanist({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-urbanist",
-  weight: ["400", "500", "600"],
+  weight: ["600"],
 })
 
 export const metadata: Metadata = {
@@ -79,9 +80,10 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${figtree.variable} ${urbanist.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${inter.variable} ${urbanist.variable}`} suppressHydrationWarning>
       <body className="antialiased">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+          <AnimatedBackground />
           {children}
           <Toaster />
         </ThemeProvider>
