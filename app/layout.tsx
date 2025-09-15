@@ -5,18 +5,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
 import AnimatedBackground from "@/components/AnimatedBackground";
-import dynamic from "next/dynamic";
-
-// Load FX components only on the client to avoid SSR build/runtime hiccups
-const BirdsCursor = dynamic(
-  () => import("@/components/FX/BirdsCursor").then((m) => m.BirdsCursor),
-  { ssr: false }
-);
-const PerformanceMonitor = dynamic(
-  () =>
-    import("@/components/FX/PerformanceMonitor").then((m) => m.PerformanceMonitor),
-  { ssr: false }
-);
+import { FXMounts } from "@/components/FX/FXMounts";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -114,21 +103,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <AnimatedBackground />
-          {process.env.NODE_ENV === "development" && (
-            <>
-              <BirdsCursor
-                enabled
-                count={6}
-                colors={["#2d3748", "#d69e2e", "#38b2ac"]}
-                size={12}
-                speedCap={3}
-                forces={{ separation: 1.2, alignment: 0.8, cohesion: 0.6, trail: 1.5 }}
-                useSprite
-                zIndex={10}
-              />
-              <PerformanceMonitor enabled />
-            </>
-          )}
+          <FXMounts />
           {children}
           <Toaster />
         </ThemeProvider>
