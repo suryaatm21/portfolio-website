@@ -4,6 +4,8 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
+  /* Height of the fixed navbar, used to align sky overlay */
+  --nav-height: 4rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -61,7 +63,8 @@
   --secondary: oklch(0.269 0 0);
   --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
+  /* Make body text variants closer to white for readability */
+  --muted-foreground: oklch(0.92 0 0);
   --accent: oklch(0.269 0 0);
   --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.396 0.141 25.723);
@@ -155,9 +158,12 @@
     @apply bg-background text-foreground font-body;
     /* Solid dark background as specified */
     background: #131b23;
+    /* Drop the universal text shadow so body sections can use a panel */
+    text-shadow: none;
   }
   .dark body {
     background: linear-gradient(180deg, #1a202c 0%, #2d3748 100%);
+    text-shadow: none;
   }
 
   /* Typography utilities */
@@ -170,6 +176,8 @@
     font-family: var(--font-heading);
     /* SemiBold weight for headings */
     font-weight: 600;
+    /* Soft but pronounced shadow for headings only */
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.28), 0 16px 40px rgba(0, 0, 0, 0.18);
   }
 
   /* Custom utility classes */
@@ -210,4 +218,22 @@
       transition-duration: 0.01ms !important;
     }
   }
+}
+
+/* Translucent readable panel utility for body text areas
+   Tweak these three lines (mix %, blur, border color) to change
+   the panel look and opacity. */
+.readable-panel {
+  /* Lower this percentage for more transparency (e.g., 55%) */
+  background: color-mix(in oklch, var(--background) 55%, transparent);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  /* Reduce this white mix for a lighter border */
+  border: 1px solid color-mix(in oklch, white 8%, transparent);
+  border-radius: 0.75rem; /* rounded-xl */
+  padding: 0.75rem 1rem; /* p-3 px-4 */
+}
+
+.readable-panel, .readable-panel * {
+  text-shadow: none !important;
 }

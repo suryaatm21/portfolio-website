@@ -1,30 +1,50 @@
-import type React from "react"
-import type { Metadata } from "next"
-import { Inter, Urbanist } from "next/font/google"
-import "./globals.css"
-import { ThemeProvider } from "@/components/theme-provider"
-import { Toaster } from "@/components/ui/toaster"
-import AnimatedBackground from "@/components/AnimatedBackground"
+import type React from "react";
+import type { Metadata } from "next";
+import { Inter, Urbanist } from "next/font/google";
+import "./globals.css";
+import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "@/components/ui/toaster";
+import AnimatedBackground from "@/components/AnimatedBackground";
+import dynamic from "next/dynamic";
+
+// Load FX components only on the client to avoid SSR build/runtime hiccups
+const BirdsCursor = dynamic(
+  () => import("@/components/FX/BirdsCursor").then((m) => m.BirdsCursor),
+  { ssr: false }
+);
+const PerformanceMonitor = dynamic(
+  () =>
+    import("@/components/FX/PerformanceMonitor").then((m) => m.PerformanceMonitor),
+  { ssr: false }
+);
 
 const inter = Inter({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-inter",
   weight: ["400"],
-})
+});
 
 const urbanist = Urbanist({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-urbanist",
   weight: ["600"],
-})
+});
 
 export const metadata: Metadata = {
   title: "Surya - Full Stack Developer | Modern Web Solutions",
   description:
     "Personal portfolio of Surya - Full Stack Developer specializing in modern web technologies, React, Next.js, and scalable applications. Building the future of browser productivity.",
-  keywords: ["Full Stack Developer", "React", "Next.js", "TypeScript", "Web Development", "JavaScript", "Portfolio"],
+  keywords: [
+    "Full Stack Developer",
+    "React",
+    "Next.js",
+    "TypeScript",
+    "Web Development",
+    "JavaScript",
+    "Portfolio",
+  ],
   authors: [{ name: "Surya" }],
   creator: "Surya",
   publisher: "Surya",
@@ -57,7 +77,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Surya - Full Stack Developer | Modern Web Solutions",
-    description: "Personal portfolio of Surya - Full Stack Developer specializing in modern web technologies.",
+    description:
+      "Personal portfolio of Surya - Full Stack Developer specializing in modern web technologies.",
     images: ["/og.png"],
     creator: "@yourusername",
   },
@@ -72,22 +93,46 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
-}
+};
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${urbanist.variable}`} suppressHydrationWarning>
-      <body className="antialiased">
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+    <html
+      lang="en"
+      className={`${inter.variable} ${urbanist.variable}`}
+      suppressHydrationWarning
+    >
+      <body className="bg-background text-foreground font-body antialiased">
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
           <AnimatedBackground />
+          {process.env.NODE_ENV === "development" && (
+            <>
+              <BirdsCursor
+                enabled
+                count={6}
+                colors={["#2d3748", "#d69e2e", "#38b2ac"]}
+                size={12}
+                speedCap={3}
+                forces={{ separation: 1.2, alignment: 0.8, cohesion: 0.6, trail: 1.5 }}
+                useSprite
+                zIndex={10}
+              />
+              <PerformanceMonitor enabled />
+            </>
+          )}
           {children}
           <Toaster />
         </ThemeProvider>
       </body>
     </html>
-  )
+  );
 }
