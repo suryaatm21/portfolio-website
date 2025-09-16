@@ -5,7 +5,7 @@
 
 :root {
   /* Height of the fixed navbar, used to align sky overlay */
-  --nav-height: 4rem;
+  --nav-height: 10rem; /* increased navbar height */
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -48,7 +48,7 @@
   --brand-cta-hover: #15803d;
 
   /* Added page background token */
-  --bg-page: #131b23;     
+  --bg-page: #131b23;
 }
 
 .dark {
@@ -203,9 +203,38 @@
     display: none;
   }
 
+  /* Vertical writing mode for timeline labels */
+  .writing-vertical-rl {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+  }
+
+  /* 3D transform utilities for carousel */
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+
+  /* Line clamp utility */
+  .line-clamp-4 {
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
   /* Smooth scrolling and reduced motion support */
   html {
     scroll-behavior: smooth;
+  }
+
+  /* Ensure absolutely-positioned overlays (sky) scroll with the document */
+  html,
+  body {
+    position: relative;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -234,6 +263,7 @@
   padding: 0.75rem 1rem; /* p-3 px-4 */
 }
 
-.readable-panel, .readable-panel * {
+.readable-panel,
+.readable-panel * {
   text-shadow: none !important;
 }

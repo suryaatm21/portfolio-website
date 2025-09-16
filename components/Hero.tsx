@@ -41,7 +41,7 @@ export function Hero() {
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center relative overflow-hidden"
+      className="min-h-[80vh] md:min-h-[85vh] flex items-center justify-center relative overflow-hidden"
       onMouseMove={handleMouseMove}
     >
       <div className="absolute inset-0 -z-10">
@@ -91,7 +91,7 @@ export function Hero() {
                 <img
                   src="https://i.imgur.com/0QUH8nY.jpg"
                   alt="Profile picture"
-                  className="relative w-48 h-48 xl:w-56 xl:h-56 rounded-full object-cover border-4 border-accent/30 shadow-2xl"
+                  className="relative w-56 h-56 xl:w-64 xl:h-64 rounded-full object-cover border-4 border-accent/30 shadow-2xl"
                   onError={(e) => {
                     const target = e.target as HTMLImageElement
                     if (target.src.includes(".jpg")) {
@@ -106,24 +106,26 @@ export function Hero() {
 
             <div className="flex-1 text-center xl:text-left">
               <motion.h1
-                className="text-4xl sm:text-5xl xl:text-6xl font-sans font-bold mb-6 leading-tight"
+                className="text-5xl sm:text-6xl xl:text-7xl font-sans font-bold mb-6 leading-tight"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, ease: "easeOut" }}
               >
                 <span className="bg-gradient-to-r from-accent to-secondary bg-clip-text text-slate-100 font-mono">
-                  Surya Atmuri 🦅
+                  Surya Atmuri
                 </span>
               </motion.h1>
 
-              <motion.p
-                className="text-lg sm:text-xl text-muted-foreground mb-8 max-w-2xl xl:max-w-none leading-relaxed font-mono"
+              <motion.div
+                className="inline-block mb-8 max-w-2xl xl:max-w-none readable-panel"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
               >
-                Junior in cs @ georgia tech building solutions to real problems. Currently scaling Untab and sharing recruitment resources on LinkedIn 😁
-              </motion.p>
+                <p className="text-lg sm:text-xl text-muted-foreground leading-relaxed font-mono">
+                  Junior in cs @ georgia tech building solutions to real problems. Currently scaling Untab and sharing recruitment resources on LinkedIn 😁
+                </p>
+              </motion.div>
 
               <motion.div
                 className="flex flex-col sm:flex-row items-center xl:items-start xl:justify-start justify-center gap-4 mb-6"
@@ -183,14 +185,16 @@ export function Hero() {
                 </Button>
               </motion.div>
 
-              <motion.p
-                className="text-sm font-medium text-secondary tracking-wide uppercase"
+              <motion.div
+                className="inline-block readable-panel"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.8, ease: "easeOut" }}
               >
-                Solve first, refine later.
-              </motion.p>
+                <p className="text-sm font-medium text-secondary tracking-wide uppercase m-0">
+                  Solve first, refine later.
+                </p>
+              </motion.div>
             </div>
           </div>
         </div>

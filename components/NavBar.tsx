@@ -65,15 +65,15 @@ export function NavBar() {
       role="navigation"
       aria-label="Main navigation"
     >
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+      <div className="container mx-auto px-4 sm:px-8 lg:px-10">
+        <div className="flex items-center justify-between h-20">
           {/* Logo/Name */}
           <div className="flex-shrink-0">
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => scrollToSection("#home")}
-              className="text-xl font-heading font-semibold text-brand-primary hover:text-brand-accent transition-colors focus:outline-none focus:ring-2 focus:ring-brand-accent focus:ring-offset-2 rounded-md px-2 py-1"
+              className="text-2xl font-heading font-semibold text-brand-primary hover:text-brand-accent transition-colors focus:outline-none focus:ring-2 focus:ring-brand-accent focus:ring-offset-2 rounded-md px-2 py-1"
               aria-label="Go to home section"
             >
               Surya
@@ -95,7 +95,7 @@ export function NavBar() {
                     size="sm"
                     onClick={() => scrollToSection(item.href)}
                     className={cn(
-                      "text-sm font-medium transition-colors hover:text-brand-accent hover:bg-brand-accent/10 focus:ring-2 focus:ring-brand-accent focus:ring-offset-2",
+                      "text-xl font-medium transition-colors hover:text-brand-accent hover:bg-brand-accent/10 focus:ring-2 focus:ring-brand-accent focus:ring-offset-2 px-3 py-2",
                       activeSection === item.href.slice(1)
                         ? "text-brand-accent bg-brand-accent/10"
                         : "text-brand-primary",
@@ -121,7 +121,7 @@ export function NavBar() {
               <Button
                 variant="ghost"
                 size="sm"
-                className="md:hidden w-9 px-0"
+                className="md:hidden w-10 h-10 px-0"
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 aria-expanded={isMobileMenuOpen}
                 aria-controls="mobile-menu"
@@ -156,7 +156,7 @@ export function NavBar() {
                     size="sm"
                     onClick={() => scrollToSection(item.href)}
                     className={cn(
-                      "w-full justify-start text-sm font-medium transition-colors hover:text-brand-accent hover:bg-brand-accent/10",
+                      "w-full justify-start text-base font-medium transition-colors hover:text-brand-accent hover:bg-brand-accent/10 py-3",
                       activeSection === item.href.slice(1)
                         ? "text-brand-accent bg-brand-accent/10"
                         : "text-brand-primary",

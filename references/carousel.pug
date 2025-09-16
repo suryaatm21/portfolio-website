@@ -1,0 +1,16 @@
+p 3D Carousel/Slider!
+div.carousel
+  div.carousel__body
+    div.carousel__prev
+      i.far.fa-angle-left
+    div.carousel__next
+      i.far.fa-angle-right
+    div.carousel__slider
+      - items = [1, 2, 3, 4, 5];
+      each val1, index in items
+        div.carousel__slider__item
+          div.item__3d-frame
+              div.item__3d-frame__box.item__3d-frame__box--front
+                h1=val1
+              div.item__3d-frame__box.item__3d-frame__box--left
+              div.item__3d-frame__box.item__3d-frame__box--right              
