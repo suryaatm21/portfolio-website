@@ -41,7 +41,7 @@ export function Hero() {
 
   return (
     <div
-      className="min-h-[80vh] md:min-h-[85vh] flex items-center justify-center relative overflow-hidden"
+      className="min-h-[80vh] md:min-h-[85vh] flex items-center justify-center relative overflow-visible"
       onMouseMove={handleMouseMove}>
       <div className="absolute inset-0 -z-10">
         <motion.div

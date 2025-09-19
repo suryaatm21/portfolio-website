@@ -197,23 +197,6 @@ export function HorizontalTimeline({
               Navigate through my professional journey and key milestones
             </p>
           </div>
-
-          {/* Rubber Duck Animation */}
-          <motion.div
-            className="absolute top-4 right-8 w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center text-2xl"
-            style={{
-              x: useTransform(timelineProgress, [0, 100], [0, 200]),
-            }}
-            animate={{
-              rotate: [0, 10, -10, 0],
-              y: [0, -5, 5, 0],
-            }}
-            transition={{
-              rotate: { duration: 4, repeat: Infinity },
-              y: { duration: 2, repeat: Infinity },
-            }}>
-            🦆
-          </motion.div>
         </div>
 
         {/* Horizontal Timeline Track */}
@@ -443,13 +426,6 @@ export function HorizontalTimeline({
             <ChevronRight className="w-4 h-4" />
           </Button>
         </div>
-      </div>
-
-      {/* Navigation Hint */}
-      <div className="text-center mt-4">
-        <p className="text-xs text-muted-foreground">
-          Use arrow keys, scroll, or click to navigate • Watch the duck move! 🦆
-        </p>
       </div>
     </div>
   );

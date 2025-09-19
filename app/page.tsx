@@ -88,13 +88,13 @@ export default function Home() {
       </main>
 
       <footer
-        className="bg-muted/30 border-t border-border/50 py-12"
+        className="bg-muted/30 border-t border-border/50 py-6"
         role="contentinfo">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="text-center md:text-left">
               <p className="text-sm text-muted-foreground">
-                © 2024 Surya. Built with Next.js and Tailwind CSS.
+                © 2025 Surya. Built with Next.js and Tailwind CSS.
               </p>
             </div>
 
