@@ -1,18 +1,18 @@
-"use client";
+'use client';
 
-import { useState, useEffect, useRef, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { useState, useEffect, useRef, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import {
   ChevronLeft,
   ChevronRight,
   ExternalLink,
   Github,
   Code2,
-} from "lucide-react";
-import { cn } from "@/lib/utils";
+} from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface Project {
   title: string;
@@ -49,7 +49,7 @@ export function ProjectCarousel({
 
   // Calculate responsive dimensions
   const updateDimensions = useCallback(() => {
-    if (typeof window !== "undefined") {
+    if (typeof window !== 'undefined') {
       // More responsive sizing for mobile
       const isMobile = window.innerWidth < 768;
       const isTablet = window.innerWidth < 1024;
@@ -73,8 +73,8 @@ export function ProjectCarousel({
 
   useEffect(() => {
     updateDimensions();
-    window.addEventListener("resize", updateDimensions);
-    return () => window.removeEventListener("resize", updateDimensions);
+    window.addEventListener('resize', updateDimensions);
+    return () => window.removeEventListener('resize', updateDimensions);
   }, [updateDimensions]);
 
   // Autoplay removed
@@ -93,7 +93,7 @@ export function ProjectCarousel({
 
   const getItemTransform = (index: number) => {
     if (index === currentIndex) {
-      return "perspective(1200px) rotateY(0deg) translateZ(0px)";
+      return 'perspective(1200px) rotateY(0deg) translateZ(0px)';
     }
 
     const isLeft =
@@ -110,11 +110,10 @@ export function ProjectCarousel({
 
   return (
     <div
-      className={cn("relative w-full", className)}
+      className={cn('relative w-full', className)}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      ref={containerRef}
-    >
+      ref={containerRef}>
       {/* Carousel Body */}
       <div className="relative w-full overflow-hidden py-20">
         {/* Navigation Buttons */}
@@ -123,8 +122,7 @@ export function ProjectCarousel({
           size="icon"
           className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-background/80 backdrop-blur-sm border border-border hover:bg-brand-accent/10 hover:border-brand-accent hover:scale-110 transition-all duration-200"
           onClick={goToPrevious}
-          aria-label="Previous project"
-        >
+          aria-label="Previous project">
           <ChevronLeft className="w-6 h-6" />
         </Button>
 
@@ -133,8 +131,7 @@ export function ProjectCarousel({
           size="icon"
           className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-background/80 backdrop-blur-sm border border-border hover:bg-brand-accent/10 hover:border-brand-accent hover:scale-110 transition-all duration-200"
           onClick={goToNext}
-          aria-label="Next project"
-        >
+          aria-label="Next project">
           <ChevronRight className="w-6 h-6" />
         </Button>
 
@@ -144,20 +141,18 @@ export function ProjectCarousel({
           style={{
             width: `${dimensions.width * items.length}px`,
             transform: getSliderTransform(),
-            left: "50%",
+            left: '50%',
             marginLeft: `-${dimensions.width / 2}px`,
-          }}
-        >
+          }}>
           {/* Carousel Slider */}
           <div
             className="relative flex transition-transform duration-1000 ease-in-out"
             style={{
               width: `${dimensions.width * items.length}px`,
               transform: getSliderTransform(),
-              left: "50%",
+              left: '50%',
               marginLeft: `-${dimensions.width / 2}px`,
-            }}
-          >
+            }}>
             {items.map((project, index) => (
               <div
                 key={`${project.title}-${index}`}
@@ -165,16 +160,14 @@ export function ProjectCarousel({
                 style={{
                   width: `${dimensions.width - 40}px`,
                   height: `${dimensions.height}px`,
-                }}
-              >
+                }}>
                 {/* 3D Frame Container */}
                 <div
                   className="relative w-full h-full transition-transform duration-1000 ease-in-out"
                   style={{
-                    transformStyle: "preserve-3d",
+                    transformStyle: 'preserve-3d',
                     transform: getItemTransform(index),
-                  }}
-                >
+                  }}>
                   {/* Front Face */}
                   <Card className="absolute inset-0 border-2 border-border bg-background/95 backdrop-blur-sm">
                     <CardContent className="p-6 h-full flex flex-col">
@@ -186,12 +179,12 @@ export function ProjectCarousel({
                       </div>
 
                       {/* Project Title */}
-                      <h3 className="text-xl font-heading font-semibold text-center mb-3 text-brand-primary">
+                      <h3 className="text-xl font-heading font-semibold text-center mb-3 text-black">
                         {project.title}
                       </h3>
 
                       {/* Project Summary */}
-                      <p className="text-sm text-muted-foreground text-center mb-6 flex-grow line-clamp-4">
+                      <p className="text-sm text-white/80 text-center mb-6 flex-grow line-clamp-4">
                         {project.summary}
                       </p>
 
@@ -201,16 +194,14 @@ export function ProjectCarousel({
                           <Badge
                             key={tech}
                             variant="secondary"
-                            className="text-xs px-2 py-1"
-                          >
+                            className="text-xs px-2 py-1">
                             {tech}
                           </Badge>
                         ))}
                         {project.tech.length > 3 && (
                           <Badge
                             variant="outline"
-                            className="text-xs px-2 py-1"
-                          >
+                            className="text-xs px-2 py-1">
                             +{project.tech.length - 3}
                           </Badge>
                         )}
@@ -222,14 +213,12 @@ export function ProjectCarousel({
                           <Button
                             size="sm"
                             className="flex-1 bg-brand-primary hover:bg-brand-primary/90"
-                            asChild
-                          >
+                            asChild>
                             <a
                               href={project.demo}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="flex items-center gap-2"
-                            >
+                              className="flex items-center gap-2">
                               <ExternalLink className="w-3 h-3" />
                               Demo
                             </a>
@@ -240,14 +229,12 @@ export function ProjectCarousel({
                             size="sm"
                             variant="outline"
                             className="flex-1"
-                            asChild
-                          >
+                            asChild>
                             <a
                               href={project.repo}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="flex items-center gap-2"
-                            >
+                              className="flex items-center gap-2">
                               <Github className="w-3 h-3" />
                               Code
                             </a>
@@ -261,9 +248,9 @@ export function ProjectCarousel({
                   <div
                     className="absolute top-0 left-0 w-10 h-full bg-brand-primary/5 border-l-2 border-brand-primary/20"
                     style={{
-                      transform: "translate3d(1px, 0, -40px) rotateY(-90deg)",
-                      transformOrigin: "0%",
-                      backfaceVisibility: "hidden",
+                      transform: 'translate3d(1px, 0, -40px) rotateY(-90deg)',
+                      transformOrigin: '0%',
+                      backfaceVisibility: 'hidden',
                     }}
                   />
 
@@ -271,9 +258,9 @@ export function ProjectCarousel({
                   <div
                     className="absolute top-0 right-0 w-10 h-full bg-brand-primary/5 border-r-2 border-brand-primary/20"
                     style={{
-                      transform: "translate3d(-1px, 0, -40px) rotateY(90deg)",
-                      transformOrigin: "100%",
-                      backfaceVisibility: "hidden",
+                      transform: 'translate3d(-1px, 0, -40px) rotateY(90deg)',
+                      transformOrigin: '100%',
+                      backfaceVisibility: 'hidden',
                     }}
                   />
 
@@ -281,7 +268,7 @@ export function ProjectCarousel({
                   <div
                     className="absolute bottom-0 w-full h-10 bg-black/10 rounded-full blur-sm"
                     style={{
-                      transform: "rotateX(90deg) translate3d(0px, -20px, 0px)",
+                      transform: 'rotateX(90deg) translate3d(0px, -20px, 0px)',
                       opacity: index === currentIndex ? 0.6 : 0.3,
                     }}
                   />
@@ -299,10 +286,10 @@ export function ProjectCarousel({
             key={index}
             onClick={() => goToSlide(index)}
             className={cn(
-              "w-2 h-2 rounded-full transition-all duration-200",
+              'w-2 h-2 rounded-full transition-all duration-200',
               index === currentIndex
-                ? "bg-brand-primary w-8"
-                : "bg-border hover:bg-brand-primary/50"
+                ? 'bg-brand-primary w-8'
+                : 'bg-border hover:bg-brand-primary/50',
             )}
             aria-label={`Go to project ${index + 1}`}
           />

@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -8,16 +8,18 @@
   --nav-height: 10rem; /* increased navbar height */
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
+  --card: oklch(var(--card-opacity) 0 0); /* Dark gray cards using custom variable */
+  --card-foreground: oklch(0.985 0 0); /* White text on dark gray cards */
+  --popover: oklch(0 0 0);
+  --popover-foreground: oklch(0.985 0 0);
   --primary: oklch(0.205 0 0);
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
+  --muted-foreground: oklch(
+    0.85 0 0
+  ); /* Lighter for better contrast on black cards */
   --accent: oklch(0.97 0 0);
   --accent-foreground: oklch(0.205 0 0);
   --destructive: oklch(0.577 0.245 27.325);
@@ -47,6 +49,11 @@
   --brand-cta: #16a34a;
   --brand-cta-hover: #15803d;
 
+  /* Custom adjustable variables for fine-tuning */
+  --header-color: oklch(0.25 0 0); /* Adjustable header color (dark gray) */
+  --card-opacity: 0.20; /* Adjustable card background opacity */
+  --text-shadow: none; /* Adjustable text shadow for sections (excluding hero) */
+
   /* Added page background token */
   --bg-page: #131b23;
 }
@@ -54,7 +61,7 @@
 .dark {
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
-  --card: oklch(0.145 0 0);
+  --card: oklch(var(--card-opacity) 0 0); /* Dark gray cards using custom variable */
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.145 0 0);
   --popover-foreground: oklch(0.985 0 0);
@@ -176,8 +183,14 @@
     font-family: var(--font-heading);
     /* SemiBold weight for headings */
     font-weight: 600;
-    /* Soft but pronounced shadow for headings only */
-    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.28), 0 16px 40px rgba(0, 0, 0, 0.18);
+    /* Adjustable text shadow using custom variable */
+    text-shadow: var(--text-shadow);
+  }
+
+  /* Hero section name should keep its drop shadow */
+  .hero-name,
+  .hero-name * {
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.28), 0 16px 40px rgba(0, 0, 0, 0.18) !important;
   }
 
   /* Custom utility classes */

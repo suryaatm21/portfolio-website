@@ -1,56 +1,63 @@
-"use client"
+'use client';
 
-import { useState, useEffect, useRef } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { Card, CardContent } from "@/components/ui/card"
-import { experience } from "@/content/site"
-import { cn } from "@/lib/utils"
+import { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Card, CardContent } from '@/components/ui/card';
+import { experience } from '@/content/site';
+import { cn } from '@/lib/utils';
 
 export function ExperienceStepper() {
-  const [activeIndex, setActiveIndex] = useState(0)
-  const containerRef = useRef<HTMLDivElement>(null)
-  const isScrolling = useRef(false)
+  const [activeIndex, setActiveIndex] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isScrolling = useRef(false);
 
   useEffect(() => {
-    const container = containerRef.current
-    if (!container) return
+    const container = containerRef.current;
+    if (!container) return;
 
     const handleWheel = (e: WheelEvent) => {
-      if (isScrolling.current) return
+      if (isScrolling.current) return;
 
-      e.preventDefault()
-      isScrolling.current = true
+      e.preventDefault();
+      isScrolling.current = true;
 
       if (e.deltaY > 0 && activeIndex < experience.length - 1) {
-        setActiveIndex((prev) => prev + 1)
+        setActiveIndex((prev) => prev + 1);
       } else if (e.deltaY < 0 && activeIndex > 0) {
-        setActiveIndex((prev) => prev - 1)
+        setActiveIndex((prev) => prev - 1);
       }
 
       setTimeout(() => {
-        isScrolling.current = false
-      }, 300)
-    }
+        isScrolling.current = false;
+      }, 300);
+    };
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "ArrowLeft" && activeIndex > 0) {
-        setActiveIndex((prev) => prev - 1)
-      } else if (e.key === "ArrowRight" && activeIndex < experience.length - 1) {
-        setActiveIndex((prev) => prev + 1)
+      if (e.key === 'ArrowLeft' && activeIndex > 0) {
+        setActiveIndex((prev) => prev - 1);
+      } else if (
+        e.key === 'ArrowRight' &&
+        activeIndex < experience.length - 1
+      ) {
+        setActiveIndex((prev) => prev + 1);
       }
-    }
+    };
 
-    container.addEventListener("wheel", handleWheel, { passive: false })
-    window.addEventListener("keydown", handleKeyDown)
+    container.addEventListener('wheel', handleWheel, { passive: false });
+    window.addEventListener('keydown', handleKeyDown);
 
     return () => {
-      container.removeEventListener("wheel", handleWheel)
-      window.removeEventListener("keydown", handleKeyDown)
-    }
-  }, [activeIndex])
+      container.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [activeIndex]);
 
   return (
-    <div ref={containerRef} className="max-w-4xl mx-auto" role="tablist" aria-label="Experience timeline">
+    <div
+      ref={containerRef}
+      className="max-w-4xl mx-auto"
+      role="tablist"
+      aria-label="Experience timeline">
       {/* Horizontal stepper */}
       <div className="flex justify-center items-center mb-12 relative">
         {/* Background line */}
@@ -63,7 +70,7 @@ export function ExperienceStepper() {
           animate={{
             width: `${((activeIndex + 1) / experience.length) * 100}%`,
           }}
-          transition={{ duration: 0.3, ease: "easeOut" }}
+          transition={{ duration: 0.3, ease: 'easeOut' }}
         />
 
         {/* Step circles */}
@@ -73,19 +80,18 @@ export function ExperienceStepper() {
               key={item.id}
               onClick={() => setActiveIndex(index)}
               className={cn(
-                "w-12 h-12 rounded-full border-2 transition-all duration-200 flex items-center justify-center text-xs font-medium relative",
+                'w-12 h-12 rounded-full border-2 transition-all duration-200 flex items-center justify-center text-xs font-medium relative',
                 index === activeIndex
-                  ? "bg-brand-secondary border-brand-secondary text-white shadow-lg"
+                  ? 'bg-brand-secondary border-brand-secondary text-white shadow-lg'
                   : index < activeIndex
-                    ? "bg-brand-secondary/20 border-brand-secondary text-brand-secondary"
-                    : "bg-background border-border text-muted-foreground hover:border-brand-secondary/50",
+                  ? 'bg-brand-secondary/20 border-brand-secondary text-brand-secondary'
+                  : 'bg-background border-border text-muted-foreground hover:border-brand-secondary/50',
               )}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
               role="tab"
               aria-selected={index === activeIndex}
-              aria-controls={`panel-${item.id}`}
-            >
+              aria-controls={`panel-${item.id}`}>
               {item.year}
 
               {/* Active ring indicator */}
@@ -111,12 +117,11 @@ export function ExperienceStepper() {
                 key={item.id}
                 onClick={() => setActiveIndex(index)}
                 className={cn(
-                  "text-sm font-medium transition-colors duration-200 py-2 px-1",
+                  'text-sm font-medium transition-colors duration-200 py-2 px-1',
                   index === activeIndex
-                    ? "text-brand-secondary"
-                    : "text-muted-foreground hover:text-brand-secondary/70",
-                )}
-              >
+                    ? 'text-brand-secondary'
+                    : 'text-muted-foreground hover:text-brand-secondary/70',
+                )}>
                 {item.title}
               </button>
             ))}
@@ -130,7 +135,7 @@ export function ExperienceStepper() {
               x: `${activeIndex * 100}%`,
               width: `${100 / experience.length}%`,
             }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
           />
         </div>
       </div>
@@ -146,30 +151,32 @@ export function ExperienceStepper() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
-          >
+            transition={{ duration: 0.3, ease: 'easeOut' }}>
             <Card className="soft-card">
               <CardContent className="pt-6">
                 <div className="text-center mb-6">
-                  <h3 className="text-xl font-heading font-semibold text-brand-primary mb-2">
+                  <h3 className="text-xl font-heading font-semibold text-black mb-2">
                     {experience[activeIndex].title}
                   </h3>
-                  <p className="text-brand-secondary font-medium">{experience[activeIndex].year}</p>
+                  <p className="text-brand-secondary font-medium">
+                    {experience[activeIndex].year}
+                  </p>
                 </div>
 
                 <ul className="space-y-3 max-w-2xl mx-auto">
-                  {experience[activeIndex].bullets.map((bullet, bulletIndex) => (
-                    <motion.li
-                      key={bulletIndex}
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: bulletIndex * 0.1, duration: 0.3 }}
-                      className="flex items-start gap-3 text-muted-foreground"
-                    >
-                      <div className="w-2 h-2 rounded-full bg-brand-accent mt-2 flex-shrink-0" />
-                      {bullet}
-                    </motion.li>
-                  ))}
+                  {experience[activeIndex].bullets.map(
+                    (bullet, bulletIndex) => (
+                      <motion.li
+                        key={bulletIndex}
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: bulletIndex * 0.1, duration: 0.3 }}
+                        className="flex items-start gap-3 text-white/80">
+                        <div className="w-2 h-2 rounded-full bg-brand-accent mt-2 flex-shrink-0" />
+                        {bullet}
+                      </motion.li>
+                    ),
+                  )}
                 </ul>
               </CardContent>
             </Card>
@@ -179,8 +186,10 @@ export function ExperienceStepper() {
 
       {/* Navigation hint */}
       <div className="text-center mt-6">
-        <p className="text-xs text-muted-foreground">Use arrow keys, scroll, or click to navigate</p>
+        <p className="text-xs text-muted-foreground">
+          Use arrow keys, scroll, or click to navigate
+        </p>
       </div>
     </div>
-  )
+  );
 }

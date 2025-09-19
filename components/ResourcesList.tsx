@@ -1,33 +1,36 @@
-"use client"
+'use client';
 
-import { FadeInUp } from "@/components/animations/FadeInUp"
-import { AnimatedButton } from "@/components/animations/AnimatedButton"
-import { ExternalLink } from "lucide-react"
+import { FadeInUp } from '@/components/animations/FadeInUp';
+import { AnimatedButton } from '@/components/animations/AnimatedButton';
+import { ExternalLink } from 'lucide-react';
 
 const resourceItems = [
   {
-    title: "System design cheatsheet",
-    href: "#", // placeholder link
+    title: 'System design cheatsheet',
+    href: '#', // placeholder link
   },
   {
-    title: "Telegram job-tracker group",
-    href: "#", // placeholder link
+    title: 'Telegram job-tracker group',
+    href: '#', // placeholder link
   },
   {
-    title: "More to come...",
+    title: 'More to come...',
     href: null,
     muted: true,
   },
-]
+];
 
 export function ResourcesList() {
   return (
     <div className="max-w-6xl mx-auto">
       <FadeInUp>
         <header className="text-center mb-12">
-          <h2 className="text-3xl sm:text-4xl font-heading font-semibold text-brand-primary mb-4">Resources</h2>
+          <h2 className="text-3xl sm:text-4xl font-heading font-semibold text-black mb-4">
+            Resources
+          </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Curated tools and resources to help you level up your development skills
+            Curated tools and resources to help you level up your development
+            skills
           </p>
         </header>
       </FadeInUp>
@@ -43,13 +46,17 @@ export function ResourcesList() {
                   {item.href ? (
                     <a
                       href={item.href}
-                      className="text-brand-primary hover:text-brand-accent transition-colors underline underline-offset-4 decoration-brand-accent/30 hover:decoration-brand-accent flex items-center gap-1 group"
-                    >
+                      className="text-brand-primary hover:text-brand-accent transition-colors underline underline-offset-4 decoration-brand-accent/30 hover:decoration-brand-accent flex items-center gap-1 group">
                       {item.title}
                       <ExternalLink className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity" />
                     </a>
                   ) : (
-                    <span className={item.muted ? "text-muted-foreground italic" : "text-brand-primary"}>
+                    <span
+                      className={
+                        item.muted
+                          ? 'text-muted-foreground italic'
+                          : 'text-brand-primary'
+                      }>
                       {item.title}
                     </span>
                   )}
@@ -61,8 +68,15 @@ export function ResourcesList() {
 
         <FadeInUp delay={0.3}>
           <div className="flex justify-center">
-            <AnimatedButton asChild variant="cta" size="lg" className="shadow-lg">
-              <a href="https://resources.theuntab.com" target="_blank" rel="noopener noreferrer">
+            <AnimatedButton
+              asChild
+              variant="cta"
+              size="lg"
+              className="shadow-lg">
+              <a
+                href="https://resources.theuntab.com"
+                target="_blank"
+                rel="noopener noreferrer">
                 Get access
               </a>
             </AnimatedButton>
@@ -70,5 +84,5 @@ export function ResourcesList() {
         </FadeInUp>
       </div>
     </div>
-  )
+  );
 }

@@ -1,7 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useCallback, useState } from 'react';
-import { useTheme } from 'next-themes';
+import { useEffect, useRef, useCallback } from 'react';
 
 interface AnimatedBackgroundProps {
   theme?: 'dark' | 'light';
@@ -17,9 +16,8 @@ declare global {
 export default function AnimatedBackground({
   theme: propTheme,
 }: AnimatedBackgroundProps) {
-  const { theme: systemTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-  const theme = propTheme || (mounted ? systemTheme : 'dark') || 'dark';
+  // Force light theme since dark mode is disabled
+  const theme = propTheme || 'light';
   const vantaRef = useRef<HTMLDivElement>(null);
   const vantaEffect = useRef<any>(null);
   const scriptsLoadedRef = useRef(false);
@@ -38,11 +36,6 @@ export default function AnimatedBackground({
     typeof window !== 'undefined'
       ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
       : false;
-
-  // Set mounted to true after component mounts to prevent hydration mismatch
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   const loadScripts = useCallback(async (): Promise<boolean> => {
     if (scriptsLoadedRef.current) return true;
@@ -101,10 +94,7 @@ export default function AnimatedBackground({
         vantaEffect.current.destroy();
       }
 
-      // Configure Vanta clouds with theme-specific colors
-      const isDark = theme === 'dark';
-
-      // Deep purple for night sky: RGB(17, 11, 31) = 0x110b1f
+      // Configure Vanta clouds for light theme only
       const vantaConfig = {
         el: vantaRef.current,
         THREE: window.THREE,
@@ -113,13 +103,13 @@ export default function AnimatedBackground({
         gyroControls: false,
         minHeight: 200.0,
         minWidth: 200.0,
-        backgroundColor: isDark ? 0x050408 : 0xffffff, // RGB(5,4,8) vs white
-        skyColor: isDark ? 0x090631 : 0x68b8d7, // RGB(5,4,8) vs light blue
-        cloudColor: isDark ? 0x222222 : 0xadc1de, // #222222 gray vs warm gray
-        cloudShadowColor: isDark ? 0x222222 : 0x183550, // #222222 gray shadow vs blue shadow
-        sunColor: isDark ? 0xcfc2ff : 0xff9919, // Soft moonlight (lavender) vs warm sun
-        sunGlareColor: isDark ? 0x8a7bbd : 0xff6653, // Subtle moon glow vs sun glare
-        sunlightColor: isDark ? 0x6c4f8f : 0xff9933, // Dim moonlight vs bright sunlight
+        backgroundColor: 0xffffff, // White background
+        skyColor: 0x68b8d7, // Light blue sky
+        cloudColor: 0xadc1de, // Warm gray clouds
+        cloudShadowColor: 0x183550, // Blue shadow
+        sunColor: 0xff9919, // Warm sun
+        sunGlareColor: 0xff6653, // Sun glare
+        sunlightColor: 0xff9933, // Bright sunlight
         speed: prefersReducedMotion ? 0.2 : 1.0,
       };
 
@@ -324,11 +314,8 @@ export default function AnimatedBackground({
           height:
             'calc(var(--sky-solid-height, calc(var(--nav-height, 4rem) + 24px)) + var(--sky-fade-length, 220px))',
           background:
-            theme === 'dark'
-              ? // Night sky gradient - deep blue to transparent
-                'linear-gradient(to bottom, rgba(9,6,49,1) 0%, rgba(9,6,49,1) var(--sky-solid-height, 320px), rgba(9,6,49,0) calc(var(--sky-solid-height, 320px) + var(--sky-fade-length, 220px)))'
-              : // Day sky gradient - original blue
-                'linear-gradient(to bottom, rgba(104,184,215,1) 0%, rgba(104,184,215,1) var(--sky-solid-height, 320px), rgba(104,184,215,0) calc(var(--sky-solid-height, 320px) + var(--sky-fade-length, 220px)))',
+            // Day sky gradient - light blue
+            'linear-gradient(to bottom, rgba(104,184,215,1) 0%, rgba(104,184,215,1) var(--sky-solid-height, 320px), rgba(104,184,215,0) calc(var(--sky-solid-height, 320px) + var(--sky-fade-length, 220px)))',
           zIndex: -1,
           pointerEvents: 'none',
           opacity: 'var(--sky-overlay-opacity, 1)',
@@ -342,9 +329,6 @@ export default function AnimatedBackground({
           <div>Three.js: {healthStatsRef.current.threeOK ? '✓' : '✗'}</div>
           <div>Vanta: {healthStatsRef.current.vantaOK ? '✓' : '✗'}</div>
           <div>Clouds: {healthStatsRef.current.cloudsActive ? '✓' : '✗'}</div>
-          <div>
-            Theme: {theme} ({theme === 'dark' ? '🌙' : '☀️'})
-          </div>
           <div>
             Colors: {healthStatsRef.current.customColors ? 'Custom' : 'Default'}
           </div>
