@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef, useCallback, useState } from 'react';
+import { useTheme } from 'next-themes';
 
 interface AnimatedBackgroundProps {
   theme?: 'dark' | 'light';
@@ -14,12 +15,17 @@ declare global {
 }
 
 export default function AnimatedBackground({
-  theme = 'dark',
+  theme: propTheme,
 }: AnimatedBackgroundProps) {
+  const { theme: systemTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  const theme = propTheme || (mounted ? systemTheme : 'dark') || 'dark';
   const vantaRef = useRef<HTMLDivElement>(null);
   const vantaEffect = useRef<any>(null);
   const scriptsLoadedRef = useRef(false);
   const heroDocTopRef = useRef<number>(0);
+  const baseClipRef = useRef<number>(320);
+  const baseFadeRef = useRef<number>(220);
   const healthStatsRef = useRef({
     tailwindOK: true,
     vantaOK: false,
@@ -32,6 +38,11 @@ export default function AnimatedBackground({
     typeof window !== 'undefined'
       ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
       : false;
+
+  // Set mounted to true after component mounts to prevent hydration mismatch
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const loadScripts = useCallback(async (): Promise<boolean> => {
     if (scriptsLoadedRef.current) return true;
@@ -90,24 +101,25 @@ export default function AnimatedBackground({
         vantaEffect.current.destroy();
       }
 
-      // Configure Vanta clouds with custom colors from the customization panel
+      // Configure Vanta clouds with theme-specific colors
+      const isDark = theme === 'dark';
+
+      // Deep purple for night sky: RGB(17, 11, 31) = 0x110b1f
       const vantaConfig = {
         el: vantaRef.current,
-        // Pass THREE explicitly to avoid undefined errors in some builds
         THREE: window.THREE,
         mouseControls: !prefersReducedMotion,
         touchControls: !prefersReducedMotion,
         gyroControls: false,
         minHeight: 200.0,
         minWidth: 200.0,
-        // Custom colors from Vanta.js customization panel
-        backgroundColor: 0xffffff,
-        skyColor: 0x68b8d7,
-        cloudColor: 0xadc1de,
-        cloudShadowColor: 0x183550,
-        sunColor: 0xff9919,
-        sunGlareColor: 0xff6653,
-        sunlightColor: 0xff9933,
+        backgroundColor: isDark ? 0x050408 : 0xffffff, // RGB(5,4,8) vs white
+        skyColor: isDark ? 0x090631 : 0x68b8d7, // RGB(5,4,8) vs light blue
+        cloudColor: isDark ? 0x222222 : 0xadc1de, // #222222 gray vs warm gray
+        cloudShadowColor: isDark ? 0x222222 : 0x183550, // #222222 gray shadow vs blue shadow
+        sunColor: isDark ? 0xcfc2ff : 0xff9919, // Soft moonlight (lavender) vs warm sun
+        sunGlareColor: isDark ? 0x8a7bbd : 0xff6653, // Subtle moon glow vs sun glare
+        sunlightColor: isDark ? 0x6c4f8f : 0xff9933, // Dim moonlight vs bright sunlight
         speed: prefersReducedMotion ? 0.2 : 1.0,
       };
 
@@ -129,13 +141,22 @@ export default function AnimatedBackground({
   // Update the CSS variables for sky based on current scroll position
   const updateSkyFromScroll = useCallback(() => {
     const docTop = heroDocTopRef.current || 0;
-    let solid = Math.max(0, Math.round(docTop - window.scrollY - 24));
-    let fade = 220;
-    if (solid < fade + 32) fade = Math.max(64, solid - 32);
     const root = document.documentElement;
+
+    let solid = Math.max(0, Math.round(docTop - window.scrollY - 24));
+    let fade = baseFadeRef.current;
+
+    if (solid < fade + 32) {
+      fade = Math.max(64, solid - 32);
+    }
+
+    if (!Number.isFinite(fade) || fade < 0) {
+      fade = 0;
+    }
+
     root.style.setProperty('--sky-solid-height', `${solid}px`);
     root.style.setProperty('--sky-fade-length', `${fade}px`);
-    root.style.setProperty('--vanta-clip', `${solid + fade}px`);
+    root.style.setProperty('--sky-overlay-opacity', solid > 0 ? '1' : '0');
   }, []);
 
   const handleResize = useCallback(() => {
@@ -154,6 +175,21 @@ export default function AnimatedBackground({
           heroContainer.getBoundingClientRect().top + window.scrollY,
         );
         heroDocTopRef.current = docTop;
+
+        let baseSolid = Math.max(0, Math.round(docTop - 24));
+        let baseFade = 220;
+        if (baseSolid < baseFade + 32) {
+          baseFade = Math.max(64, baseSolid - 32);
+        }
+
+        baseFadeRef.current = baseFade;
+        const clipValue = Math.max(0, baseSolid + baseFade);
+        baseClipRef.current = clipValue;
+        document.documentElement.style.setProperty(
+          '--vanta-clip',
+          `${clipValue}px`,
+        );
+
         // Immediately reflect current scroll position
         updateSkyFromScroll();
       }
@@ -244,25 +280,36 @@ export default function AnimatedBackground({
   return (
     <>
       <div
-        ref={vantaRef}
-        id="bg-canvas"
+        aria-hidden
         style={{
           position: 'fixed',
           inset: 0,
-          width: '100vw',
-          height: '100vh',
-          // Place Vanta behind our sky overlay so the sky color
-          // can meet the clouds right at the top of the hero.
+          overflow: 'hidden',
           zIndex: -2,
-          pointerEvents: prefersReducedMotion ? 'none' : 'auto',
-          display: 'block',
-          // Clip away the Vanta area that overlaps the hero sky overlay.
-          // We keep colors intact by not drawing Vanta above the seam at all.
-          clipPath:
-            'polygon(0 calc(var(--vanta-clip, 320px)), 100% calc(var(--vanta-clip, 320px)), 100% 100%, 0% 100%)',
-        }}
-      />
-      {/* Fixed sky overlay at the very top (under the navbar). 
+          pointerEvents: 'none',
+        }}>
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            width: '100vw',
+            height: 'calc(100vh + var(--vanta-clip, 320px))',
+            transform: 'translateY(calc(-1 * var(--vanta-clip, 320px)))',
+            willChange: 'transform',
+          }}>
+          <div
+            ref={vantaRef}
+            id="bg-canvas"
+            style={{
+              width: '100%',
+              height: '100%',
+              pointerEvents: prefersReducedMotion ? 'none' : 'auto',
+              display: 'block',
+            }}
+          />
+        </div>
+      </div>
+      {/* Fixed sky overlay at the very top (under the navbar).
           This ensures a visible sky that meets the clouds exactly
           at the top of the hero section. */}
       <div
@@ -274,14 +321,18 @@ export default function AnimatedBackground({
           top: 0,
           left: 0,
           width: '100vw',
-          // Fade should END at container top (solid height). So we fade from
-          // (solid-height - fade-length) -> (solid-height).
           height:
-            'var(--sky-solid-height, calc(var(--nav-height, 4rem) + 24px))',
+            'calc(var(--sky-solid-height, calc(var(--nav-height, 4rem) + 24px)) + var(--sky-fade-length, 220px))',
           background:
-            'linear-gradient(to bottom, rgba(104,184,215,1) 0%, rgba(104,184,215,1) calc(var(--sky-solid-height, 320px) - var(--sky-fade-length, 220px)), rgba(104,184,215,0) var(--sky-solid-height, 320px))',
+            theme === 'dark'
+              ? // Night sky gradient - deep blue to transparent
+                'linear-gradient(to bottom, rgba(9,6,49,1) 0%, rgba(9,6,49,1) var(--sky-solid-height, 320px), rgba(9,6,49,0) calc(var(--sky-solid-height, 320px) + var(--sky-fade-length, 220px)))'
+              : // Day sky gradient - original blue
+                'linear-gradient(to bottom, rgba(104,184,215,1) 0%, rgba(104,184,215,1) var(--sky-solid-height, 320px), rgba(104,184,215,0) calc(var(--sky-solid-height, 320px) + var(--sky-fade-length, 220px)))',
           zIndex: -1,
           pointerEvents: 'none',
+          opacity: 'var(--sky-overlay-opacity, 1)',
+          transition: 'opacity 200ms ease',
         }}
       />
       {/* Development health overlay */}
@@ -291,6 +342,9 @@ export default function AnimatedBackground({
           <div>Three.js: {healthStatsRef.current.threeOK ? '✓' : '✗'}</div>
           <div>Vanta: {healthStatsRef.current.vantaOK ? '✓' : '✗'}</div>
           <div>Clouds: {healthStatsRef.current.cloudsActive ? '✓' : '✗'}</div>
+          <div>
+            Theme: {theme} ({theme === 'dark' ? '🌙' : '☀️'})
+          </div>
           <div>
             Colors: {healthStatsRef.current.customColors ? 'Custom' : 'Default'}
           </div>
