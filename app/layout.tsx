@@ -89,13 +89,16 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Cast ThemeProvider to a permissive component type so JSX children are allowed
+  const ThemeProviderAny = ThemeProvider as unknown as React.ComponentType<any>;
+
   return (
     <html
       lang="en"
       className={`${inter.variable} ${urbanist.variable}`}
       suppressHydrationWarning>
       <body className="bg-background text-foreground font-body antialiased">
-        <ThemeProvider
+        <ThemeProviderAny
           attribute="class"
           defaultTheme="light"
           enableSystem={false}
@@ -104,7 +107,7 @@ export default function RootLayout({
           <FXMounts />
           {children}
           <Toaster />
-        </ThemeProvider>
+        </ThemeProviderAny>
       </body>
     </html>
   );

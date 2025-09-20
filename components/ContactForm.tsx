@@ -128,8 +128,8 @@ export function ContactForm() {
           </Card>
         </FadeInUp>
 
-        {/* Right column with space-around */}
-        <div className="flex flex-col space-y-0 justify-around h-full">
+        {/* Right column with space between cards */}
+        <div className="flex flex-col space-y-6 justify-center h-full">
           {/* Availability Section - Row 1 */}
           <FadeInUp delay={0.2}>
             <Card className="soft-card">

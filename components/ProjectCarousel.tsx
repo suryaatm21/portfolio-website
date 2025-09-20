@@ -147,33 +147,6 @@ export function ProjectCarousel({
     setCurrentIndex(clamped);
   }, [dimensions.width, items.length, getSliderOffset]);
 
-  const handleWheel = useCallback(
-    (event: WheelEvent) => {
-      if (!items.length || dimensions.width === 0) return;
-      event.preventDefault();
-
-      scrollMomentumRef.current += event.deltaY || event.deltaX;
-
-      if (wheelFrameRef.current) cancelAnimationFrame(wheelFrameRef.current);
-
-      wheelFrameRef.current = requestAnimationFrame(() => {
-        const threshold = dimensions.width * 0.2;
-
-        if (scrollMomentumRef.current > threshold) {
-          goToNext();
-          scrollMomentumRef.current = 0;
-        } else if (scrollMomentumRef.current < -threshold) {
-          goToPrevious();
-          scrollMomentumRef.current = 0;
-        } else {
-          // Allow small drags to snap back smoothly
-          snapToNearestSlide();
-        }
-      });
-    },
-    [dimensions.width, goToNext, goToPrevious, items.length, snapToNearestSlide],
-  );
-
   useEffect(() => {
     updateDimensions();
     window.addEventListener('resize', updateDimensions);
@@ -185,16 +158,13 @@ export function ProjectCarousel({
     if (!node) return;
 
     const keyListener = (event: KeyboardEvent) => handleKeyNavigation(event);
-    const wheelListener = (event: WheelEvent) => handleWheel(event);
 
     node.addEventListener('keydown', keyListener);
-    node.addEventListener('wheel', wheelListener, { passive: false });
 
     return () => {
       node.removeEventListener('keydown', keyListener);
-      node.removeEventListener('wheel', wheelListener);
     };
-  }, [handleKeyNavigation, handleWheel]);
+  }, [handleKeyNavigation]);
 
   useEffect(() => () => {
     if (wheelFrameRef.current) cancelAnimationFrame(wheelFrameRef.current);

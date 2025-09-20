@@ -46,14 +46,14 @@ export default function Home() {
               </div>
             </header>
 
-            <HorizontalTimeline entries={timeline} />
+            <HorizontalTimeline entries={timeline as any} />
           </div>
         </Section>
 
         <Section id="projects">
           <div className="max-w-7xl mx-auto">
             <header className="text-center mb-16">
-              <h2 className="text-3xl sm:text-4xl font-sans font-semibold text-black mb-4 tracking-tight">
+              <h2 className="text-3xl sm:text-4xl font-heading font-semibold text-gray-800 mb-4">
                 {sections.projects.title}
               </h2>
             </header>

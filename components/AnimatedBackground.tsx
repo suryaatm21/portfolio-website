@@ -324,7 +324,7 @@ export default function AnimatedBackground({
       />
       {/* Development health overlay */}
       {process.env.NODE_ENV === 'development' && (
-        <div className="fixed top-4 right-4 bg-black/80 text-white text-xs p-2 rounded z-50 font-mono">
+        <div className="fixed top-22 right-4 bg-black/80 text-white text-xs p-2 rounded z-40 font-mono">
           <div>Tailwind: {healthStatsRef.current.tailwindOK ? '✓' : '✗'}</div>
           <div>Three.js: {healthStatsRef.current.threeOK ? '✓' : '✗'}</div>
           <div>Vanta: {healthStatsRef.current.vantaOK ? '✓' : '✗'}</div>
