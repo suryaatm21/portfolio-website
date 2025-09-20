@@ -1,22 +1,22 @@
-"use client"
+'use client';
 
-import { NavBar } from "@/components/NavBar"
-import { Hero } from "@/components/Hero"
-import { Section } from "@/components/Section"
-import { ResourcesList } from "@/components/ResourcesList"
-import { ExperienceStepper } from "@/components/ExperienceStepper"
-import { ProjectsCarousel } from "@/components/ProjectsCarousel"
-import { ContactForm } from "@/components/ContactForm"
-import { Socials } from "@/components/Socials"
-import { SkipToContent } from "@/components/SkipToContent"
-import { Button } from "@/components/ui/button"
-import { ArrowUp } from "lucide-react"
-import { projects } from "@/content/site"
+import { NavBar } from '@/components/NavBar';
+import { Hero } from '@/components/Hero';
+import { Section } from '@/components/Section';
+import { ResourcesList } from '@/components/ResourcesList';
+import { HorizontalTimeline } from '@/components/HorizontalTimeline';
+import { ProjectsCarousel } from '@/components/ProjectsCarousel';
+import { ContactForm } from '@/components/ContactForm';
+import { Socials } from '@/components/Socials';
+import { SkipToContent } from '@/components/SkipToContent';
+import { Button } from '@/components/ui/button';
+import { ArrowUp } from 'lucide-react';
+import { projects, timeline, sections, footer } from '@/content/site';
 
 export default function Home() {
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" })
-  }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
     <>
@@ -24,7 +24,8 @@ export default function Home() {
       <NavBar />
 
       <main id="main-content" className="relative">
-        <Section id="home" className="min-h-screen flex items-center justify-center p-0">
+        {/* Use the same vertical rhythm as other sections for equal spacing */}
+        <Section id="home" className="flex items-center justify-center">
           <Hero />
         </Section>
 
@@ -33,27 +34,28 @@ export default function Home() {
         </Section>
 
         <Section id="experience">
-          <div className="max-w-6xl mx-auto">
+          <div className="max-w-7xl mx-auto">
             <header className="text-center mb-16">
-              <h2 className="text-3xl sm:text-4xl font-heading font-semibold text-brand-primary mb-4">Experience</h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                My journey in building impactful products and growing as a developer
-              </p>
+              <h2 className="text-3xl sm:text-4xl font-heading font-semibold text-gray-800 mb-4">
+                {sections.experience.title}
+              </h2>
+              <div className="max-w-2xl mx-auto readable-panel">
+                <p className="text-lg text-muted-foreground m-0">
+                  {sections.experience.description}
+                </p>
+              </div>
             </header>
 
-            <ExperienceStepper />
+            <HorizontalTimeline entries={timeline as any} />
           </div>
         </Section>
 
         <Section id="projects">
           <div className="max-w-7xl mx-auto">
             <header className="text-center mb-16">
-              <h2 className="text-3xl sm:text-4xl font-sans font-semibold text-foreground mb-4 tracking-tight">
-                Projects
+              <h2 className="text-3xl sm:text-4xl font-heading font-semibold text-gray-800 mb-4">
+                {sections.projects.title}
               </h2>
-              <p className="text-lg text-muted-foreground/80 max-w-2xl mx-auto">
-                A showcase of my recent work and side projects
-              </p>
             </header>
 
             <ProjectsCarousel items={projects} />
@@ -63,10 +65,9 @@ export default function Home() {
         <Section id="contact">
           <div className="max-w-6xl mx-auto">
             <header className="text-center mb-12">
-              <h2 className="text-3xl sm:text-4xl font-heading font-semibold text-brand-primary mb-4">Get In Touch</h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Have a project in mind or just want to chat? I'd love to hear from you.
-              </p>
+              <h2 className="text-3xl sm:text-4xl font-heading font-semibold text-gray-800 mb-4">
+                {sections.contact.title}
+              </h2>
             </header>
 
             <ContactForm />
@@ -74,11 +75,15 @@ export default function Home() {
         </Section>
       </main>
 
-      <footer className="bg-muted/30 border-t border-border/50 py-12" role="contentinfo">
+      <footer
+        className="bg-muted/30 border-t border-border/50 py-6"
+        role="contentinfo">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="text-center md:text-left">
-              <p className="text-sm text-muted-foreground">© 2024 Surya. Built with Next.js and Tailwind CSS.</p>
+              <p className="text-sm text-muted-foreground">
+                {footer.copyright}
+              </p>
             </div>
 
             <div className="flex items-center gap-4">
@@ -88,8 +93,7 @@ export default function Home() {
                 size="sm"
                 onClick={scrollToTop}
                 className="hover:bg-brand-accent/10 hover:text-brand-accent"
-                aria-label="Back to top"
-              >
+                aria-label={footer.backToTop}>
                 <ArrowUp className="h-4 w-4" />
               </Button>
             </div>
@@ -97,5 +101,5 @@ export default function Home() {
         </div>
       </footer>
     </>
-  )
+  );
 }

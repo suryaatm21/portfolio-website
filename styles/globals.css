@@ -1,9 +1,11 @@
-@import 'tailwindcss';
-@import 'tw-animate-css';
+@import "tailwindcss";
+@import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
 :root {
+  /* Height of the fixed navbar, used by the sky overlay */
+  --nav-height: 5rem; /* match app/globals.css */
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -118,6 +120,57 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    background: transparent;
+    text-shadow: none;
   }
+  .dark body { text-shadow: none; }
+
+  /* Ensure full viewport coverage */
+  html,
+  body,
+  #__next,
+  #root {
+    min-height: 100%;
+  }
+
+  /* Make absolute children (sky overlay) scroll with the document */
+  html,
+  body {
+    position: relative;
+  }
+
+  /* Vanta.js background positioning */
+  #bg-canvas {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -2; /* keep behind the sky overlay */
+    display: block;
+  }
+
+  /* Ensure Vanta canvas doesn't interfere with content */
+  #bg-canvas canvas {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+  }
+}
+
+/* Shared readable panel utility when importing styles/globals.css */
+.readable-panel {
+  background: color-mix(in oklch, var(--background) 55%, transparent);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  border: 1px solid color-mix(in oklch, white 8%, transparent);
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+}
+.readable-panel, .readable-panel * { text-shadow: none !important; }
+
+/* Heading shadows for this stylesheet too */
+h1, h2, h3 {
+  text-shadow: 0 2px 6px rgba(0,0,0,0.28), 0 16px 40px rgba(0,0,0,0.18);
 }
