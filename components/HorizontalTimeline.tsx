@@ -19,6 +19,7 @@ import {
   GraduationCap,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { timelineText } from '@/content/site';
 
 interface TimelineEntry {
   id: string;
@@ -145,15 +146,15 @@ export function HorizontalTimeline({
     <div
       ref={containerRef}
       className={cn(
-        'relative w-full xl:grid xl:grid-cols-[56px_1fr] xl:gap-8 xl:items-center',
+        'relative w-full xl:flex xl:justify-center xl:items-center',
         className,
       )}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}>
-      {/* Vertical Quick Nav (static within layout, with margin) */}
-      <div className="hidden xl:flex flex-col gap-3 justify-center items-center ml-4">
+      {/* Vertical Quick Nav (positioned absolutely to the left) */}
+      <div className="hidden xl:flex flex-col gap-3 justify-center items-center absolute left-0 xl:left-8 top-1/2 -translate-y-1/2 z-10">
         <div className="text-xs font-medium text-muted-foreground mb-2 writing-vertical-rl">
-          Timeline
+          {timelineText.quickNav}
         </div>
         {entries.map((entry, index) => (
           <button
@@ -174,8 +175,8 @@ export function HorizontalTimeline({
         ))}
       </div>
 
-      {/* Main Timeline Container */}
-      <div className="relative bg-gradient-to-br from-background via-background/95 to-muted/20 rounded-2xl border border-border/50 overflow-hidden">
+      {/* Main Timeline Container - Centered independently */}
+      <div className="relative bg-gradient-to-br from-background via-background/95 to-muted/20 rounded-2xl border border-border/50 overflow-hidden max-w-5xl">
         {/* Timeline Header */}
         <div className="relative p-8 border-b border-border/50">
           <div className="text-center">
@@ -186,15 +187,15 @@ export function HorizontalTimeline({
               transition={{ duration: 0.6 }}>
               <Calendar className="w-4 h-4 text-brand-primary" />
               <span className="text-sm font-medium text-brand-primary">
-                Professional Journey
+                {timelineText.badge}
               </span>
             </motion.div>
 
             <h3 className="text-2xl font-heading font-semibold text-foreground mb-2">
-              Experience Timeline
+              {timelineText.title}
             </h3>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Navigate through my professional journey and key milestones
+              {timelineText.description}
             </p>
           </div>
         </div>

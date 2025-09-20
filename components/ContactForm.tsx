@@ -12,6 +12,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Socials } from '@/components/Socials';
 import { Send, Mail } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { contact } from '@/content/site';
 
 export function ContactForm() {
   const [subject, setSubject] = useState('');
@@ -51,120 +52,111 @@ export function ContactForm() {
 
   return (
     <div className="max-w-4xl mx-auto">
-      <FadeInUp>
-        <Card className="soft-card">
-          <CardHeader>
-            <CardTitle className="text-2xl font-heading text-brand-primary flex items-center gap-2">
-              <Mail className="h-6 w-6 text-brand-accent" />
-              Send a Message
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-8">
-            {/* Contact Form Section */}
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1, duration: 0.3 }}>
-                <label
-                  htmlFor="subject"
-                  className="block text-sm font-medium text-white mb-2">
-                  Subject
-                </label>
-                <Input
-                  id="subject"
-                  type="text"
-                  value={subject}
-                  onChange={(e) => setSubject(e.target.value)}
-                  placeholder="What would you like to discuss?"
-                  className="border-brand-accent/20 focus:border-brand-accent focus:ring-brand-accent/20 transition-colors"
-                  required
-                />
-              </motion.div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+        {/* Contact Form - Takes 2 rows */}
+        <FadeInUp className="lg:row-span-2">
+          <Card className="soft-card h-full">
+            <CardHeader>
+              <CardTitle className="text-2xl font-heading text-brand-primary flex items-center gap-2">
+                <Mail className="h-6 w-6 text-brand-accent" />
+                {contact.form.title}
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="p-6">
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1, duration: 0.3 }}>
+                  <label
+                    htmlFor="subject"
+                    className="block text-sm font-medium text-white mb-2">
+                    {contact.form.subjectLabel}
+                  </label>
+                  <Input
+                    id="subject"
+                    type="text"
+                    value={subject}
+                    onChange={(e) => setSubject(e.target.value)}
+                    placeholder={contact.form.subjectPlaceholder}
+                    className="border-brand-accent/20 focus:border-brand-accent focus:ring-brand-accent/20 transition-colors"
+                    required
+                  />
+                </motion.div>
 
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2, duration: 0.3 }}>
-                <label
-                  htmlFor="message"
-                  className="block text-sm font-medium text-white mb-2">
-                  Message
-                </label>
-                <Textarea
-                  id="message"
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  placeholder="Tell me about your project, question, or just say hello!"
-                  rows={5}
-                  className="border-brand-accent/20 focus:border-brand-accent focus:ring-brand-accent/20 resize-none transition-colors"
-                  required
-                />
-              </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2, duration: 0.3 }}>
+                  <label
+                    htmlFor="message"
+                    className="block text-sm font-medium text-white mb-2">
+                    {contact.form.messageLabel}
+                  </label>
+                  <Textarea
+                    id="message"
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    placeholder={contact.form.messagePlaceholder}
+                    rows={8}
+                    className="border-brand-accent/20 focus:border-brand-accent focus:ring-brand-accent/20 resize-none transition-colors"
+                    required
+                  />
+                </motion.div>
 
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3, duration: 0.3 }}>
-                <AnimatedButton
-                  type="submit"
-                  className="w-full bg-brand-cta hover:bg-brand-cta-hover text-white group shadow-lg">
-                  <Send className="mr-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                  Send Message
-                </AnimatedButton>
-              </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3, duration: 0.3 }}>
+                  <AnimatedButton
+                    type="submit"
+                    className="w-full bg-brand-cta hover:bg-brand-cta-hover text-white group shadow-lg">
+                    <Send className="mr-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                    {contact.form.submitText}
+                  </AnimatedButton>
+                </motion.div>
 
-              <motion.p
-                className="text-xs text-white/70 text-center mt-4"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.4, duration: 0.3 }}>
-                This will open your default email client with a prefilled
-                message. Your email address will not be stored or shared.
-              </motion.p>
-            </form>
+                <motion.p
+                  className="text-xs text-white/70 text-center mt-4"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.4, duration: 0.3 }}>
+                  {contact.form.disclaimer}
+                </motion.p>
+              </form>
+            </CardContent>
+          </Card>
+        </FadeInUp>
 
-            {/* Divider */}
-            <div className="border-t border-white/20"></div>
+        {/* Right column with space-around */}
+        <div className="flex flex-col space-y-0 justify-around h-full">
+          {/* Availability Section - Row 1 */}
+          <FadeInUp delay={0.2}>
+            <Card className="soft-card">
+              <CardContent className="p-6">
+                <h4 className="text-lg font-heading font-medium text-brand-accent mb-3">
+                  {contact.availability.title}
+                </h4>
+                <p className="text-white">
+                  {contact.availability.content}
+                </p>
+              </CardContent>
+            </Card>
+          </FadeInUp>
 
-            {/* Internships Section */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5, duration: 0.3 }}
-              className="p-4 rounded-lg bg-brand-accent/10 border border-brand-accent/20">
-              <h4 className="text-lg font-heading font-medium text-brand-accent mb-2">
-                Currently Open To
-              </h4>
-              <p className="text-white">
-                🚀 Seeking 2026 internships in software engineering, full-stack development, and emerging technologies
-              </p>
-            </motion.div>
-
-            {/* Social Links Section */}
-            <div>
-              <h4 className="text-lg font-heading font-medium text-white mb-3">
-                Find me elsewhere
-              </h4>
-              <Socials variant="footer" className="justify-start" />
-            </div>
-
-            {/* Quick Response Section */}
-            <motion.div
-              className="p-4 rounded-lg bg-white/10 border border-white/20"
-              whileHover={{ scale: 1.02 }}
-              transition={{ duration: 0.2 }}>
-              <h4 className="text-sm font-medium text-white mb-2">
-                Quick Response
-              </h4>
-              <p className="text-sm text-white/80">
-                I typically respond to emails within 24-48 hours. For urgent
-                matters, feel free to reach out via LinkedIn.
-              </p>
-            </motion.div>
-          </CardContent>
-        </Card>
-      </FadeInUp>
+          {/* Social Links Section - Row 2 */}
+          <FadeInUp delay={0.3}>
+            <Card className="soft-card">
+              <CardContent className="p-6">
+                <h4 className="text-lg font-heading font-medium text-white mb-4">
+                  {contact.social.title}
+                </h4>
+                <Socials variant="footer" className="justify-start" />
+              </CardContent>
+            </Card>
+          </FadeInUp>
+        </div>
+      </div>
     </div>
   );
 }

@@ -4,31 +4,7 @@ import { ProjectCard } from '@/components/ProjectCard';
 import { ScrollHint } from '@/components/animations/ScrollHint';
 import { FadeInUp } from '@/components/animations/FadeInUp';
 import { AnimatedCard } from '@/components/animations/AnimatedCard';
-
-const projects = [
-  {
-    title: 'Spoiler Alert',
-    summary:
-      "Spoiler Alert helps you track what's in your fridge, reduce food waste, and make meal planning effortless.",
-    repo: 'https://github.com/suryaatm21/spoiler_alert',
-    demo: '',
-    tech: ['Next.js', 'PostgreSQL', 'Tailwind'],
-  },
-  {
-    title: 'Spotify Playlist Optimizer',
-    summary: 'Clusters tracks by audio features',
-    repo: 'https://github.com/xxxxxxxxx',
-    demo: 'https://xxxxxxxxx',
-    tech: ['Django', 'PostgreSQL', 'TensorFlow'],
-  },
-  {
-    title: 'Untab Pomodoro Closer',
-    summary: 'Auto-closes tabs when timer ends',
-    repo: 'https://github.com/xxxxxxxxx',
-    demo: 'https://xxxxxxxxx',
-    tech: ['WebExtensions', 'TypeScript'],
-  },
-];
+import { projects } from '@/content/site';
 
 export function ProjectsRail() {
   return (
@@ -63,7 +39,7 @@ export function ProjectsRail() {
                     title={project.title}
                     summary={project.summary}
                     repo={project.repo}
-                    demo={project.demo}
+                    demo={project.demo ?? ''}
                     tech={project.tech}
                   />
                 </AnimatedCard>

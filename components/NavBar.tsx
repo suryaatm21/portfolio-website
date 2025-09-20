@@ -6,14 +6,9 @@ import { Button } from '@/components/ui/button';
 import { Socials } from '@/components/Socials';
 import { Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { navigation } from '@/content/site';
 
-const navItems = [
-  { label: 'Home', href: '#home' },
-  { label: 'Resources', href: '#resources' },
-  { label: 'Experience', href: '#experience' },
-  { label: 'Projects', href: '#projects' },
-  { label: 'Contact', href: '#contact' },
-];
+const navItems = navigation;
 
 export function NavBar() {
   const [activeSection, setActiveSection] = useState('home');

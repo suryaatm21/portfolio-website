@@ -1,0 +1,204 @@
+%-------------------------
+% Resume in Latex
+%------------------------
+
+\documentclass[letterpaper,11pt]{article} % reverted to normal font
+% Substitute Calibri with TeX Gyre Heros (similar sans-serif)
+\usepackage[scaled]{helvet}
+\renewcommand\familydefault{\sfdefault}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+% Adjust margins (ATS-safe for 11in page height)
+\usepackage[margin=1in]{geometry} % guaranteed 1" margins on all sides
+
+\input{glyphtounicode}
+
+% Adjust margins
+\addtolength{\oddsidemargin}{-0.5in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-0.5in}
+\addtolength{\textheight}{1.1in}
+
+\urlstyle{same}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Sections formatting
+\titleformat{\section}{
+  \vspace{-6pt}\bfseries\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+\pdfgentounicode=1
+
+%-------------------------
+% Custom commands
+\newcommand{\resumeEdu}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+      \textit{\small #3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-6pt}
+}
+
+\newcommand{\resumeItem}[1]{\item\small{#1}\vspace{-3pt}}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#3} & #2 \\
+      \textit{\small#1} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-6pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \normalsize #1 & #2 \\
+    \end{tabular*}\vspace{-6pt}
+}
+
+\newcommand{\resumeSubItem}[1]{\resumeItem{#1}\vspace{-3pt}}
+
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-6pt}}
+
+%-------------------------------------------
+%%%%%%  RESUME STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+%----------HEADING----------
+\begin{center}
+    \textbf{\Huge \bfseries Surya Atmuri} \\ \vspace{1pt}
+    \small Princeton, NJ $|$ (732)-735-0687 $|$ 
+    \href{mailto:suryaatmuri57@gmail.com}{suryaatmuri57@gmail.com} $|$ 
+    \href{https://www.linkedin.com/in/surya-atmuri/}{linkedin.com/in/surya-atmuri} $|$ 
+    \href{https://github.com/suryaatm21}{github.com/suryaatm21} $|$ 
+    US Citizen 
+\end{center}
+
+%-----------EDUCATION-----------
+\section{\MakeUppercase{Education}}
+\resumeSubHeadingListStart
+\resumeEdu
+  {Georgia Institute of Technology - College of Computing}{Atlanta, GA}
+  {B.S. in Computer Science, GPA: 3.9/4.0 (Faculty Honors)}{Expected May 2027}
+
+    \resumeItemListStart
+        \resumeItem{Coursework: Object Oriented Programming (OOP), Data Structures, Discrete Math, Design \& Analysis of Algorithms, Computer Organization \& Programming, Objects \& Design, Database Systems, Artificial Intelligence, Machine Learning}
+    \resumeItemListEnd
+\resumeSubHeadingListEnd
+
+%-----------EXPERIENCE-----------
+\section{\MakeUppercase{Professional Experience}}
+\resumeSubHeadingListStart
+
+\resumeSubheading
+  {Automated Algorithm Design - Vertically Integrated Projects (VIP)}{Jan 2025 -- Present}
+  {Undergraduate Researcher}{Atlanta, GA}
+  \resumeItemListStart
+    \resumeItem{Developed an LLM-guided AutoML pipeline with Mixtral-8x7B to evolve PyTorch architectures for 3D point cloud classification, running 10 generations and benchmarking 100+ model variants per run with SLURM on PACE ICE}
+    \resumeItem{Advanced PointNet++ performance by evolving a variant that raised test accuracy from 62.7\% to 67.1\% (+7\%), while reducing model complexity metrics to achieve a Pareto-optimal balance of accuracy and efficiency}
+    \resumeItem{Doubled request throughput with asynchronous batching using asyncio, cutting inference latency by 50\%}
+  \resumeItemListEnd
+
+\resumeSubheading
+  {Todd Agriscience}{Jun 2025 -- Sep 2025}
+  {Software Engineering Intern}{Los Angeles, CA}
+  \resumeItemListStart
+    \resumeItem{Engineered a role-based authentication system with NextAuth.js, middleware, and an AWS DynamoDB session store, securing all admin routes against unauthorized access while sustaining sub-10ms latency for 20 client dashboards}
+
+    % \resumeItem{Engineered a role-based authentication system with NextAuth.js and middleware, eliminating unauthorized access to sensitive admin routes and reducing security risk exposure by 100\% through dynamic session validation}
+    % \resumeItem{Architected an AWS DynamoDB session store with sub-10ms latency, powering dashboards for 20 enterprise clients}
+    \resumeItem{Resolved 4 critical production blockers in a Next.js 15/React 18 SaaS platform, fixing build errors, dependency conflicts, and context propagation failures in route redirects, supporting full internationalization (i18n) and updated test harnesses}
+  \resumeItemListEnd
+
+\resumeSubheading
+  {Acrotech Biopharma Inc.}{Jun 2024 -- Aug 2024}
+  {Software Engineering Intern}{East Windsor, NJ}{\vspace{0 pt}}
+  \resumeItemListStart
+    \resumeItem{Built a SharePoint based intranet platform leveraging SPFx, TypeScript, Webpack, and Gulp driving employee engagement with upwards of 1,100 total visits and 217 visits in the final 30 days of term}
+    \resumeItem{Configured CRUD workflows using Power Automate and JavaScript, improving backend synchronization efficiency and reducing manual input errors, contributing to a seamless experience for 17 unique users over 2 months}
+    \resumeItem{Analyzed data queries using SQL in PowerBI's SQL Server and Excel's command line to model commercial patterns of 400+ health care professionals and compare tele-sales call activity to determine sales impact in weekly reports}
+  \resumeItemListEnd
+
+% \resumeSubheading
+%   {SB Dental Studio}{Jun 2023 -- Jun 2024}
+%   {Data Analyst Intern}{Plainsboro, NJ}{\vspace{0 pt}}
+%   \resumeItemListStart
+%     \resumeItem{Restructured patient data with Dentrix software, automating follow-ups and minimizing scheduling conflicts by 60\%}
+%     \resumeItem{Streamlined payment processing system, validating insurance policies for 140+ claim forms to ensure compliance}
+%   \resumeItemListEnd
+\resumeSubHeadingListEnd
+
+%-----------PROJECTS-----------
+\section{\MakeUppercase{Projects}}
+\resumeSubHeadingListStart
+
+\resumeProjectHeading
+  {\textbf{\href{https://github.com/suryaatm21/job-tracker}{Job Tracker Bot}} $|$ \emph{Python, GitHub Actions, Telegram API}}{Aug 2025 -- Present}
+  \resumeItemListStart
+    \resumeItem{Shipped a GitHub Actions pipeline with TTL caching to monitor internship repos, actively delivering alerts to 1,300+ contacts and 60+ active users, scaling reliably on three CI pipelines with sub-15s runtimes and under 1\% job failure rate.}
+    % \resumeItem{Optimized workflows with TTL caching, batching, and fallback logic, cutting job failure rate to less than 1\%}
+  \resumeItemListEnd
+  
+
+\resumeProjectHeading
+  {\textbf{CloudScribe AI} $|$ \emph{TypeScript, Next.js, Google Cloud, Docker, Firebase}}{Jan 2025 -- Present}
+  \resumeItemListStart
+    \resumeItem{Deploying a serverless pipeline using GCP's Cloud Storage, Pub/Sub, and Firebase Functions to transcribe and summarize multi modal media inputs (e.g., .mp3, .mp4) with sub-30s latency and under 2s trigger response}
+    \resumeItem{Containerized video processing with Docker and deployed to Cloud Run, integrating OpenAI APIs for semantic summarization with over 90\% similarity to human-written notes using cosine and ROUGE metrics across 150+ tests}
+  \resumeItemListEnd    
+
+% \resumeProjectHeading
+%     {\textbf{NASA Predictive Maintenance} $|$ \emph{Python, Pandas, NumPy, Matplotlib, Streamlit}}{Mar 2025 -- Apr 2025}
+%     \resumeItemListStart
+%     \resumeItem{Trained models on NASA C-MAPSS time-series data to predict aircraft engine Remaining Useful Life (RUL), using feature data engineering, scaling and time-window aggregation, achieving an 89\% F1-score.}
+%     \resumeItem{Built a Streamlit dashboard to visualize degradation curves and predictions for insights across 200+ engine trajectories.}
+%     \resumeItemListEnd
+
+
+\resumeProjectHeading
+  {\textbf{\href{https://github.com/suryaatm21/spotify-optimizer}{Spotify Playlist Optimizer}} $|$ \emph{REST APIs, FastAPI, PostgreSQL, scikit-learn}}{Oct 2024 -- Aug 2025}
+  \resumeItemListStart
+    \resumeItem{Designed a FastAPI backend with PostgreSQL and Spotify OAuth, batch processing tracks with average latency under 200ms, and integrated ReccoBeats API to fetch 95\%+ of audio features with data imputation fallback}
+    \resumeItem{Applied K-Means and DBSCAN clustering with PCA visualizations on audio features to reveal playlist-level patterns, enabling organization and filtering via CRUD operations through the Spotify Web API}
+  \resumeItemListEnd
+
+\resumeProjectHeading
+  {\textbf{\href{https://github.com/suryaatm21/spoiler_alert}{Spoiler Alert - Web Development GT}} $|$ \emph{JavaScript, Flask, React, SQLite}}{Sep 2024 -- Dec 2024}
+  \resumeItemListStart
+    \resumeItem{Led frontend scrum development of the Fridge dashboard using React, Flask, and Gemini API to automate expiry and category inputs, reducing manual entry steps by 40\% and cutting input time from 30s to under 10s per item}
+  \resumeItemListEnd
+
+\resumeSubHeadingListEnd
+
+%-----------TECHNICAL SKILLS-----------
+\section{\MakeUppercase{Technical Skills}}
+ \begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+     \textbf{Languages}{: Python, Java, JavaScript, TypeScript, SQL, HTML, CSS, LaTeX, C, C++, Swift} \\
+     \textbf{Frameworks}{: React, Angular, Next.js, Node.js, GraphQL, FastAPI, TailwindCSS, Flask, Django, Scrum, Agile, RAG} \\
+     \textbf{Developer Tools}{: Git, GitHub, NPM, AWS, GCP, Azure, Postman, Storybook, MongoDB, CI/CD, Jira, Figma, VSCode} \\
+     \textbf{Libraries}{: Pandas, NumPy, Seaborn, scikit-learn, Matplotlib, TensorFlow, PyTorch, Axios, LangChain, Transformers}
+    }}
+ \end{itemize}
+
+%-------------------------------------------
+\end{document}

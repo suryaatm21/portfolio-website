@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -41,11 +41,25 @@ export function ProjectCarousel({
   autoPlayInterval = 4000,
   className,
 }: ProjectCarouselProps) {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(() =>
+    items.length ? Math.floor(items.length / 2) : 0,
+  );
   const [dimensions, setDimensions] = useState({ width: 300, height: 400 });
   const containerRef = useRef<HTMLDivElement>(null);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const scrollMomentumRef = useRef(0);
+  const wheelFrameRef = useRef<number>();
+
+  // Keep the active slide centred when the dataset changes
+  useEffect(() => {
+    if (!items.length) return;
+    const median = Math.floor(items.length / 2);
+    setCurrentIndex((index) => {
+      if (index >= items.length || index < 0) {
+        return median;
+      }
+      return index;
+    });
+  }, [items.length]);
 
   // Calculate responsive dimensions
   const updateDimensions = useCallback(() => {
@@ -71,25 +85,27 @@ export function ProjectCarousel({
     }
   }, []);
 
-  useEffect(() => {
-    updateDimensions();
-    window.addEventListener('resize', updateDimensions);
-    return () => window.removeEventListener('resize', updateDimensions);
-  }, [updateDimensions]);
+  // Define callback functions first
+  const goToSlide = useCallback(
+    (index: number) => {
+      if (!items.length) return;
+      const clamped = ((index % items.length) + items.length) % items.length;
+      setCurrentIndex(clamped);
+    },
+    [items.length],
+  );
 
-  // Autoplay removed
-
-  const goToSlide = (index: number) => {
-    setCurrentIndex(index);
-  };
-
-  const goToPrevious = () => {
+  const goToPrevious = useCallback(() => {
+    if (!items.length) return;
+    scrollMomentumRef.current = 0;
     setCurrentIndex((prev) => (prev - 1 + items.length) % items.length);
-  };
+  }, [items.length]);
 
-  const goToNext = () => {
+  const goToNext = useCallback(() => {
+    if (!items.length) return;
+    scrollMomentumRef.current = 0;
     setCurrentIndex((prev) => (prev + 1) % items.length);
-  };
+  }, [items.length]);
 
   const getItemTransform = (index: number) => {
     if (index === currentIndex) {
@@ -103,17 +119,97 @@ export function ProjectCarousel({
     return `perspective(1200px) rotateY(${rotateY}deg) translateZ(-100px)`;
   };
 
-  const getSliderTransform = () => {
-    const offset = currentIndex * -dimensions.width + dimensions.width / 2;
-    return `translate3d(${offset}px, 0, 0)`;
+  const getSliderOffset = () => {
+    if (!items.length) return 0;
+    const halfSpan = (items.length - 1) / 2;
+    return (halfSpan - currentIndex) * dimensions.width;
   };
+    // const getSliderOffset = () =>
+    // currentIndex * -dimensions.width + dimensions.width / 2;
+
+  const handleKeyNavigation = useCallback(
+    (event: KeyboardEvent) => {
+      if (event.key === 'ArrowRight') {
+        event.preventDefault();
+        goToNext();
+      } else if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        goToPrevious();
+      }
+    },
+    [goToNext, goToPrevious],
+  );
+
+  const snapToNearestSlide = useCallback(() => {
+    scrollMomentumRef.current = 0;
+    const nearest = Math.round(-getSliderOffset() / dimensions.width);
+    const clamped = Math.min(Math.max(nearest, 0), items.length - 1);
+    setCurrentIndex(clamped);
+  }, [dimensions.width, items.length, getSliderOffset]);
+
+  const handleWheel = useCallback(
+    (event: WheelEvent) => {
+      if (!items.length || dimensions.width === 0) return;
+      event.preventDefault();
+
+      scrollMomentumRef.current += event.deltaY || event.deltaX;
+
+      if (wheelFrameRef.current) cancelAnimationFrame(wheelFrameRef.current);
+
+      wheelFrameRef.current = requestAnimationFrame(() => {
+        const threshold = dimensions.width * 0.2;
+
+        if (scrollMomentumRef.current > threshold) {
+          goToNext();
+          scrollMomentumRef.current = 0;
+        } else if (scrollMomentumRef.current < -threshold) {
+          goToPrevious();
+          scrollMomentumRef.current = 0;
+        } else {
+          // Allow small drags to snap back smoothly
+          snapToNearestSlide();
+        }
+      });
+    },
+    [dimensions.width, goToNext, goToPrevious, items.length, snapToNearestSlide],
+  );
+
+  useEffect(() => {
+    updateDimensions();
+    window.addEventListener('resize', updateDimensions);
+    return () => window.removeEventListener('resize', updateDimensions);
+  }, [updateDimensions]);
+
+  useEffect(() => {
+    const node = containerRef.current;
+    if (!node) return;
+
+    const keyListener = (event: KeyboardEvent) => handleKeyNavigation(event);
+    const wheelListener = (event: WheelEvent) => handleWheel(event);
+
+    node.addEventListener('keydown', keyListener);
+    node.addEventListener('wheel', wheelListener, { passive: false });
+
+    return () => {
+      node.removeEventListener('keydown', keyListener);
+      node.removeEventListener('wheel', wheelListener);
+    };
+  }, [handleKeyNavigation, handleWheel]);
+
+  useEffect(() => () => {
+    if (wheelFrameRef.current) cancelAnimationFrame(wheelFrameRef.current);
+  }, []);
+
+  const sliderOffset = getSliderOffset();
 
   return (
     <div
-      className={cn('relative w-full', className)}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      ref={containerRef}>
+      className={cn('relative w-full outline-none', className)}
+      ref={containerRef}
+      tabIndex={0}
+      role="region"
+      aria-roledescription="Project carousel"
+      aria-label="Project showcase">
       {/* Carousel Body */}
       <div className="relative w-full overflow-hidden py-20">
         {/* Navigation Buttons */}
@@ -136,147 +232,142 @@ export function ProjectCarousel({
         </Button>
 
         {/* Carousel Slider */}
-        <div
-          className="relative flex transition-transform duration-1000 ease-in-out"
+        <motion.div
+          className="relative flex"
           style={{
             width: `${dimensions.width * items.length}px`,
-            transform: getSliderTransform(),
             left: '50%',
             marginLeft: `-${dimensions.width / 2}px`,
-          }}>
-          {/* Carousel Slider */}
-          <div
-            className="relative flex transition-transform duration-1000 ease-in-out"
-            style={{
-              width: `${dimensions.width * items.length}px`,
-              transform: getSliderTransform(),
-              left: '50%',
-              marginLeft: `-${dimensions.width / 2}px`,
-            }}>
-            {items.map((project, index) => (
+          }}
+          animate={{ x: sliderOffset }}
+          transition={{ type: 'spring', stiffness: 140, damping: 20 }}
+          role="listbox"
+          aria-live="polite">
+          {items.map((project, index) => (
+            <div
+              key={`${project.title}-${index}`}
+              className="relative flex-shrink-0 mx-5"
+              style={{
+                width: `${dimensions.width - 40}px`,
+                height: `${dimensions.height}px`,
+              }}
+              role="option"
+              aria-selected={index === currentIndex}>
+              {/* 3D Frame Container */}
               <div
-                key={`${project.title}-${index}`}
-                className="relative flex-shrink-0 mx-5"
+                className="relative w-full h-full transition-transform duration-700 ease-out"
                 style={{
-                  width: `${dimensions.width - 40}px`,
-                  height: `${dimensions.height}px`,
+                  transformStyle: 'preserve-3d',
+                  transform: getItemTransform(index),
                 }}>
-                {/* 3D Frame Container */}
+                {/* Front Face */}
+                <Card className="absolute inset-0 border-2 border-border bg-background/95 backdrop-blur-sm">
+                  <CardContent className="p-6 h-full flex flex-col">
+                    {/* Project Icon */}
+                    <div className="flex justify-center mb-4">
+                      <div className="w-16 h-16 rounded-xl bg-brand-primary/10 flex items-center justify-center">
+                        <Code2 className="w-8 h-8 text-brand-primary" />
+                      </div>
+                    </div>
+
+                    {/* Project Title */}
+                    <h3 className="text-xl font-heading font-semibold text-center mb-3 text-black">
+                      {project.title}
+                    </h3>
+
+                    {/* Project Summary */}
+                    <p className="text-sm text-white/80 text-center mb-6 flex-grow line-clamp-4">
+                      {project.summary}
+                    </p>
+
+                    {/* Tech Stack */}
+                    <div className="flex flex-wrap gap-1 justify-center mb-6">
+                      {project.tech.slice(0, 3).map((tech) => (
+                        <Badge
+                          key={tech}
+                          variant="secondary"
+                          className="text-xs px-2 py-1">
+                          {tech}
+                        </Badge>
+                      ))}
+                      {project.tech.length > 3 && (
+                        <Badge
+                          variant="outline"
+                          className="text-xs px-2 py-1">
+                          +{project.tech.length - 3}
+                        </Badge>
+                      )}
+                    </div>
+
+                    {/* CTA Buttons */}
+                    <div className="flex gap-2 justify-center">
+                      {project.demo && (
+                        <Button
+                          size="sm"
+                          className="flex-1 bg-brand-primary hover:bg-brand-primary/90"
+                          asChild>
+                          <a
+                            href={project.demo}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2">
+                            <ExternalLink className="w-3 h-3" />
+                            Demo
+                          </a>
+                        </Button>
+                      )}
+                      {project.repo && (
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="flex-1"
+                          asChild>
+                          <a
+                            href={project.repo}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2">
+                            <Github className="w-3 h-3" />
+                            Code
+                          </a>
+                        </Button>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Left Side Face */}
                 <div
-                  className="relative w-full h-full transition-transform duration-1000 ease-in-out"
+                  className="absolute top-0 left-0 w-10 h-full bg-brand-primary/5 border-l-2 border-brand-primary/20"
                   style={{
-                    transformStyle: 'preserve-3d',
-                    transform: getItemTransform(index),
-                  }}>
-                  {/* Front Face */}
-                  <Card className="absolute inset-0 border-2 border-border bg-background/95 backdrop-blur-sm">
-                    <CardContent className="p-6 h-full flex flex-col">
-                      {/* Project Icon */}
-                      <div className="flex justify-center mb-4">
-                        <div className="w-16 h-16 rounded-xl bg-brand-primary/10 flex items-center justify-center">
-                          <Code2 className="w-8 h-8 text-brand-primary" />
-                        </div>
-                      </div>
+                    transform: 'translate3d(1px, 0, -40px) rotateY(-90deg)',
+                    transformOrigin: '0%',
+                    backfaceVisibility: 'hidden',
+                  }}
+                />
 
-                      {/* Project Title */}
-                      <h3 className="text-xl font-heading font-semibold text-center mb-3 text-black">
-                        {project.title}
-                      </h3>
+                {/* Right Side Face */}
+                <div
+                  className="absolute top-0 right-0 w-10 h-full bg-brand-primary/5 border-r-2 border-brand-primary/20"
+                  style={{
+                    transform: 'translate3d(-1px, 0, -40px) rotateY(90deg)',
+                    transformOrigin: '100%',
+                    backfaceVisibility: 'hidden',
+                  }}
+                />
 
-                      {/* Project Summary */}
-                      <p className="text-sm text-white/80 text-center mb-6 flex-grow line-clamp-4">
-                        {project.summary}
-                      </p>
-
-                      {/* Tech Stack */}
-                      <div className="flex flex-wrap gap-1 justify-center mb-6">
-                        {project.tech.slice(0, 3).map((tech) => (
-                          <Badge
-                            key={tech}
-                            variant="secondary"
-                            className="text-xs px-2 py-1">
-                            {tech}
-                          </Badge>
-                        ))}
-                        {project.tech.length > 3 && (
-                          <Badge
-                            variant="outline"
-                            className="text-xs px-2 py-1">
-                            +{project.tech.length - 3}
-                          </Badge>
-                        )}
-                      </div>
-
-                      {/* CTA Buttons */}
-                      <div className="flex gap-2 justify-center">
-                        {project.demo && (
-                          <Button
-                            size="sm"
-                            className="flex-1 bg-brand-primary hover:bg-brand-primary/90"
-                            asChild>
-                            <a
-                              href={project.demo}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="flex items-center gap-2">
-                              <ExternalLink className="w-3 h-3" />
-                              Demo
-                            </a>
-                          </Button>
-                        )}
-                        {project.repo && (
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            className="flex-1"
-                            asChild>
-                            <a
-                              href={project.repo}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="flex items-center gap-2">
-                              <Github className="w-3 h-3" />
-                              Code
-                            </a>
-                          </Button>
-                        )}
-                      </div>
-                    </CardContent>
-                  </Card>
-
-                  {/* Left Side Face */}
-                  <div
-                    className="absolute top-0 left-0 w-10 h-full bg-brand-primary/5 border-l-2 border-brand-primary/20"
-                    style={{
-                      transform: 'translate3d(1px, 0, -40px) rotateY(-90deg)',
-                      transformOrigin: '0%',
-                      backfaceVisibility: 'hidden',
-                    }}
-                  />
-
-                  {/* Right Side Face */}
-                  <div
-                    className="absolute top-0 right-0 w-10 h-full bg-brand-primary/5 border-r-2 border-brand-primary/20"
-                    style={{
-                      transform: 'translate3d(-1px, 0, -40px) rotateY(90deg)',
-                      transformOrigin: '100%',
-                      backfaceVisibility: 'hidden',
-                    }}
-                  />
-
-                  {/* Shadow */}
-                  <div
-                    className="absolute bottom-0 w-full h-10 bg-black/10 rounded-full blur-sm"
-                    style={{
-                      transform: 'rotateX(90deg) translate3d(0px, -20px, 0px)',
-                      opacity: index === currentIndex ? 0.6 : 0.3,
-                    }}
-                  />
-                </div>
+                {/* Shadow */}
+                <div
+                  className="absolute bottom-0 w-full h-10 bg-black/10 rounded-full blur-sm"
+                  style={{
+                    transform: 'rotateX(90deg) translate3d(0px, -20px, 0px)',
+                    opacity: index === currentIndex ? 0.6 : 0.3,
+                  }}
+                />
               </div>
-            ))}
-          </div>
-        </div>
+            </div>
+          ))}
+        </motion.div>
       </div>
 
       {/* Dots Indicator */}

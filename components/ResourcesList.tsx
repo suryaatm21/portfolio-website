@@ -3,6 +3,7 @@
 import { FadeInUp } from '@/components/animations/FadeInUp';
 import { AnimatedButton } from '@/components/animations/AnimatedButton';
 import { ExternalLink } from 'lucide-react';
+import { sections } from '@/content/site';
 
 const resourceItems = [
   {
@@ -27,11 +28,10 @@ export function ResourcesList() {
         <FadeInUp>
           <header className="text-center mb-12">
             <h2 className="text-3xl sm:text-4xl font-heading font-semibold text-white mb-4">
-              Resources
+              {sections.resources.title}
             </h2>
             <p className="text-lg text-white/80 max-w-2xl mx-auto">
-              Curated tools and resources to help you level up your development
-              skills
+              {sections.resources.description}
             </p>
           </header>
         </FadeInUp>
@@ -75,10 +75,10 @@ export function ResourcesList() {
                 size="lg"
                 className="shadow-lg">
                 <a
-                  href="https://resources.theuntab.com"
+                  href={sections.resources.buttonHref}
                   target="_blank"
                   rel="noopener noreferrer">
-                  Get access
+                  {sections.resources.buttonText}
                 </a>
               </AnimatedButton>
             </div>

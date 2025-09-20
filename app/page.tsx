@@ -11,7 +11,7 @@ import { Socials } from '@/components/Socials';
 import { SkipToContent } from '@/components/SkipToContent';
 import { Button } from '@/components/ui/button';
 import { ArrowUp } from 'lucide-react';
-import { projects, timeline } from '@/content/site';
+import { projects, timeline, sections, footer } from '@/content/site';
 
 export default function Home() {
   const scrollToTop = () => {
@@ -37,12 +37,11 @@ export default function Home() {
           <div className="max-w-7xl mx-auto">
             <header className="text-center mb-16">
               <h2 className="text-3xl sm:text-4xl font-heading font-semibold text-gray-800 mb-4">
-                Experience
+                {sections.experience.title}
               </h2>
               <div className="max-w-2xl mx-auto readable-panel">
                 <p className="text-lg text-muted-foreground m-0">
-                  My journey in building impactful products and growing as a
-                  developer
+                  {sections.experience.description}
                 </p>
               </div>
             </header>
@@ -54,14 +53,9 @@ export default function Home() {
         <Section id="projects">
           <div className="max-w-7xl mx-auto">
             <header className="text-center mb-16">
-              <h2 className="text-3xl sm:text-4xl font-sans font-semibold text-foreground mb-4 tracking-tight">
-                Projects
+              <h2 className="text-3xl sm:text-4xl font-sans font-semibold text-black mb-4 tracking-tight">
+                {sections.projects.title}
               </h2>
-              <div className="max-w-2xl mx-auto readable-panel">
-                <p className="text-lg text-muted-foreground/90 m-0">
-                  A showcase of my recent work and side projects
-                </p>
-              </div>
             </header>
 
             <ProjectsCarousel items={projects} />
@@ -72,14 +66,8 @@ export default function Home() {
           <div className="max-w-6xl mx-auto">
             <header className="text-center mb-12">
               <h2 className="text-3xl sm:text-4xl font-heading font-semibold text-gray-800 mb-4">
-                Get In Touch
+                {sections.contact.title}
               </h2>
-              <div className="max-w-2xl mx-auto readable-panel">
-                <p className="text-lg text-muted-foreground m-0">
-                  Have a project in mind or just want to chat? I'd love to hear
-                  from you.
-                </p>
-              </div>
             </header>
 
             <ContactForm />
@@ -94,7 +82,7 @@ export default function Home() {
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="text-center md:text-left">
               <p className="text-sm text-muted-foreground">
-                © 2025 Surya. Built with Next.js and Tailwind CSS.
+                {footer.copyright}
               </p>
             </div>
 
@@ -105,7 +93,7 @@ export default function Home() {
                 size="sm"
                 onClick={scrollToTop}
                 className="hover:bg-brand-accent/10 hover:text-brand-accent"
-                aria-label="Back to top">
+                aria-label={footer.backToTop}>
                 <ArrowUp className="h-4 w-4" />
               </Button>
             </div>
