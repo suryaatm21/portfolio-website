@@ -129,7 +129,7 @@ export function ContactForm() {
         </FadeInUp>
 
         {/* Right column centered as a group with equal top/bottom space */}
-        <div className="flex flex-col justify-center gap-6 h-full lg:row-span-2">
+        <div className="flex flex-col justify-around h-full lg:row-span-2">
           {/* Availability Section - Row 1 */}
           <FadeInUp delay={0.2}>
             <Card className="soft-card">
