@@ -26,7 +26,7 @@ export const hero = {
 
 export const sections = {
   experience: {
-    title: 'Experience',
+    title: 'Professional Experience',
     description:
       'My journey in building impactful products and growing as a developer',
   },
@@ -34,7 +34,7 @@ export const sections = {
     title: 'Projects',
   },
   resources: {
-    title: 'Resources',
+    title: 'Recruitment Resources',
     description:
       'Curated tools and resources to help you level up your development skills',
     buttonText: 'Get access',
@@ -208,7 +208,7 @@ export const contact = {
       'This will open your default email client with a prefilled message. Your email address will not be stored or shared.',
   },
   availability: {
-    title: 'Currently Open To',
+    title: 'Currently Seeking',
     content:
       'Summer/Fall 2026 internships in software engineering, cloud computing, and applied AI',
   },
