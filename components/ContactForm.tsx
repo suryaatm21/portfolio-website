@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { AnimatedButton } from '@/components/animations/AnimatedButton';
 import { FadeInUp } from '@/components/animations/FadeInUp';
+import { AnimatedHobbiesCard } from '@/components/AnimatedHobbiesCard';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -68,16 +69,7 @@ export function ContactForm() {
           </FadeInUp>
 
           {/* Social Links Section - Row 2 */}
-          <FadeInUp delay={0.3}>
-            <Card className="soft-card">
-              <CardContent className="p-6">
-                <h4 className="text-lg font-heading font-medium text-white mb-4">
-                  {contact.social.title}
-                </h4>
-                <Socials variant="footer" className="justify-start" />
-              </CardContent>
-            </Card>
-          </FadeInUp>
+          <AnimatedHobbiesCard />
         </div>
 
         {/* Contact Form - Takes 2 rows */}

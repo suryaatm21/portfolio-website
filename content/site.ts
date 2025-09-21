@@ -50,6 +50,28 @@ export const sections = {
   },
 };
 
+export const hobbies = [
+  {
+    name: 'Weightlifting, Hooping, and Jogging',
+    emoji: '💪🏽',
+  },
+  {
+    name: 'Anime: Watching Clannad',
+    emoji: '🎥',
+    color: 'from-pink-500 to-purple-500',
+  },
+  {
+    name: 'Reading: "When Things Fall Apart"',
+    emoji: '📚',
+    color: 'from-blue-500 to-green-500',
+  },
+  {
+    name: 'Cloudgazing: This Website\'s Inspiration',
+    emoji: '☁️',
+    color: 'from-sky-400 to-blue-500',
+  },
+];
+
 export const footer = {
   copyright: '© 2025 Surya. Built with Next.js and Tailwind CSS.',
   backToTop: 'Back to top',

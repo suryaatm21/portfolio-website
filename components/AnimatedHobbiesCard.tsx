@@ -6,8 +6,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { FadeInUp } from '@/components/animations/FadeInUp';
 import { hobbies } from '@/content/site';
 
-export function AnimatedHobbies() {
-
+export function AnimatedHobbiesCard() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
@@ -16,35 +15,31 @@ export function AnimatedHobbies() {
     }, 3000); // Change every 3 seconds
 
     return () => clearInterval(interval);
-  }, [hobbies.length]);
+  }, []);
 
   return (
-    <FadeInUp className="flex justify-center">
-      <Card className="w-full max-w-sm overflow-hidden">
-        <CardContent className="p-8 text-center">
-          <h3 className="text-lg font-heading font-medium text-gray-800 mb-6">
-            Hobbies & Interests
-          </h3>
-
-          <div className="relative h-24 flex items-center justify-center">
+    <FadeInUp delay={0.3}>
+      <Card className="soft-card">
+        <CardContent className="p-6">
+          <h4 className="text-lg font-heading font-medium text-white mb-4">
+            Find me
+          </h4>
+          
+          <div className="relative h-16 flex items-center">
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentIndex}
-                initial={{ opacity: 0, y: 20, scale: 0.8 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: -20, scale: 0.8 }}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
                 transition={{
-                  duration: 0.5,
+                  duration: 0.4,
                   ease: [0.4, 0, 0.2, 1],
-                  scale: { type: 'spring', stiffness: 300 },
                 }}
-                className="absolute inset-0 flex flex-col items-center justify-center">
-                <motion.div
-                  className={`text-4xl mb-2 ${
-                    hobbies[currentIndex].color 
-                      ? `bg-gradient-to-r ${hobbies[currentIndex].color} bg-clip-text text-transparent`
-                      : ''
-                  }`}
+                className="absolute inset-0 flex items-center"
+              >
+                <motion.span
+                  className="text-xl mr-3"
                   animate={{
                     rotate: [0, 5, -5, 0],
                   }}
@@ -52,15 +47,21 @@ export function AnimatedHobbies() {
                     duration: 2,
                     repeat: Infinity,
                     ease: 'easeInOut',
-                  }}>
+                  }}
+                >
                   {hobbies[currentIndex].emoji}
-                </motion.div>
-
+                </motion.span>
+                
                 <motion.span
-                  className="text-lg font-medium text-gray-700"
+                  className={`text-sm text-white font-medium ${
+                    hobbies[currentIndex].color 
+                      ? `bg-gradient-to-r ${hobbies[currentIndex].color} bg-clip-text text-transparent`
+                      : 'text-white'
+                  }`}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ delay: 0.2 }}>
+                  transition={{ delay: 0.1 }}
+                >
                   {hobbies[currentIndex].name}
                 </motion.span>
               </motion.div>
@@ -68,14 +69,14 @@ export function AnimatedHobbies() {
           </div>
 
           {/* Progress dots */}
-          <div className="flex justify-center space-x-2 mt-6">
+          <div className="flex justify-center space-x-1 mt-4">
             {hobbies.map((_, index) => (
               <motion.button
                 key={index}
-                className={`w-2 h-2 rounded-full transition-colors ${
+                className={`w-1.5 h-1.5 rounded-full transition-colors ${
                   index === currentIndex
-                    ? 'bg-green-600'
-                    : 'bg-gray-300 hover:bg-gray-400'
+                    ? 'bg-brand-accent'
+                    : 'bg-white/30 hover:bg-white/50'
                 }`}
                 onClick={() => setCurrentIndex(index)}
                 whileHover={{ scale: 1.3 }}
