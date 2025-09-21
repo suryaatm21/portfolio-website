@@ -53,6 +53,33 @@ export function ContactForm() {
   return (
     <div className="max-w-4xl mx-auto">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
+        {/* Left column centered as a group with equal top/bottom space */}
+        <div className="flex flex-col justify-around h-full lg:row-span-2">
+          {/* Availability Section - Row 1 */}
+          <FadeInUp delay={0.2}>
+            <Card className="soft-card">
+              <CardContent className="p-6">
+                <h4 className="text-lg font-heading font-medium text-brand-accent mb-3">
+                  {contact.availability.title}
+                </h4>
+                <p className="text-white">{contact.availability.content}</p>
+              </CardContent>
+            </Card>
+          </FadeInUp>
+
+          {/* Social Links Section - Row 2 */}
+          <FadeInUp delay={0.3}>
+            <Card className="soft-card">
+              <CardContent className="p-6">
+                <h4 className="text-lg font-heading font-medium text-white mb-4">
+                  {contact.social.title}
+                </h4>
+                <Socials variant="footer" className="justify-start" />
+              </CardContent>
+            </Card>
+          </FadeInUp>
+        </div>
+
         {/* Contact Form - Takes 2 rows */}
         <FadeInUp className="lg:row-span-2">
           <Card className="soft-card h-full">
@@ -127,33 +154,6 @@ export function ContactForm() {
             </CardContent>
           </Card>
         </FadeInUp>
-
-        {/* Right column centered as a group with equal top/bottom space */}
-        <div className="flex flex-col justify-around h-full lg:row-span-2">
-          {/* Availability Section - Row 1 */}
-          <FadeInUp delay={0.2}>
-            <Card className="soft-card">
-              <CardContent className="p-6">
-                <h4 className="text-lg font-heading font-medium text-brand-accent mb-3">
-                  {contact.availability.title}
-                </h4>
-                <p className="text-white">{contact.availability.content}</p>
-              </CardContent>
-            </Card>
-          </FadeInUp>
-
-          {/* Social Links Section - Row 2 */}
-          <FadeInUp delay={0.3}>
-            <Card className="soft-card">
-              <CardContent className="p-6">
-                <h4 className="text-lg font-heading font-medium text-white mb-4">
-                  {contact.social.title}
-                </h4>
-                <Socials variant="footer" className="justify-start" />
-              </CardContent>
-            </Card>
-          </FadeInUp>
-        </div>
       </div>
     </div>
   );
