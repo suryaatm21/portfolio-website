@@ -19,7 +19,7 @@ export const hero = {
     },
     secondary: {
       text: 'See resume',
-      href: '/resume.pdf',
+      href: 'https://drive.google.com/file/d/1u5K2wNYF_pDkESpnWuVUmBaAh7oetXnS/view?usp=sharing',
     },
   },
 };
