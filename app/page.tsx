@@ -46,11 +46,6 @@ export default function Home() {
               <h2 className="text-3xl sm:text-4xl font-heading font-semibold text-gray-800 mb-4">
                 {sections.experience.title}
               </h2>
-              <div className="max-w-2xl mx-auto readable-panel">
-                <p className="text-lg text-muted-foreground m-0">
-                  {sections.experience.description}
-                </p>
-              </div>
             </header>
 
             <HorizontalTimeline entries={timeline as any} />
