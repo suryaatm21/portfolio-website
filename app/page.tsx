@@ -4,7 +4,6 @@ import { NavBar } from '@/components/NavBar';
 import { Hero } from '@/components/Hero';
 import { Section } from '@/components/Section';
 import { ResourcesList } from '@/components/ResourcesList';
-import { AnimatedHobbies } from '@/components/AnimatedHobbies';
 import { HorizontalTimeline } from '@/components/HorizontalTimeline';
 import { ProjectsCarousel } from '@/components/ProjectsCarousel';
 import { ContactForm } from '@/components/ContactForm';
@@ -32,12 +31,6 @@ export default function Home() {
 
         <Section id="resources">
           <ResourcesList />
-        </Section>
-
-        <Section id="hobbies" className="py-12">
-          <div className="max-w-4xl mx-auto">
-            <AnimatedHobbies />
-          </div>
         </Section>
 
         <Section id="experience">
