@@ -7,7 +7,6 @@ import { FadeInUp } from '@/components/animations/FadeInUp';
 import { hobbies } from '@/content/site';
 
 export function AnimatedHobbies() {
-
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
@@ -41,7 +40,7 @@ export function AnimatedHobbies() {
                 className="absolute inset-0 flex flex-col items-center justify-center">
                 <motion.div
                   className={`text-4xl mb-2 ${
-                    hobbies[currentIndex].color 
+                    hobbies[currentIndex].color
                       ? `bg-gradient-to-r ${hobbies[currentIndex].color} bg-clip-text text-transparent`
                       : ''
                   }`}

@@ -66,7 +66,7 @@ export const hobbies = [
     color: 'from-blue-500 to-green-500',
   },
   {
-    name: 'Cloudgazing: This Website\'s Inspiration',
+    name: "Cloudgazing: This Website's Inspiration",
     emoji: '☁️',
     color: 'from-sky-400 to-blue-500',
   },

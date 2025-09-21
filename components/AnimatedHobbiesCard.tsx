@@ -21,10 +21,10 @@ export function AnimatedHobbiesCard() {
     <FadeInUp delay={0.3}>
       <Card className="soft-card">
         <CardContent className="p-6">
-          <h4 className="text-lg font-heading font-medium text-cyan-400 mb-4">
-            Find me
+          <h4 className="text-lg font-heading font-medium text-brand-accent mb-3">
+            Find Me...
           </h4>
-          
+
           <div className="relative h-20 flex items-center">
             <AnimatePresence mode="wait">
               <motion.div
@@ -36,8 +36,7 @@ export function AnimatedHobbiesCard() {
                   duration: 0.4,
                   ease: [0.4, 0, 0.2, 1],
                 }}
-                className="absolute inset-0 flex items-center"
-              >
+                className="absolute inset-0 flex items-center">
                 <motion.span
                   className="text-2xl mr-3 flex-shrink-0"
                   animate={{
@@ -47,21 +46,19 @@ export function AnimatedHobbiesCard() {
                     duration: 2,
                     repeat: Infinity,
                     ease: 'easeInOut',
-                  }}
-                >
+                  }}>
                   {hobbies[currentIndex].emoji}
                 </motion.span>
-                
+
                 <motion.span
                   className={`text-base text-white font-medium flex-1 break-words ${
-                    hobbies[currentIndex].color 
+                    hobbies[currentIndex].color
                       ? `bg-gradient-to-r ${hobbies[currentIndex].color} bg-clip-text text-transparent`
                       : 'text-white'
                   }`}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ delay: 0.1 }}
-                >
+                  transition={{ delay: 0.1 }}>
                   {hobbies[currentIndex].name}
                 </motion.span>
               </motion.div>

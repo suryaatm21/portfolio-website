@@ -11,7 +11,13 @@ import { Socials } from '@/components/Socials';
 import { SkipToContent } from '@/components/SkipToContent';
 import { Button } from '@/components/ui/button';
 import { ArrowUp } from 'lucide-react';
-import { projects, timeline, sections, footer, education } from '@/content/site';
+import {
+  projects,
+  timeline,
+  sections,
+  footer,
+  education,
+} from '@/content/site';
 
 export default function Home() {
   const scrollToTop = () => {
@@ -95,10 +101,9 @@ export default function Home() {
                   </h3>
                   <div className="grid grid-cols-1 gap-2">
                     {education.coursework.map((course, index) => (
-                      <div 
+                      <div
                         key={index}
-                        className="text-sm text-gray-700 py-1 px-3 bg-gray-50 rounded-md"
-                      >
+                        className="text-sm text-gray-700 py-1 px-3 bg-gray-50 rounded-md">
                         {course}
                       </div>
                     ))}
