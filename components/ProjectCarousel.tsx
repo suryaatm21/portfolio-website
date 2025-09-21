@@ -107,26 +107,6 @@ export function ProjectCarousel({
     setCurrentIndex((prev) => (prev + 1) % items.length);
   }, [items.length]);
 
-  const getItemTransform = (index: number) => {
-    if (index === currentIndex) {
-      return 'perspective(1200px) rotateY(0deg) translateZ(0px)';
-    }
-
-    const isLeft =
-      index < currentIndex ||
-      (currentIndex === 0 && index === items.length - 1);
-    const rotateY = isLeft ? 40 : -40;
-    return `perspective(1200px) rotateY(${rotateY}deg) translateZ(-100px)`;
-  };
-
-  const getSliderOffset = () => {
-    if (!items.length) return 0;
-    const halfSpan = (items.length - 1) / 2;
-    return (halfSpan - currentIndex) * dimensions.width;
-  };
-  // const getSliderOffset = () =>
-  // currentIndex * -dimensions.width + dimensions.width / 2;
-
   const handleKeyNavigation = useCallback(
     (event: KeyboardEvent) => {
       if (event.key === 'ArrowRight') {
@@ -140,12 +120,42 @@ export function ProjectCarousel({
     [goToNext, goToPrevious],
   );
 
-  const snapToNearestSlide = useCallback(() => {
-    scrollMomentumRef.current = 0;
-    const nearest = Math.round(-getSliderOffset() / dimensions.width);
-    const clamped = Math.min(Math.max(nearest, 0), items.length - 1);
-    setCurrentIndex(clamped);
-  }, [dimensions.width, items.length, getSliderOffset]);
+  const computeOffset = useCallback(
+    (index: number) => {
+      if (!items.length) return 0;
+      const raw = (index - currentIndex + items.length) % items.length;
+      const half = Math.floor(items.length / 2);
+      if (raw > half) {
+        return raw - items.length;
+      }
+      return raw;
+    },
+    [currentIndex, items.length],
+  );
+
+  const handleWheel = useCallback(
+    (event: WheelEvent) => {
+      if (!items.length || dimensions.width === 0) return;
+      event.preventDefault();
+
+      scrollMomentumRef.current += event.deltaY || event.deltaX;
+
+      if (wheelFrameRef.current) cancelAnimationFrame(wheelFrameRef.current);
+
+      wheelFrameRef.current = requestAnimationFrame(() => {
+        const threshold = dimensions.width * 0.15;
+
+        if (scrollMomentumRef.current > threshold) {
+          goToNext();
+          scrollMomentumRef.current = 0;
+        } else if (scrollMomentumRef.current < -threshold) {
+          goToPrevious();
+          scrollMomentumRef.current = 0;
+        }
+      });
+    },
+    [dimensions.width, goToNext, goToPrevious, items.length],
+  );
 
   useEffect(() => {
     updateDimensions();
@@ -158,13 +168,16 @@ export function ProjectCarousel({
     if (!node) return;
 
     const keyListener = (event: KeyboardEvent) => handleKeyNavigation(event);
+    const wheelListener = (event: WheelEvent) => handleWheel(event);
 
     node.addEventListener('keydown', keyListener);
+    node.addEventListener('wheel', wheelListener, { passive: false });
 
     return () => {
       node.removeEventListener('keydown', keyListener);
+      node.removeEventListener('wheel', wheelListener as any);
     };
-  }, [handleKeyNavigation]);
+  }, [handleKeyNavigation, handleWheel]);
 
   useEffect(
     () => () => {
