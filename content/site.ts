@@ -3,6 +3,7 @@ export const navigation = [
   { label: 'Resources', href: '#resources' },
   { label: 'Experience', href: '#experience' },
   { label: 'Projects', href: '#projects' },
+  { label: 'Education', href: '#education' },
   { label: 'Contact', href: '#contact' },
 ];
 
@@ -32,6 +33,10 @@ export const sections = {
   },
   projects: {
     title: 'Projects',
+  },
+  education: {
+    title: 'Education & Skills',
+    description: 'Academic background and technical expertise',
   },
   resources: {
     title: 'Recruitment Resources',

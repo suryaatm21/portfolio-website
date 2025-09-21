@@ -12,7 +12,7 @@ import { Socials } from '@/components/Socials';
 import { SkipToContent } from '@/components/SkipToContent';
 import { Button } from '@/components/ui/button';
 import { ArrowUp } from 'lucide-react';
-import { projects, timeline, sections, footer } from '@/content/site';
+import { projects, timeline, sections, footer, education } from '@/content/site';
 
 export default function Home() {
   const scrollToTop = () => {
@@ -61,6 +61,58 @@ export default function Home() {
             </header>
 
             <ProjectsCarousel items={projects} />
+          </div>
+        </Section>
+
+        <Section id="education">
+          <div className="max-w-4xl mx-auto">
+            <header className="text-center mb-16">
+              <h2 className="text-3xl sm:text-4xl font-heading font-semibold text-gray-800 mb-4">
+                {sections.education.title}
+              </h2>
+            </header>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+              {/* University Information */}
+              <div className="space-y-6">
+                <div className="bg-white rounded-lg shadow-lg p-8 border border-gray-200">
+                  <h3 className="text-xl font-heading font-semibold text-gray-800 mb-4">
+                    Academic Background
+                  </h3>
+                  <div className="space-y-3">
+                    <p className="text-lg font-medium text-green-600">
+                      {education.institution}
+                    </p>
+                    <p className="text-gray-700">{education.degree}</p>
+                    <p className="text-sm text-gray-600">
+                      Expected Graduation: {education.graduationDate}
+                    </p>
+                    <p className="text-sm text-gray-600">
+                      GPA: {education.gpa}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Coursework */}
+              <div className="space-y-6">
+                <div className="bg-white rounded-lg shadow-lg p-8 border border-gray-200">
+                  <h3 className="text-xl font-heading font-semibold text-gray-800 mb-4">
+                    Relevant Coursework
+                  </h3>
+                  <div className="grid grid-cols-1 gap-2">
+                    {education.coursework.map((course, index) => (
+                      <div 
+                        key={index}
+                        className="text-sm text-gray-700 py-1 px-3 bg-gray-50 rounded-md"
+                      >
+                        {course}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </Section>
 
