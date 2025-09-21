@@ -124,8 +124,8 @@ export function ProjectCarousel({
     const halfSpan = (items.length - 1) / 2;
     return (halfSpan - currentIndex) * dimensions.width;
   };
-    // const getSliderOffset = () =>
-    // currentIndex * -dimensions.width + dimensions.width / 2;
+  // const getSliderOffset = () =>
+  // currentIndex * -dimensions.width + dimensions.width / 2;
 
   const handleKeyNavigation = useCallback(
     (event: KeyboardEvent) => {
@@ -166,9 +166,12 @@ export function ProjectCarousel({
     };
   }, [handleKeyNavigation]);
 
-  useEffect(() => () => {
-    if (wheelFrameRef.current) cancelAnimationFrame(wheelFrameRef.current);
-  }, []);
+  useEffect(
+    () => () => {
+      if (wheelFrameRef.current) cancelAnimationFrame(wheelFrameRef.current);
+    },
+    [],
+  );
 
   const sliderOffset = getSliderOffset();
 
@@ -261,9 +264,7 @@ export function ProjectCarousel({
                         </Badge>
                       ))}
                       {project.tech.length > 3 && (
-                        <Badge
-                          variant="outline"
-                          className="text-xs px-2 py-1">
+                        <Badge variant="outline" className="text-xs px-2 py-1">
                           +{project.tech.length - 3}
                         </Badge>
                       )}

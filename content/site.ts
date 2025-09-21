@@ -1,5 +1,5 @@
 export const navigation = [
-  { label: 'Home', href: '#home' },
+  { label: 'Me', href: '#home' },
   { label: 'Resources', href: '#resources' },
   { label: 'Experience', href: '#experience' },
   { label: 'Projects', href: '#projects' },
@@ -15,7 +15,7 @@ export const hero = {
   cta: {
     primary: {
       text: 'Get in touch',
-      href: 'mailto:surya@theuntab.com',
+      href: '#contact',
     },
     secondary: {
       text: 'See resume',
@@ -202,15 +202,15 @@ export const contact = {
     subjectPlaceholder: 'What would you like to discuss?',
     messageLabel: 'Message',
     messagePlaceholder:
-      'Tell me about your project, question, or just say hello!',
+      'Tell me about your team, question, or endeavors! Looking for book, song, and anime recs too',
     submitText: 'Send Message',
     disclaimer:
       'This will open your default email client with a prefilled message. Your email address will not be stored or shared.',
   },
   availability: {
-    title: 'Currently Seeking',
+    title: 'Currently Seeking: To Be a Better Engineer',
     content:
-      'Summer/Fall 2026 internships in software engineering, cloud computing, and applied AI',
+      'Open to summer/fall 2026 internships in software engineering, cloud computing, and applied AI',
   },
   social: {
     title: 'Find me elsewhere',

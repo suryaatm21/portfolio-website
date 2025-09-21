@@ -24,7 +24,9 @@ const resourceItems = [
 export function ResourcesList() {
   return (
     <div className="max-w-6xl mx-auto">
-      <div className="soft-card text-card-foreground p-8 sm:p-12" style={{ backgroundColor: `oklch(var(--card-opacity) 0 0)` }}>
+      <div
+        className="soft-card text-card-foreground p-8 sm:p-12"
+        style={{ backgroundColor: `oklch(var(--card-opacity) 0 0)` }}>
         <FadeInUp>
           <header className="text-center mb-12">
             <h2 className="text-3xl sm:text-4xl font-heading font-semibold text-white mb-4">
@@ -54,9 +56,7 @@ export function ResourcesList() {
                     ) : (
                       <span
                         className={
-                          item.muted
-                            ? 'text-white/60 italic'
-                            : 'text-white'
+                          item.muted ? 'text-white/60 italic' : 'text-white'
                         }>
                         {item.title}
                       </span>
