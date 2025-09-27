@@ -56,7 +56,7 @@ export const hobbies = [
     emoji: '💪🏽',
   },
   {
-    name: 'Anime: Watching Clannad',
+    name: 'Anime: Watching Clannad After Story',
     emoji: '🎥',
     color: 'from-pink-500 to-purple-500',
   },
@@ -66,7 +66,7 @@ export const hobbies = [
     color: 'from-blue-500 to-green-500',
   },
   {
-    name: "Cloudgazing: This Website's Inspiration",
+    name: "Cloudgazing: This Portfolio's Inspiration",
     emoji: '☁️',
     color: 'from-sky-400 to-blue-500',
   },

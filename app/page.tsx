@@ -7,6 +7,7 @@ import { ResourcesList } from '@/components/ResourcesList';
 import { HorizontalTimeline } from '@/components/HorizontalTimeline';
 import { ProjectsCarousel } from '@/components/ProjectsCarousel';
 import { ContactForm } from '@/components/ContactForm';
+import { CylindricalText } from '@/components/CylindricalText';
 import { Socials } from '@/components/Socials';
 import { SkipToContent } from '@/components/SkipToContent';
 import { Button } from '@/components/ui/button';
@@ -93,22 +94,12 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Coursework */}
+              {/* Coursework with Cylindrical Text Effect */}
               <div className="space-y-6">
-                <div className="bg-white rounded-lg shadow-lg p-8 border border-gray-200">
-                  <h3 className="text-xl font-heading font-semibold text-gray-800 mb-4">
-                    Relevant Coursework
-                  </h3>
-                  <div className="grid grid-cols-1 gap-2">
-                    {education.coursework.map((course, index) => (
-                      <div
-                        key={index}
-                        className="text-sm text-gray-700 py-1 px-3 bg-gray-50 rounded-md">
-                        {course}
-                      </div>
-                    ))}
-                  </div>
-                </div>
+                <CylindricalText 
+                  items={education.coursework}
+                  className="min-h-[400px]"
+                />
               </div>
             </div>
           </div>

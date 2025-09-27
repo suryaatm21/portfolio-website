@@ -22,21 +22,41 @@ const urbanist = Urbanist({
 });
 
 export const metadata: Metadata = {
-  title: 'Surya - Full Stack Developer | Modern Web Solutions',
+  title: 'Surya\'s Portfolio Website',
   description:
-    'Personal portfolio of Surya - Full Stack Developer specializing in modern web technologies, React, Next.js, and scalable applications. Building the future of browser productivity.',
+    'Personal portfolio of Surya Atmuri - full stack developer specializing in modern web technologies, cloud/data driven systems, and scalable applications. Building the future of browser productivity.',
   keywords: [
     'Full Stack Developer',
-    'React',
-    'Next.js',
-    'TypeScript',
-    'Web Development',
-    'JavaScript',
+    'Cloud Computing',
+    'Applied AI',
+    'Machine, Deep Learning',
+    'Data Driven Systems',
+    'Surya Atmuri',
     'Portfolio',
+    'Personal Website',
   ],
-  authors: [{ name: 'Surya' }],
-  creator: 'Surya',
-  publisher: 'Surya',
+  icons: {
+    icon: [
+      { url: '/favicon_io/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon_io/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+    ],
+    shortcut: '/favicon_io/favicon.ico',
+    apple: '/favicon_io/apple-touch-icon.png',
+    other: [
+      {
+        rel: 'android-chrome-192x192',
+        url: '/favicon_io/android-chrome-192x192.png',
+      },
+      {
+        rel: 'android-chrome-512x512',
+        url: '/favicon_io/android-chrome-512x512.png',
+      },
+    ],
+  },
+  manifest: '/favicon_io/site.webmanifest',
+  authors: [{ name: 'Surya Atmuri' }],
+  creator: 'Surya Atmuri',
+  publisher: 'Surya Atmuri',
   generator: 'Next.js',
   applicationName: 'Surya Portfolio',
   referrer: 'origin-when-cross-origin',
@@ -65,9 +85,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Surya - Full Stack Developer | Modern Web Solutions',
+    title: 'Surya Atmuri - Full Stack Developer | Modern Web Solutions',
     description:
-      'Personal portfolio of Surya - Full Stack Developer specializing in modern web technologies.',
+      'Personal portfolio of Surya Atmuri - Full Stack Developer specializing in modern web technologies.',
     images: ['/og.png'],
     creator: '@yourusername',
   },
