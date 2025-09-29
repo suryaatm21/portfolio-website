@@ -1,28 +1,31 @@
-'use client';
+"use client";
 
-import { NavBar } from '@/components/NavBar';
-import { Hero } from '@/components/Hero';
-import { Section } from '@/components/Section';
-import { ResourcesList } from '@/components/ResourcesList';
-import { HorizontalTimeline } from '@/components/HorizontalTimeline';
-import { ProjectsCarousel } from '@/components/ProjectsCarousel';
-import { ContactForm } from '@/components/ContactForm';
-import { CylindricalText } from '@/components/CylindricalText';
-import { Socials } from '@/components/Socials';
-import { SkipToContent } from '@/components/SkipToContent';
-import { Button } from '@/components/ui/button';
-import { ArrowUp } from 'lucide-react';
+import { ArrowUp } from "lucide-react";
+
+import { AcademicBackgroundCard } from "@/components/AcademicBackgroundCard";
+import { ContactForm } from "@/components/ContactForm";
+import { CylindricalText } from "@/components/CylindricalText";
+import { Hero } from "@/components/Hero";
+import { HorizontalTimeline } from "@/components/HorizontalTimeline";
+import { NavBar } from "@/components/NavBar";
+import { ProjectsCarousel } from "@/components/ProjectsCarousel";
+import ReferenceCoursework from "@/components/ReferenceCoursework";
+import { ResourcesList } from "@/components/ResourcesList";
+import { Section } from "@/components/Section";
+import { SkipToContent } from "@/components/SkipToContent";
+import { Socials } from "@/components/Socials";
+import { Button } from "@/components/ui/button";
 import {
   projects,
   timeline,
   sections,
   footer,
   education,
-} from '@/content/site';
+} from "@/content/site";
 
 export default function Home() {
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
@@ -42,12 +45,6 @@ export default function Home() {
 
         <Section id="experience">
           <div className="max-w-7xl mx-auto">
-            <header className="text-center mb-16">
-              <h2 className="text-3xl sm:text-4xl font-heading font-semibold text-gray-800 mb-4">
-                {sections.experience.title}
-              </h2>
-            </header>
-
             <HorizontalTimeline entries={timeline as any} />
           </div>
         </Section>
@@ -55,7 +52,7 @@ export default function Home() {
         <Section id="projects">
           <div className="max-w-7xl mx-auto">
             <header className="text-center mb-16">
-              <h2 className="text-3xl sm:text-4xl font-heading font-semibold text-gray-800 mb-4">
+              <h2 className="text-3xl sm:text-4xl font-heading font-semibold text-component-section-header-text mb-4">
                 {sections.projects.title}
               </h2>
             </header>
@@ -67,7 +64,7 @@ export default function Home() {
         <Section id="education">
           <div className="max-w-4xl mx-auto">
             <header className="text-center mb-16">
-              <h2 className="text-3xl sm:text-4xl font-heading font-semibold text-gray-800 mb-4">
+              <h2 className="text-3xl sm:text-4xl font-heading font-semibold text-component-section-header-text mb-4">
                 {sections.education.title}
               </h2>
             </header>
@@ -75,31 +72,17 @@ export default function Home() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
               {/* University Information */}
               <div className="space-y-6">
-                <div className="bg-white rounded-lg shadow-lg p-8 border border-gray-200">
-                  <h3 className="text-xl font-heading font-semibold text-gray-800 mb-4">
-                    Academic Background
-                  </h3>
-                  <div className="space-y-3">
-                    <p className="text-lg font-medium text-green-600">
-                      {education.institution}
-                    </p>
-                    <p className="text-gray-700">{education.degree}</p>
-                    <p className="text-sm text-gray-600">
-                      Expected Graduation: {education.graduationDate}
-                    </p>
-                    <p className="text-sm text-gray-600">
-                      GPA: {education.gpa}
-                    </p>
-                  </div>
-                </div>
+                <AcademicBackgroundCard
+                  institution={education.institution}
+                  degree={education.degree}
+                  graduationDate={education.graduationDate}
+                  gpa={education.gpa}
+                />
               </div>
 
-              {/* Coursework with Cylindrical Text Effect */}
+              {/* Coursework with Reference Cylindrical Text Effect */}
               <div className="space-y-6">
-                <CylindricalText 
-                  items={education.coursework}
-                  className="min-h-[400px]"
-                />
+                <ReferenceCoursework items={education.coursework} />
               </div>
             </div>
           </div>
@@ -108,7 +91,7 @@ export default function Home() {
         <Section id="contact">
           <div className="max-w-6xl mx-auto">
             <header className="text-center mb-12">
-              <h2 className="text-3xl sm:text-4xl font-heading font-semibold text-gray-800 mb-4">
+              <h2 className="text-3xl sm:text-4xl font-heading font-semibold text-component-section-header-text mb-4">
                 {sections.contact.title}
               </h2>
             </header>

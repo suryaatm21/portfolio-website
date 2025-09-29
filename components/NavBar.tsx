@@ -1,17 +1,19 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Button } from '@/components/ui/button';
-import { Socials } from '@/components/Socials';
-import { Menu, X } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { navigation } from '@/content/site';
+import { motion } from "framer-motion";
+import { Menu, X } from "lucide-react";
+import React from "react";
+import { useState, useEffect } from "react";
+
+import { Socials } from "@/components/Socials";
+import { Button } from "@/components/ui/button";
+import { navigation } from "@/content/site";
+import { cn } from "@/lib/utils";
 
 const navItems = navigation;
 
-export function NavBar() {
-  const [activeSection, setActiveSection] = useState('home');
+export function NavBar(): React.ReactElement {
+  const [activeSection, setActiveSection] = useState("home");
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -35,14 +37,14 @@ export function NavBar() {
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const scrollToSection = (href: string) => {
     const element = document.getElementById(href.slice(1));
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      element.scrollIntoView({ behavior: "smooth" });
     }
     setIsMobileMenuOpen(false);
   };
@@ -51,12 +53,12 @@ export function NavBar() {
     <motion.nav
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      transition={{ duration: 0.3, ease: 'easeOut' }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
       className={cn(
-        'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
+        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
         isScrolled
-          ? 'bg-background/80 backdrop-blur-md border-b border-border/50 shadow-sm'
-          : 'bg-transparent',
+          ? "bg-background/80 backdrop-blur-md border-b border-border/50 shadow-sm"
+          : "bg-transparent",
       )}
       role="navigation"
       aria-label="Main navigation">
@@ -67,7 +69,7 @@ export function NavBar() {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => scrollToSection('#home')}
+              onClick={() => scrollToSection("#home")}
               className="text-2xl font-heading font-semibold text-brand-primary hover:text-brand-accent transition-colors focus:outline-none focus:ring-2 focus:ring-brand-accent focus:ring-offset-2 rounded-md px-2 py-1"
               aria-label="Go to home section">
               Surya
@@ -90,13 +92,13 @@ export function NavBar() {
                     size="sm"
                     onClick={() => scrollToSection(item.href)}
                     className={cn(
-                      'text-xl font-medium transition-colors hover:text-brand-accent hover:bg-brand-accent/10 focus:ring-2 focus:ring-brand-accent focus:ring-offset-2 px-3 py-2',
+                      "text-xl font-medium transition-colors hover:text-brand-accent hover:bg-brand-accent/10 focus:ring-2 focus:ring-brand-accent focus:ring-offset-2 px-3 py-2",
                       activeSection === item.href.slice(1)
-                        ? 'text-brand-accent bg-brand-accent/10'
-                        : 'text-brand-primary',
+                        ? "text-brand-accent bg-brand-accent/10"
+                        : "text-brand-primary",
                     )}
                     aria-current={
-                      activeSection === item.href.slice(1) ? 'page' : undefined
+                      activeSection === item.href.slice(1) ? "page" : undefined
                     }>
                     {item.label}
                   </Button>
@@ -135,7 +137,7 @@ export function NavBar() {
         {isMobileMenuOpen && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
+            animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.2 }}
             id="mobile-menu"
@@ -152,13 +154,13 @@ export function NavBar() {
                     size="sm"
                     onClick={() => scrollToSection(item.href)}
                     className={cn(
-                      'w-full justify-start text-base font-medium transition-colors hover:text-brand-accent hover:bg-brand-accent/10 py-3',
+                      "w-full justify-start text-base font-medium transition-colors hover:text-brand-accent hover:bg-brand-accent/10 py-3",
                       activeSection === item.href.slice(1)
-                        ? 'text-brand-accent bg-brand-accent/10'
-                        : 'text-brand-primary',
+                        ? "text-brand-accent bg-brand-accent/10"
+                        : "text-brand-primary",
                     )}
                     aria-current={
-                      activeSection === item.href.slice(1) ? 'page' : undefined
+                      activeSection === item.href.slice(1) ? "page" : undefined
                     }>
                     {item.label}
                   </Button>

@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useEffect, useRef, useCallback } from 'react';
+import React, { useEffect, useRef, useCallback } from "react";
 
 interface AnimatedBackgroundProps {
-  theme?: 'dark' | 'light';
+  theme?: "dark" | "light";
 }
 
 declare global {
@@ -15,9 +15,9 @@ declare global {
 
 export default function AnimatedBackground({
   theme: propTheme,
-}: AnimatedBackgroundProps) {
+}: AnimatedBackgroundProps): JSX.Element {
   // Force light theme since dark mode is disabled
-  const theme = propTheme || 'light';
+  const theme = propTheme || "light";
   const vantaRef = useRef<HTMLDivElement>(null);
   const vantaEffect = useRef<any>(null);
   const scriptsLoadedRef = useRef(false);
@@ -33,8 +33,8 @@ export default function AnimatedBackground({
   });
 
   const prefersReducedMotion =
-    typeof window !== 'undefined'
-      ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    typeof window !== "undefined"
+      ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
       : false;
 
   const loadScripts = useCallback(async (): Promise<boolean> => {
@@ -55,23 +55,23 @@ export default function AnimatedBackground({
       };
 
       // Load Three.js
-      const threeScript = document.createElement('script');
+      const threeScript = document.createElement("script");
       threeScript.src =
-        'https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js';
+        "https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js";
       threeScript.onload = checkComplete;
       threeScript.onerror = () => {
-        console.warn('Failed to load Three.js');
+        console.warn("Failed to load Three.js");
         checkComplete();
       };
       document.head.appendChild(threeScript);
 
       // Load Vanta Clouds
-      const vantaScript = document.createElement('script');
+      const vantaScript = document.createElement("script");
       vantaScript.src =
-        'https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.clouds.min.js';
+        "https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.clouds.min.js";
       vantaScript.onload = checkComplete;
       vantaScript.onerror = () => {
-        console.warn('Failed to load Vanta.js clouds');
+        console.warn("Failed to load Vanta.js clouds");
         checkComplete();
       };
       document.head.appendChild(vantaScript);
@@ -85,7 +85,7 @@ export default function AnimatedBackground({
       await loadScripts();
 
       if (!window.VANTA || !window.THREE) {
-        console.warn('Vanta.js or Three.js not loaded properly');
+        console.warn("Vanta.js or Three.js not loaded properly");
         return;
       }
 
@@ -116,14 +116,14 @@ export default function AnimatedBackground({
       if (window.VANTA && window.VANTA.CLOUDS) {
         vantaEffect.current = window.VANTA.CLOUDS(vantaConfig);
       } else {
-        console.warn('VANTA.CLOUDS not available on window');
+        console.warn("VANTA.CLOUDS not available on window");
         return;
       }
       healthStatsRef.current.cloudsActive = true;
 
-      console.log('Vanta.js clouds initialized successfully');
+      console.log("Vanta.js clouds initialized successfully");
     } catch (error) {
-      console.error('Failed to initialize Vanta.js:', error);
+      console.error("Failed to initialize Vanta.js:", error);
       healthStatsRef.current.vantaOK = false;
     }
   }, [theme, prefersReducedMotion, loadScripts]);
@@ -144,9 +144,9 @@ export default function AnimatedBackground({
       fade = 0;
     }
 
-    root.style.setProperty('--sky-solid-height', `${solid}px`);
-    root.style.setProperty('--sky-fade-length', `${fade}px`);
-    root.style.setProperty('--sky-overlay-opacity', solid > 0 ? '1' : '0');
+    root.style.setProperty("--sky-solid-height", `${solid}px`);
+    root.style.setProperty("--sky-fade-length", `${fade}px`);
+    root.style.setProperty("--sky-overlay-opacity", solid > 0 ? "1" : "0");
   }, []);
 
   const handleResize = useCallback(() => {
@@ -157,7 +157,7 @@ export default function AnimatedBackground({
     // Recalculate where the sky should end (just above the Hero container)
     try {
       const heroContainer = document.querySelector(
-        '#home .container',
+        "#home .container",
       ) as HTMLElement | null;
       if (heroContainer) {
         // Compute absolute document top for consistency across screens
@@ -176,7 +176,7 @@ export default function AnimatedBackground({
         const clipValue = Math.max(0, baseSolid + baseFade);
         baseClipRef.current = clipValue;
         document.documentElement.style.setProperty(
-          '--vanta-clip',
+          "--vanta-clip",
           `${clipValue}px`,
         );
 
@@ -191,8 +191,8 @@ export default function AnimatedBackground({
       initializeVanta();
     }, 100);
 
-    window.addEventListener('resize', handleResize);
-    window.addEventListener('orientationchange', handleResize);
+    window.addEventListener("resize", handleResize);
+    window.addEventListener("orientationchange", handleResize);
     // Also calculate on first paint and after content mounts
     handleResize();
     const t1 = setTimeout(handleResize, 300);
@@ -210,19 +210,19 @@ export default function AnimatedBackground({
         handleResize();
         attachDPRListener();
       };
-      mq.addEventListener('change', onChange);
-      detachDPR = () => mq.removeEventListener('change', onChange);
+      mq.addEventListener("change", onChange);
+      detachDPR = () => mq.removeEventListener("change", onChange);
     };
-    if (typeof window !== 'undefined') attachDPRListener();
+    if (typeof window !== "undefined") attachDPRListener();
 
     // Update sky height as the user scrolls (ensures sky disappears on scroll)
-    window.addEventListener('scroll', updateSkyFromScroll, { passive: true });
+    window.addEventListener("scroll", updateSkyFromScroll, { passive: true });
 
     return () => {
       clearTimeout(timeoutId);
-      window.removeEventListener('resize', handleResize);
-      window.removeEventListener('orientationchange', handleResize);
-      window.removeEventListener('scroll', updateSkyFromScroll);
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("orientationchange", handleResize);
+      window.removeEventListener("scroll", updateSkyFromScroll);
 
       if (vantaEffect.current) {
         vantaEffect.current.destroy();
@@ -255,9 +255,9 @@ export default function AnimatedBackground({
     }
   }, []);
 
-  const setTheme = useCallback((newTheme: 'dark' | 'light') => {
+  const setTheme = useCallback((newTheme: "dark" | "light") => {
     // Theme will be handled by the useEffect above
-    console.log('Theme set to:', newTheme);
+    console.log("Theme set to:", newTheme);
   }, []);
 
   // Expose methods via ref
@@ -272,29 +272,29 @@ export default function AnimatedBackground({
       <div
         aria-hidden
         style={{
-          position: 'fixed',
+          position: "fixed",
           inset: 0,
-          overflow: 'hidden',
+          overflow: "hidden",
           zIndex: -2,
-          pointerEvents: 'none',
+          pointerEvents: "none",
         }}>
         <div
           style={{
-            position: 'absolute',
+            position: "absolute",
             inset: 0,
-            width: '100vw',
-            height: 'calc(100vh + var(--vanta-clip, 320px))',
-            transform: 'translateY(calc(-1 * var(--vanta-clip, 320px)))',
-            willChange: 'transform',
+            width: "100vw",
+            height: "calc(100vh + var(--vanta-clip, 320px))",
+            transform: "translateY(calc(-1 * var(--vanta-clip, 320px)))",
+            willChange: "transform",
           }}>
           <div
             ref={vantaRef}
             id="bg-canvas"
             style={{
-              width: '100%',
-              height: '100%',
-              pointerEvents: prefersReducedMotion ? 'none' : 'auto',
-              display: 'block',
+              width: "100%",
+              height: "100%",
+              pointerEvents: prefersReducedMotion ? "none" : "auto",
+              display: "block",
             }}
           />
         </div>
@@ -307,32 +307,32 @@ export default function AnimatedBackground({
         style={{
           // Make the sky overlay part of the page flow so it scrolls out of view
           // while keeping the current fade position intact.
-          position: 'absolute',
+          position: "absolute",
           top: 0,
           left: 0,
-          width: '100vw',
+          width: "100vw",
           height:
-            'calc(var(--sky-solid-height, calc(var(--nav-height, 4rem) + 24px)) + var(--sky-fade-length, 220px))',
+            "calc(var(--sky-solid-height, calc(var(--nav-height, 4rem) + 24px)) + var(--sky-fade-length, 220px))",
           background:
             // Day sky gradient - light blue
-            'linear-gradient(to bottom, rgba(104,184,215,1) 0%, rgba(104,184,215,1) var(--sky-solid-height, 320px), rgba(104,184,215,0) calc(var(--sky-solid-height, 320px) + var(--sky-fade-length, 220px)))',
+            "linear-gradient(to bottom, rgba(104,184,215,1) 0%, rgba(104,184,215,1) var(--sky-solid-height, 320px), rgba(104,184,215,0) calc(var(--sky-solid-height, 320px) + var(--sky-fade-length, 220px)))",
           zIndex: -1,
-          pointerEvents: 'none',
-          opacity: 'var(--sky-overlay-opacity, 1)',
-          transition: 'opacity 200ms ease',
+          pointerEvents: "none",
+          opacity: "var(--sky-overlay-opacity, 1)",
+          transition: "opacity 200ms ease",
         }}
       />
       {/* Development health overlay */}
-      {process.env.NODE_ENV === 'development' && (
+      {process.env.NODE_ENV === "development" && (
         <div className="fixed top-22 right-4 bg-black/80 text-white text-xs p-2 rounded z-40 font-mono">
-          <div>Tailwind: {healthStatsRef.current.tailwindOK ? '✓' : '✗'}</div>
-          <div>Three.js: {healthStatsRef.current.threeOK ? '✓' : '✗'}</div>
-          <div>Vanta: {healthStatsRef.current.vantaOK ? '✓' : '✗'}</div>
-          <div>Clouds: {healthStatsRef.current.cloudsActive ? '✓' : '✗'}</div>
+          <div>Tailwind: {healthStatsRef.current.tailwindOK ? "✓" : "✗"}</div>
+          <div>Three.js: {healthStatsRef.current.threeOK ? "✓" : "✗"}</div>
+          <div>Vanta: {healthStatsRef.current.vantaOK ? "✓" : "✗"}</div>
+          <div>Clouds: {healthStatsRef.current.cloudsActive ? "✓" : "✗"}</div>
           <div>
-            Colors: {healthStatsRef.current.customColors ? 'Custom' : 'Default'}
+            Colors: {healthStatsRef.current.customColors ? "Custom" : "Default"}
           </div>
-          <div>Motion: {prefersReducedMotion ? 'Reduced' : 'Full'}</div>
+          <div>Motion: {prefersReducedMotion ? "Reduced" : "Full"}</div>
         </div>
       )}
     </>

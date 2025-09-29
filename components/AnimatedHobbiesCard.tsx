@@ -1,10 +1,11 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Card, CardContent } from '@/components/ui/card';
-import { FadeInUp } from '@/components/animations/FadeInUp';
-import { hobbies } from '@/content/site';
+import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect } from "react";
+
+import { FadeInUp } from "@/components/animations/FadeInUp";
+import { Card, CardContent } from "@/components/ui/card";
+import { hobbies } from "@/content/site";
 
 export function AnimatedHobbiesCard() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -45,21 +46,21 @@ export function AnimatedHobbiesCard() {
                   transition={{
                     duration: 2,
                     repeat: Infinity,
-                    ease: 'easeInOut',
+                    ease: "easeInOut",
                   }}>
-                  {hobbies[currentIndex].emoji}
+                  {hobbies[currentIndex]?.emoji}
                 </motion.span>
 
                 <motion.span
                   className={`text-base text-white font-medium flex-1 break-words ${
-                    hobbies[currentIndex].color
+                    hobbies[currentIndex]?.color
                       ? `bg-gradient-to-r ${hobbies[currentIndex].color} bg-clip-text text-transparent`
-                      : 'text-white'
+                      : "text-white"
                   }`}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.1 }}>
-                  {hobbies[currentIndex].name}
+                  {hobbies[currentIndex]?.name}
                 </motion.span>
               </motion.div>
             </AnimatePresence>

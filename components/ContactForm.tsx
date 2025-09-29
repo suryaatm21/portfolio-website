@@ -1,23 +1,23 @@
-'use client';
+"use client";
 
-import type React from 'react';
+import { motion } from "framer-motion";
+import { Send, Mail } from "lucide-react";
+import type React from "react";
+import { useState } from "react";
 
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { AnimatedButton } from '@/components/animations/AnimatedButton';
-import { FadeInUp } from '@/components/animations/FadeInUp';
-import { AnimatedHobbiesCard } from '@/components/AnimatedHobbiesCard';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Socials } from '@/components/Socials';
-import { Send, Mail } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
-import { contact } from '@/content/site';
+import { AnimatedHobbiesCard } from "@/components/AnimatedHobbiesCard";
+import { Socials } from "@/components/Socials";
+import { AnimatedButton } from "@/components/animations/AnimatedButton";
+import { FadeInUp } from "@/components/animations/FadeInUp";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { contact } from "@/content/site";
+import { useToast } from "@/hooks/use-toast";
 
-export function ContactForm() {
-  const [subject, setSubject] = useState('');
-  const [message, setMessage] = useState('');
+export function ContactForm(): React.ReactElement {
+  const [subject, setSubject] = useState("");
+  const [message, setMessage] = useState("");
   const { toast } = useToast();
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -25,9 +25,9 @@ export function ContactForm() {
 
     if (!subject.trim() || !message.trim()) {
       toast({
-        title: 'Missing information',
-        description: 'Please fill in both subject and message fields.',
-        variant: 'destructive',
+        title: "Missing information",
+        description: "Please fill in both subject and message fields.",
+        variant: "destructive",
       });
       return;
     }
@@ -41,14 +41,14 @@ export function ContactForm() {
     window.location.href = mailtoLink;
 
     toast({
-      title: 'Email client opened',
+      title: "Email client opened",
       description:
-        'Your default email client should open with the prefilled message.',
+        "Your default email client should open with the prefilled message.",
     });
 
     // Reset form
-    setSubject('');
-    setMessage('');
+    setSubject("");
+    setMessage("");
   };
 
   return (

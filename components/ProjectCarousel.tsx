@@ -1,18 +1,19 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useRef, useCallback } from 'react';
-import { motion } from 'framer-motion';
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { motion } from "framer-motion";
 import {
   ChevronLeft,
   ChevronRight,
   ExternalLink,
   Github,
   Code2,
-} from 'lucide-react';
-import { cn } from '@/lib/utils';
+} from "lucide-react";
+import { useState, useEffect, useRef, useCallback } from "react";
+
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
 interface Project {
   title: string;
@@ -63,7 +64,7 @@ export function ProjectCarousel({
 
   // Calculate responsive dimensions
   const updateDimensions = useCallback(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       // More responsive sizing for mobile
       const isMobile = window.innerWidth < 768;
       const isTablet = window.innerWidth < 1024;
@@ -109,7 +110,7 @@ export function ProjectCarousel({
 
   const getItemTransform = (index: number) => {
     if (index === currentIndex) {
-      return 'perspective(1200px) rotateY(0deg) translateZ(0px)';
+      return "perspective(1200px) rotateY(0deg) translateZ(0px)";
     }
 
     const isLeft =
@@ -129,10 +130,10 @@ export function ProjectCarousel({
 
   const handleKeyNavigation = useCallback(
     (event: KeyboardEvent) => {
-      if (event.key === 'ArrowRight') {
+      if (event.key === "ArrowRight") {
         event.preventDefault();
         goToNext();
-      } else if (event.key === 'ArrowLeft') {
+      } else if (event.key === "ArrowLeft") {
         event.preventDefault();
         goToPrevious();
       }
@@ -149,8 +150,8 @@ export function ProjectCarousel({
 
   useEffect(() => {
     updateDimensions();
-    window.addEventListener('resize', updateDimensions);
-    return () => window.removeEventListener('resize', updateDimensions);
+    window.addEventListener("resize", updateDimensions);
+    return () => window.removeEventListener("resize", updateDimensions);
   }, [updateDimensions]);
 
   useEffect(() => {
@@ -159,10 +160,10 @@ export function ProjectCarousel({
 
     const keyListener = (event: KeyboardEvent) => handleKeyNavigation(event);
 
-    node.addEventListener('keydown', keyListener);
+    node.addEventListener("keydown", keyListener);
 
     return () => {
-      node.removeEventListener('keydown', keyListener);
+      node.removeEventListener("keydown", keyListener);
     };
   }, [handleKeyNavigation]);
 
@@ -177,7 +178,7 @@ export function ProjectCarousel({
 
   return (
     <div
-      className={cn('relative w-full outline-none', className)}
+      className={cn("relative w-full outline-none", className)}
       ref={containerRef}
       tabIndex={0}
       role="region"
@@ -209,11 +210,11 @@ export function ProjectCarousel({
           className="relative flex"
           style={{
             width: `${dimensions.width * items.length}px`,
-            left: '50%',
+            left: "50%",
             marginLeft: `-${dimensions.width / 2}px`,
           }}
           animate={{ x: sliderOffset }}
-          transition={{ type: 'spring', stiffness: 140, damping: 20 }}
+          transition={{ type: "spring", stiffness: 140, damping: 20 }}
           role="listbox"
           aria-live="polite">
           {items.map((project, index) => (
@@ -230,7 +231,7 @@ export function ProjectCarousel({
               <div
                 className="relative w-full h-full transition-transform duration-700 ease-out"
                 style={{
-                  transformStyle: 'preserve-3d',
+                  transformStyle: "preserve-3d",
                   transform: getItemTransform(index),
                 }}>
                 {/* Front Face */}
@@ -311,9 +312,9 @@ export function ProjectCarousel({
                 <div
                   className="absolute top-0 left-0 w-10 h-full bg-brand-primary/5 border-l-2 border-brand-primary/20"
                   style={{
-                    transform: 'translate3d(1px, 0, -40px) rotateY(-90deg)',
-                    transformOrigin: '0%',
-                    backfaceVisibility: 'hidden',
+                    transform: "translate3d(1px, 0, -40px) rotateY(-90deg)",
+                    transformOrigin: "0%",
+                    backfaceVisibility: "hidden",
                   }}
                 />
 
@@ -321,9 +322,9 @@ export function ProjectCarousel({
                 <div
                   className="absolute top-0 right-0 w-10 h-full bg-brand-primary/5 border-r-2 border-brand-primary/20"
                   style={{
-                    transform: 'translate3d(-1px, 0, -40px) rotateY(90deg)',
-                    transformOrigin: '100%',
-                    backfaceVisibility: 'hidden',
+                    transform: "translate3d(-1px, 0, -40px) rotateY(90deg)",
+                    transformOrigin: "100%",
+                    backfaceVisibility: "hidden",
                   }}
                 />
 
@@ -331,7 +332,7 @@ export function ProjectCarousel({
                 <div
                   className="absolute bottom-0 w-full h-10 bg-black/10 rounded-full blur-sm"
                   style={{
-                    transform: 'rotateX(90deg) translate3d(0px, -20px, 0px)',
+                    transform: "rotateX(90deg) translate3d(0px, -20px, 0px)",
                     opacity: index === currentIndex ? 0.6 : 0.3,
                   }}
                 />
@@ -348,10 +349,10 @@ export function ProjectCarousel({
             key={index}
             onClick={() => goToSlide(index)}
             className={cn(
-              'w-2 h-2 rounded-full transition-all duration-200',
+              "w-2 h-2 rounded-full transition-all duration-200",
               index === currentIndex
-                ? 'bg-brand-primary w-8'
-                : 'bg-border hover:bg-brand-primary/50',
+                ? "bg-brand-primary w-8"
+                : "bg-border hover:bg-brand-primary/50",
             )}
             aria-label={`Go to project ${index + 1}`}
           />

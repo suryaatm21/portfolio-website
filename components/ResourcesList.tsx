@@ -1,21 +1,22 @@
-'use client';
+"use client";
 
-import { FadeInUp } from '@/components/animations/FadeInUp';
-import { AnimatedButton } from '@/components/animations/AnimatedButton';
-import { ExternalLink } from 'lucide-react';
-import { sections } from '@/content/site';
+import { ExternalLink } from "lucide-react";
+
+import { AnimatedButton } from "@/components/animations/AnimatedButton";
+import { FadeInUp } from "@/components/animations/FadeInUp";
+import { sections } from "@/content/site";
 
 const resourceItems = [
   {
-    title: 'System design cheatsheet',
-    href: '#', // placeholder link
+    title: "System design cheatsheet",
+    href: "#", // placeholder link
   },
   {
-    title: 'Telegram job-tracker group',
-    href: '#', // placeholder link
+    title: "Telegram job-tracker group",
+    href: "#", // placeholder link
   },
   {
-    title: 'More to come...',
+    title: "More to come...",
     href: null,
     muted: true,
   },
@@ -26,7 +27,7 @@ export function ResourcesList() {
     <div className="max-w-6xl mx-auto">
       <div
         className="soft-card text-card-foreground p-8 sm:p-12"
-        style={{ backgroundColor: `oklch(var(--card-opacity) 0 0)` }}>
+        style={{ backgroundColor: "oklch(var(--card-opacity) 0 0)" }}>
         <FadeInUp>
           <header className="text-center mb-12">
             <h2 className="text-3xl sm:text-4xl font-heading font-semibold text-white mb-4">
@@ -56,7 +57,7 @@ export function ResourcesList() {
                     ) : (
                       <span
                         className={
-                          item.muted ? 'text-white/60 italic' : 'text-white'
+                          item.muted ? "text-white/60 italic" : "text-white"
                         }>
                         {item.title}
                       </span>

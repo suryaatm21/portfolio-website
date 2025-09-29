@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import React from "react";
 
 // Client-only dynamic loads avoid SSR evaluation
 const BirdsCursor = dynamic(
@@ -20,7 +21,7 @@ const PerformanceMonitor = dynamic(
 const ENABLE_BIRDS_CURSOR = false;
 const ENABLE_PERFORMANCE_MONITOR = false;
 
-export function FXMounts() {
+export function FXMounts(): JSX.Element | null {
   if (process.env.NODE_ENV !== "development") return null;
 
   return (

@@ -1,10 +1,11 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Card, CardContent } from '@/components/ui/card';
-import { FadeInUp } from '@/components/animations/FadeInUp';
-import { hobbies } from '@/content/site';
+import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect } from "react";
+
+import { FadeInUp } from "@/components/animations/FadeInUp";
+import { Card, CardContent } from "@/components/ui/card";
+import { hobbies } from "@/content/site";
 
 export function AnimatedHobbies() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -35,33 +36,37 @@ export function AnimatedHobbies() {
                 transition={{
                   duration: 0.5,
                   ease: [0.4, 0, 0.2, 1],
-                  scale: { type: 'spring', stiffness: 300 },
+                  scale: { type: "spring", stiffness: 300 },
                 }}
                 className="absolute inset-0 flex flex-col items-center justify-center">
-                <motion.div
-                  className={`text-4xl mb-2 ${
-                    hobbies[currentIndex].color
-                      ? `bg-gradient-to-r ${hobbies[currentIndex].color} bg-clip-text text-transparent`
-                      : ''
-                  }`}
-                  animate={{
-                    rotate: [0, 5, -5, 0],
-                  }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: 'easeInOut',
-                  }}>
-                  {hobbies[currentIndex].emoji}
-                </motion.div>
+                {hobbies[currentIndex] && (
+                  <>
+                    <motion.div
+                      className={`text-4xl mb-2 ${
+                        hobbies[currentIndex]?.color
+                          ? `bg-gradient-to-r ${hobbies[currentIndex].color} bg-clip-text text-transparent`
+                          : ""
+                      }`}
+                      animate={{
+                        rotate: [0, 5, -5, 0],
+                      }}
+                      transition={{
+                        duration: 2,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                      }}>
+                      {hobbies[currentIndex].emoji}
+                    </motion.div>
 
-                <motion.span
-                  className="text-lg font-medium text-gray-700"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.2 }}>
-                  {hobbies[currentIndex].name}
-                </motion.span>
+                    <motion.span
+                      className="text-lg font-medium text-gray-700"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.2 }}>
+                      {hobbies[currentIndex].name}
+                    </motion.span>
+                  </>
+                )}
               </motion.div>
             </AnimatePresence>
           </div>
@@ -73,8 +78,8 @@ export function AnimatedHobbies() {
                 key={index}
                 className={`w-2 h-2 rounded-full transition-colors ${
                   index === currentIndex
-                    ? 'bg-green-600'
-                    : 'bg-gray-300 hover:bg-gray-400'
+                    ? "bg-green-600"
+                    : "bg-gray-300 hover:bg-gray-400"
                 }`}
                 onClick={() => setCurrentIndex(index)}
                 whileHover={{ scale: 1.3 }}

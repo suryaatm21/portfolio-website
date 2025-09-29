@@ -1,5 +1,5 @@
-@import 'tailwindcss';
-@import 'tw-animate-css';
+@import "tailwindcss";
+@import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -58,6 +58,11 @@
 
   /* Added page background token */
   --bg-page: #131b23;
+
+  /* Component color tokens for consistency */
+  --component-card-text: var(--brand-primary);
+  --component-header-text: var(--brand-primary);
+  --component-section-header-text: var(--brand-primary);
 }
 
 .dark {
@@ -106,6 +111,11 @@
 
   /* Same dark background for consistency */
   --bg-page: #131b23;
+
+  /* Component color tokens for consistency - dark mode */
+  --component-card-text: var(--brand-primary);
+  --component-header-text: var(--brand-primary);
+  --component-section-header-text: var(--brand-primary);
 }
 
 @theme inline {
@@ -159,6 +169,11 @@
 
   /* Added page background token */
   --color-bg-page: var(--bg-page);
+
+  /* Component color tokens for consistency */
+  --color-component-card-text: var(--brand-primary);
+  --color-component-header-text: var(--brand-primary);
+  --color-component-section-header-text: var(--brand-primary);
 }
 
 @layer base {
@@ -194,7 +209,9 @@
   /* Hero section name should keep its drop shadow */
   .hero-name,
   .hero-name * {
-    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.28), 0 16px 40px rgba(0, 0, 0, 0.18) !important;
+    text-shadow:
+      0 2px 6px rgba(0, 0, 0, 0.28),
+      0 16px 40px rgba(0, 0, 0, 0.18) !important;
   }
 
   /* Custom utility classes */

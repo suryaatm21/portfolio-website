@@ -1,10 +1,11 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Card, CardContent } from '@/components/ui/card';
-import { experience } from '@/content/site';
-import { cn } from '@/lib/utils';
+import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
+
+import { Card, CardContent } from "@/components/ui/card";
+import { experience } from "@/content/site";
+import { cn } from "@/lib/utils";
 
 export function ExperienceStepper() {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -33,22 +34,22 @@ export function ExperienceStepper() {
     };
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowLeft' && activeIndex > 0) {
+      if (e.key === "ArrowLeft" && activeIndex > 0) {
         setActiveIndex((prev) => prev - 1);
       } else if (
-        e.key === 'ArrowRight' &&
+        e.key === "ArrowRight" &&
         activeIndex < experience.length - 1
       ) {
         setActiveIndex((prev) => prev + 1);
       }
     };
 
-    container.addEventListener('wheel', handleWheel, { passive: false });
-    window.addEventListener('keydown', handleKeyDown);
+    container.addEventListener("wheel", handleWheel, { passive: false });
+    window.addEventListener("keydown", handleKeyDown);
 
     return () => {
-      container.removeEventListener('wheel', handleWheel);
-      window.removeEventListener('keydown', handleKeyDown);
+      container.removeEventListener("wheel", handleWheel);
+      window.removeEventListener("keydown", handleKeyDown);
     };
   }, [activeIndex]);
 
@@ -70,7 +71,7 @@ export function ExperienceStepper() {
           animate={{
             width: `${((activeIndex + 1) / experience.length) * 100}%`,
           }}
-          transition={{ duration: 0.3, ease: 'easeOut' }}
+          transition={{ duration: 0.3, ease: "easeOut" }}
         />
 
         {/* Step circles */}
@@ -80,12 +81,12 @@ export function ExperienceStepper() {
               key={item.id}
               onClick={() => setActiveIndex(index)}
               className={cn(
-                'w-12 h-12 rounded-full border-2 transition-all duration-200 flex items-center justify-center text-xs font-medium relative',
+                "w-12 h-12 rounded-full border-2 transition-all duration-200 flex items-center justify-center text-xs font-medium relative",
                 index === activeIndex
-                  ? 'bg-brand-secondary border-brand-secondary text-white shadow-lg'
+                  ? "bg-brand-secondary border-brand-secondary text-white shadow-lg"
                   : index < activeIndex
-                  ? 'bg-brand-secondary/20 border-brand-secondary text-brand-secondary'
-                  : 'bg-background border-border text-muted-foreground hover:border-brand-secondary/50',
+                    ? "bg-brand-secondary/20 border-brand-secondary text-brand-secondary"
+                    : "bg-background border-border text-muted-foreground hover:border-brand-secondary/50",
               )}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
@@ -117,10 +118,10 @@ export function ExperienceStepper() {
                 key={item.id}
                 onClick={() => setActiveIndex(index)}
                 className={cn(
-                  'text-sm font-medium transition-colors duration-200 py-2 px-1',
+                  "text-sm font-medium transition-colors duration-200 py-2 px-1",
                   index === activeIndex
-                    ? 'text-brand-secondary'
-                    : 'text-muted-foreground hover:text-brand-secondary/70',
+                    ? "text-brand-secondary"
+                    : "text-muted-foreground hover:text-brand-secondary/70",
                 )}>
                 {item.title}
               </button>
@@ -135,7 +136,7 @@ export function ExperienceStepper() {
               x: `${activeIndex * 100}%`,
               width: `${100 / experience.length}%`,
             }}
-            transition={{ duration: 0.3, ease: 'easeOut' }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
           />
         </div>
       </div>
@@ -145,26 +146,26 @@ export function ExperienceStepper() {
         <AnimatePresence mode="wait">
           <motion.div
             key={activeIndex}
-            id={`panel-${experience[activeIndex].id}`}
+            id={`panel-${experience[activeIndex]?.id || activeIndex}`}
             role="tabpanel"
-            aria-labelledby={`tab-${experience[activeIndex].id}`}
+            aria-labelledby={`tab-${experience[activeIndex]?.id || activeIndex}`}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3, ease: 'easeOut' }}>
+            transition={{ duration: 0.3, ease: "easeOut" }}>
             <Card className="soft-card">
               <CardContent className="pt-6">
                 <div className="text-center mb-6">
                   <h3 className="text-xl font-heading font-semibold text-black mb-2">
-                    {experience[activeIndex].title}
+                    {experience[activeIndex]?.title}
                   </h3>
                   <p className="text-brand-secondary font-medium">
-                    {experience[activeIndex].year}
+                    {experience[activeIndex]?.year}
                   </p>
                 </div>
 
                 <ul className="space-y-3 max-w-2xl mx-auto">
-                  {experience[activeIndex].bullets.map(
+                  {experience[activeIndex]?.bullets?.map(
                     (bullet, bulletIndex) => (
                       <motion.li
                         key={bulletIndex}
