@@ -22,12 +22,12 @@ export function AcademicBackgroundCard({
 }: AcademicBackgroundCardProps): React.ReactElement {
   return (
     <FadeInUp className={className}>
-      <Card className="soft-card overflow-hidden border-0 bg-transparent shadow-none">
-        <CardContent className="space-y-4 p-6">
+      <Card className="soft-card overflow-hidden">
+        <CardContent className="space-y-4 py-8 px-8">
           {/* Condensed two-line layout */}
-          <div className="space-y-2 text-center">
+          <div className="space-y-3 text-center">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-center gap-1 sm:gap-2">
-              <p className="text-base font-medium text-brand-accent">
+              <p className="text-lg font-medium text-brand-accent">
                 {institution}
               </p>
               {location && (
@@ -47,10 +47,12 @@ export function AcademicBackgroundCard({
             </div>
           </div>
 
-          {/* Centered CTA */}
-          <div className="pt-2 text-center">
-            <p className="text-xs text-muted-foreground/80 italic">
-              ↓ Scroll to explore coursework in 3D
+          {/* Centered CTA with emphasis */}
+          <div className="pt-4 border-t border-border/40 text-center">
+            <p className="text-sm font-medium text-brand-accent flex items-center justify-center gap-2">
+              <span className="animate-bounce">↓</span>
+              <span>Scroll to explore coursework in 3D</span>
+              <span className="animate-bounce">↓</span>
             </p>
           </div>
         </CardContent>

@@ -62,13 +62,13 @@ export default function Home() {
 
         <Section id="education">
           <div className="max-w-4xl mx-auto">
-            <header className="text-center mb-16">
+            <header className="text-center mb-12">
               <h2 className="text-3xl sm:text-4xl font-heading font-semibold text-black mb-4">
                 {sections.education.title}
               </h2>
             </header>
 
-            <div className="space-y-12">
+            <div className="space-y-8">
               {/* University Information Card */}
               <AcademicBackgroundCard
                 institution={education.institution}
@@ -81,8 +81,8 @@ export default function Home() {
           </div>
         </Section>
 
-        {/* Coursework Cylindrical Animation - Full viewport section */}
-        <div className="w-full">
+        {/* Coursework Cylindrical Animation - Reduced spacing for better flow */}
+        <div className="w-full py-12 md:py-16">
           <CylindricalText
             items={education.coursework}
             sectionLabel="Scroll through my coursework journey"
