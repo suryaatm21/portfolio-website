@@ -32,7 +32,7 @@ export const sections = {
       "My journey in building impactful products and growing as a developer",
   },
   projects: {
-    title: "Projects",
+    title: "Projects That Eat My Free Time",
   },
   education: {
     title: "Education & Skills",
@@ -40,8 +40,7 @@ export const sections = {
   },
   resources: {
     title: "My Recruitment Resources",
-    description:
-      "Curated tools and resources to help you get a job",
+    description: "Curated tools and resources to help you get a job",
     buttonText: "Get access",
     buttonHref: "https://resources.theuntab.com",
   },
@@ -97,13 +96,15 @@ export const resources = [
   {
     title: "Job Tracker Bot (Telegram alerts)",
     href: "https://t.me/summer2026swe",
-    description: "Always be the first to know about the latest openings in tech.",
+    description:
+      "Always be the first to know about the latest openings in tech.",
     status: "available",
   },
   {
     title: "Neet: Coding Interviewer GPT",
     href: "https://chatgpt.com/g/g-68d5a88f14c88191bcbdb3444a680082-neet-personal-interviewer",
-    description: "Never get stuck in a technical interview again. Try this personalized GPT in practice.",
+    description:
+      "Never get stuck in a technical interview again. Try this personalized GPT in practice.",
     status: "available",
   },
   {
@@ -187,7 +188,13 @@ export const timeline = [
       "Engineered a role-based authentication system with NextAuth.js, middleware, and an AWS DynamoDB session store, securing all admin routes against unauthorized access while sustaining sub-10ms latency for 20 client dashboards",
       "Resolved 4 critical production blockers in a Next.js 15/React 18 SaaS platform, fixing build errors, dependency conflicts, and context propagation failures in route redirects, supporting full internationalization (i18n) and updated test harnesses",
     ],
-    technologies: ["Next.js", "React", "NextAuth.js", "AWS DynamoDB", "TypeScript"],
+    technologies: [
+      "Next.js",
+      "React",
+      "NextAuth.js",
+      "AWS DynamoDB",
+      "TypeScript",
+    ],
   },
   {
     id: "acrotech-biopharma",

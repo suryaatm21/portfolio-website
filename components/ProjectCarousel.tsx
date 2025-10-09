@@ -9,13 +9,7 @@ import {
   Play,
   MessageCircle,
 } from "lucide-react";
-import {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -307,7 +301,9 @@ export function ProjectCarousel({
                           </Badge>
                         ))}
                         {project.tech.length > 3 && (
-                          <Badge variant="outline" className="text-xs px-2 py-1">
+                          <Badge
+                            variant="outline"
+                            className="text-xs px-2 py-1">
                             +{project.tech.length - 3}
                           </Badge>
                         )}
@@ -324,7 +320,8 @@ export function ProjectCarousel({
                               target="_blank"
                               rel="noopener noreferrer"
                               className="flex items-center gap-2">
-                              {project.demo.includes("youtube.com") || project.demo.includes("youtu.be") ? (
+                              {project.demo.includes("youtube.com") ||
+                              project.demo.includes("youtu.be") ? (
                                 <>
                                   <Play className="w-3 h-3" />
                                   Watch
@@ -359,9 +356,10 @@ export function ProjectCarousel({
                             </a>
                           </Button>
                         )}
-                        {((project.demo === "Coming Soon" && !project.repo) || 
+                        {((project.demo === "Coming Soon" && !project.repo) ||
                           (project.repo === "Coming Soon" && !project.demo) ||
-                          (project.demo === "Coming Soon" && project.repo === "Coming Soon")) && (
+                          (project.demo === "Coming Soon" &&
+                            project.repo === "Coming Soon")) && (
                           <Button
                             size="sm"
                             variant="outline"
