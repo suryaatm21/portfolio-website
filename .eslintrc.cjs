@@ -1,49 +1,47 @@
 /** @type {import('eslint').Linter.Config} */
 module.exports = {
   root: true,
-  extends: [
-    "next/core-web-vitals",
-  ],
-  plugins: ["import"],
+  extends: ['next/core-web-vitals'],
+  plugins: ['import'],
   rules: {
     // Import organization and validation
-    "import/no-unresolved": "error",
-    "import/order": [
-      "warn",
+    'import/no-unresolved': 'error',
+    'import/order': [
+      'warn',
       {
-        "alphabetize": { "order": "asc" },
-        "newlines-between": "always",
-        "groups": [
-          "builtin",
-          "external",
-          "internal",
-          "parent",
-          "sibling",
-          "index",
+        alphabetize: { order: 'asc' },
+        'newlines-between': 'always',
+        groups: [
+          'builtin',
+          'external',
+          'internal',
+          'parent',
+          'sibling',
+          'index',
         ],
-        "pathGroups": [
+        pathGroups: [
           {
-            "pattern": "@/**",
-            "group": "internal",
-            "position": "before",
+            pattern: '@/**',
+            group: 'internal',
+            position: 'before',
           },
         ],
-        "pathGroupsExcludedImportTypes": ["builtin"],
+        pathGroupsExcludedImportTypes: ['builtin'],
       },
     ],
     // Enforce consistent code style per instructions
-    "quotes": ["error", "double"],
-    "prefer-template": "error",
+    quotes: ['error', 'double'],
+    'prefer-template': 'error',
   },
   parserOptions: {
-    ecmaVersion: "latest",
-    sourceType: "module",
+    ecmaVersion: 'latest',
+    sourceType: 'module',
   },
   settings: {
-    "import/resolver": {
-      "typescript": {
-        "alwaysTryTypes": true,
-        "project": "./tsconfig.json",
+    'import/resolver': {
+      typescript: {
+        alwaysTryTypes: true,
+        project: './tsconfig.json',
       },
     },
   },

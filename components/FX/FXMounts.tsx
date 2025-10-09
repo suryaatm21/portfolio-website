@@ -6,15 +6,15 @@ import React from "react";
 // Client-only dynamic loads avoid SSR evaluation
 const BirdsCursor = dynamic(
   () => import("@/components/FX/BirdsCursor").then((m) => m.BirdsCursor),
-  { ssr: false }
+  { ssr: false },
 );
 
 const PerformanceMonitor = dynamic(
   () =>
     import("@/components/FX/PerformanceMonitor").then(
-      (m) => m.PerformanceMonitor
+      (m) => m.PerformanceMonitor,
     ),
-  { ssr: false }
+  { ssr: false },
 );
 
 // Quick toggles for optional dev-only FX widgets

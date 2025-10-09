@@ -21,7 +21,7 @@ describe("Application Smoke Test", () => {
     expect(hero).toHaveProperty("cta");
     expect(hero.cta).toHaveProperty("primary");
     expect(hero.cta).toHaveProperty("secondary");
-    
+
     // Ensure CTA links are defined
     expect(hero.cta.primary.text).toBe("Get in touch");
     expect(hero.cta.secondary.text).toBe("See resume");

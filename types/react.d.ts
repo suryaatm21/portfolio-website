@@ -6,7 +6,7 @@ declare global {
       children?: ReactNode;
     }
   }
-  
+
   // Make Element extend ReactElement to fix component compatibility
   interface Element extends React.ReactElement {
     children?: React.ReactNode;
