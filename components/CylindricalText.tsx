@@ -7,41 +7,40 @@ import React, { useLayoutEffect, useRef } from "react";
 interface CylindricalTextProps {
   items: string[];
   className?: string;
+  sectionLabel?: string;
 }
 
 export function CylindricalText({
   items,
   className = "",
+  sectionLabel = "Keep scrolling to see the animation",
 }: CylindricalTextProps): React.ReactElement | null {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const textWrapperRef = useRef<HTMLUListElement>(null);
+  const titleRef = useRef<HTMLParagraphElement>(null);
   const itemsRef = useRef<(HTMLLIElement | null)[]>([]);
-
-  const containerClassName = ["relative min-h-[80svh]", className]
-    .filter(Boolean)
-    .join(" ");
 
   useLayoutEffect(() => {
     const wrapper = wrapperRef.current;
     const textWrapper = textWrapperRef.current;
+    const title = titleRef.current;
 
-    if (!wrapper || !textWrapper || items.length === 0) {
+    if (!wrapper || !textWrapper || !title || items.length === 0) {
       return;
     }
 
     gsap.registerPlugin(ScrollTrigger);
 
+    // Ensure refs array matches items length
     itemsRef.current = itemsRef.current.slice(0, items.length);
 
     const spacing = 180 / items.length;
 
     const calculatePositions = () => {
-      const rect = wrapper.getBoundingClientRect();
-      const minDimension = Math.max(
-        1,
-        Math.min(rect.width, rect.height, window.innerWidth, window.innerHeight),
-      );
-      const radius = minDimension * 0.4;
+      // Match reference: use Math.min of window dimensions * 0.4 offset
+      const offset = 0.4;
+      const radius =
+        Math.min(window.innerWidth, window.innerHeight) * offset;
 
       itemsRef.current.forEach((item, index) => {
         if (!item) return;
@@ -53,43 +52,38 @@ export function CylindricalText({
         const y = Math.sin(angle) * radius;
         const z = Math.cos(angle) * radius;
 
+        // Match reference transform exactly
         item.style.transform = `translate3d(-50%, -50%, 0) translate3d(${x}px, ${y}px, ${z}px) rotateX(${rotationAngle}deg)`;
       });
     };
 
-    const handleResize = () => {
-      calculatePositions();
-      ScrollTrigger.refresh();
-    };
+    // Initialize positions first
+    calculatePositions();
 
-    const ctx = gsap.context(() => {
-      calculatePositions();
-
-      const animation = gsap.fromTo(
+    // Create ScrollTrigger animation - match reference exactly
+    const scrollTrigger = ScrollTrigger.create({
+      trigger: title,
+      start: "center center",
+      end: "+=2000svh",
+      pin: wrapper,
+      scrub: 2,
+      animation: gsap.fromTo(
         textWrapper,
         { rotateX: -80 },
-        { rotateX: 270, ease: "none" },
-      );
+        { rotateX: 270, ease: "none" }
+      ),
+    });
 
-      ScrollTrigger.create({
-        trigger: wrapper,
-        start: "center center",
-        end: "+=2000svh",
-        pin: wrapper,
-        scrub: 2,
-        animation,
-        anticipatePin: 1,
-        invalidateOnRefresh: true,
-        onRefresh: calculatePositions,
-      });
-    }, wrapper);
+    // Handle resize
+    const handleResize = () => {
+      calculatePositions();
+    };
 
     window.addEventListener("resize", handleResize);
-    ScrollTrigger.refresh();
 
     return () => {
       window.removeEventListener("resize", handleResize);
-      ctx.revert();
+      scrollTrigger.kill();
     };
   }, [items]);
 
@@ -98,41 +92,47 @@ export function CylindricalText({
   }
 
   return (
-    <div className={containerClassName}>
-      <div
-        ref={wrapperRef}
-        className="relative flex h-[100svh] w-full flex-col items-center justify-center overflow-hidden"
-        style={{ perspective: "70vw" }}>
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-card to-transparent" />
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-card to-transparent" />
+    <div
+      ref={wrapperRef}
+      className={`relative h-[100svh] w-full overflow-hidden ${className}`}
+      style={{
+        perspective: "clamp(400px, 70vw, 2000px)", // Mobile-friendly perspective
+      }}>
+      {/* Top gradient fade */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 z-20 h-32 bg-gradient-to-b from-background via-background/60 to-transparent" />
 
-        <p className="relative z-10 mb-8 text-xs font-semibold uppercase tracking-[0.4em] text-muted-foreground">
-          Scroll to explore
-        </p>
+      {/* Bottom gradient fade */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-32 bg-gradient-to-t from-background via-background/60 to-transparent" />
 
-        <ul
-          ref={textWrapperRef}
-          className="relative z-10 flex h-full w-full items-center justify-center text-center text-3xl font-semibold uppercase text-component-card-text sm:text-4xl"
-          style={{
-            transformStyle: "preserve-3d",
-            transformOrigin: "50% 50%",
-          }}>
-          {items.map((item, index) => (
-            <li
-              key={`${item}-${index}`}
-              ref={(el) => {
-                itemsRef.current[index] = el;
-              }}
-              className="absolute left-1/2 top-1/2 w-full -translate-x-1/2 -translate-y-1/2 whitespace-nowrap"
-              style={{
-                transformStyle: "preserve-3d",
-                backfaceVisibility: "hidden",
-              }}>
-              {item}
-            </li>
-          ))}
-        </ul>
-      </div>
+      {/* Scroll prompt - this is the trigger element */}
+      <p
+        ref={titleRef}
+        className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 text-center text-sm font-medium tracking-wide text-muted-foreground/80">
+        {sectionLabel}
+      </p>
+
+      {/* 3D text wrapper */}
+      <ul
+        ref={textWrapperRef}
+        className="absolute left-0 top-0 h-full w-full text-center text-2xl font-semibold uppercase leading-tight text-foreground sm:text-3xl md:text-4xl lg:text-[5vw] lg:leading-[5vw]"
+        style={{
+          transformStyle: "preserve-3d",
+          transformOrigin: "center center",
+        }}>
+        {items.map((item, index) => (
+          <li
+            key={`${item}-${index}`}
+            ref={(el) => {
+              itemsRef.current[index] = el;
+            }}
+            className="absolute left-1/2 top-1/2 w-full whitespace-nowrap px-4"
+            style={{
+              backfaceVisibility: "hidden",
+            }}>
+            {item}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

@@ -1,6 +1,5 @@
 import React from "react";
 
-import { CylindricalText } from "@/components/CylindricalText";
 import { FadeInUp } from "@/components/animations/FadeInUp";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -10,7 +9,6 @@ interface AcademicBackgroundCardProps {
   graduationDate: string;
   gpa: string;
   location?: string;
-  coursework?: string[];
   className?: string;
 }
 
@@ -20,11 +18,8 @@ export function AcademicBackgroundCard({
   graduationDate,
   gpa,
   location,
-  coursework = [],
   className = "",
 }: AcademicBackgroundCardProps): React.ReactElement {
-  const hasCoursework = coursework.length > 0;
-
   return (
     <FadeInUp className={className}>
       <Card className="soft-card overflow-hidden">
@@ -34,7 +29,9 @@ export function AcademicBackgroundCard({
           </CardTitle>
 
           <div className="space-y-1">
-            <p className="text-lg font-medium text-brand-accent">{institution}</p>
+            <p className="text-lg font-medium text-brand-accent">
+              {institution}
+            </p>
             {location ? (
               <p className="text-sm text-muted-foreground">{location}</p>
             ) : null}
@@ -67,20 +64,12 @@ export function AcademicBackgroundCard({
             </div>
           </dl>
 
-          {hasCoursework ? (
-            <section className="space-y-6">
-              <header className="space-y-2">
-                <h3 className="text-sm font-semibold uppercase tracking-[0.35em] text-muted-foreground">
-                  Relevant Coursework
-                </h3>
-                <p className="text-sm text-muted-foreground/80">
-                  Scroll to explore the courses that shaped my CS foundation.
-                </p>
-              </header>
-
-              <CylindricalText items={coursework} className="min-h-[70svh]" />
-            </section>
-          ) : null}
+          <div className="pt-4 border-t border-border/40">
+            <p className="text-sm text-muted-foreground">
+              Scroll below to explore my coursework through an interactive 3D
+              experience
+            </p>
+          </div>
         </CardContent>
       </Card>
     </FadeInUp>

@@ -9,7 +9,6 @@ import { Hero } from "@/components/Hero";
 import { HorizontalTimeline } from "@/components/HorizontalTimeline";
 import { NavBar } from "@/components/NavBar";
 import { ProjectsCarousel } from "@/components/ProjectsCarousel";
-import ReferenceCoursework from "@/components/ReferenceCoursework";
 import { ResourcesList } from "@/components/ResourcesList";
 import { Section } from "@/components/Section";
 import { SkipToContent } from "@/components/SkipToContent";
@@ -69,24 +68,26 @@ export default function Home() {
               </h2>
             </header>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-              {/* University Information */}
-              <div className="space-y-6">
-                <AcademicBackgroundCard
-                  institution={education.institution}
-                  degree={education.degree}
-                  graduationDate={education.graduationDate}
-                  gpa={education.gpa}
-                />
-              </div>
-
-              {/* Coursework with Reference Cylindrical Text Effect */}
-              <div className="space-y-6">
-                <ReferenceCoursework items={education.coursework} />
-              </div>
+            <div className="space-y-12">
+              {/* University Information Card */}
+              <AcademicBackgroundCard
+                institution={education.institution}
+                location={education.location}
+                degree={education.degree}
+                graduationDate={education.graduationDate}
+                gpa={education.gpa}
+              />
             </div>
           </div>
         </Section>
+
+        {/* Coursework Cylindrical Animation - Full viewport section */}
+        <div className="w-full">
+          <CylindricalText
+            items={education.coursework}
+            sectionLabel="Scroll through my coursework journey"
+          />
+        </div>
 
         <Section id="contact">
           <div className="max-w-6xl mx-auto">
