@@ -32,7 +32,7 @@ export const sections = {
       "My journey in building impactful products and growing as a developer",
   },
   projects: {
-    title: "Projects That Eat My Free Time",
+    title: "Projects I'm Proud Of",
   },
   education: {
     title: "Education & Skills",

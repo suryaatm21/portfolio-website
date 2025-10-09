@@ -98,23 +98,18 @@ export function CylindricalText({
       style={{
         perspective: "clamp(400px, 70vw, 2000px)", // Mobile-friendly perspective
       }}>
-      {/* Top gradient fade */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 z-20 h-32 bg-gradient-to-b from-background via-background/60 to-transparent" />
-
-      {/* Bottom gradient fade */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-32 bg-gradient-to-t from-background via-background/60 to-transparent" />
-
-      {/* Scroll prompt - this is the trigger element */}
+      {/* Scroll prompt - hidden but still serves as trigger element */}
       <p
         ref={titleRef}
-        className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 text-center text-sm font-medium tracking-wide text-muted-foreground/80">
+        className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 opacity-0 pointer-events-none"
+        aria-hidden="true">
         {sectionLabel}
       </p>
 
       {/* 3D text wrapper */}
       <ul
         ref={textWrapperRef}
-        className="absolute left-0 top-0 h-full w-full text-center text-2xl font-semibold uppercase leading-tight text-foreground sm:text-3xl md:text-4xl lg:text-[5vw] lg:leading-[5vw]"
+        className="absolute left-0 top-0 h-full w-full text-center text-lg font-semibold uppercase leading-tight text-black sm:text-xl md:text-2xl lg:text-3xl"
         style={{
           transformStyle: "preserve-3d",
           transformOrigin: "center center",
@@ -125,7 +120,7 @@ export function CylindricalText({
             ref={(el) => {
               itemsRef.current[index] = el;
             }}
-            className="absolute left-1/2 top-1/2 w-full whitespace-nowrap px-4"
+            className="absolute left-1/2 top-1/2 w-full max-w-[90vw] px-4 text-ellipsis"
             style={{
               backfaceVisibility: "hidden",
             }}>
