@@ -137,7 +137,7 @@ export function HorizontalTimeline({
       case "internship":
         return "text-blue-500 border-blue-500 bg-blue-500/10";
       case "research":
-        return "text-purple-500 border-purple-500 bg-purple-500/10";
+        return "text-yellow-500 border-yellow-500 bg-yellow-500/10";
       default:
         return "text-brand-primary border-brand-primary bg-brand-primary/10";
     }
@@ -154,9 +154,6 @@ export function HorizontalTimeline({
       onMouseLeave={() => setIsHovered(false)}>
       {/* Vertical Quick Nav (positioned absolutely to the left) */}
       <div className="hidden xl:flex flex-col gap-3 justify-center items-center absolute left-0 xl:left-8 top-1/2 -translate-y-1/2 z-10">
-        <div className="text-xs font-medium text-muted-foreground mb-2 writing-vertical-rl">
-          {timelineText.quickNav}
-        </div>
         {entries.map((entry, index) => (
           <button
             key={entry.id}
@@ -195,11 +192,14 @@ export function HorizontalTimeline({
             </motion.div>
             */}
 
-            <h2 id="experience" className="text-3xl sm:text-4xl font-heading font-semibold text-component-section-header-text mb-2">
+            <h2
+              id="experience"
+              className="text-3xl sm:text-4xl font-heading font-semibold text-component-section-header-text mb-2">
               Professional Experience
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              My journey in building impactful products and growing as a developer
+              My journey in building impactful products and growing as a
+              developer
             </p>
           </div>
         </div>
@@ -322,7 +322,7 @@ export function HorizontalTimeline({
                           {getTypeIcon(entries[activeIndex]?.type || "")}
                         </div>
                         <div>
-                          <h4 className="text-xl font-heading font-semibold text-black">
+                          <h4 className="text-xl font-heading font-semibold text-white">
                             {entries[activeIndex]?.title}
                           </h4>
                           <p className="text-brand-secondary font-medium">

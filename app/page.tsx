@@ -52,7 +52,7 @@ export default function Home() {
         <Section id="projects">
           <div className="max-w-7xl mx-auto">
             <header className="text-center mb-16">
-              <h2 className="text-3xl sm:text-4xl font-heading font-semibold text-component-section-header-text mb-4">
+              <h2 className="text-3xl sm:text-4xl font-heading font-semibold text-black mb-4">
                 {sections.projects.title}
               </h2>
             </header>
@@ -64,7 +64,7 @@ export default function Home() {
         <Section id="education">
           <div className="max-w-4xl mx-auto">
             <header className="text-center mb-16">
-              <h2 className="text-3xl sm:text-4xl font-heading font-semibold text-component-section-header-text mb-4">
+              <h2 className="text-3xl sm:text-4xl font-heading font-semibold text-black mb-4">
                 {sections.education.title}
               </h2>
             </header>
@@ -91,7 +91,7 @@ export default function Home() {
         <Section id="contact">
           <div className="max-w-6xl mx-auto">
             <header className="text-center mb-12">
-              <h2 className="text-3xl sm:text-4xl font-heading font-semibold text-component-section-header-text mb-4">
+              <h2 className="text-3xl sm:text-4xl font-heading font-semibold text-black mb-4">
                 {sections.contact.title}
               </h2>
             </header>
