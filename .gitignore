@@ -29,3 +29,6 @@ next-env.d.ts
 .DS_Store
 /references
 references/
+
+# documentation (changes per feature)
+docs/commit-plan.md
