@@ -39,9 +39,9 @@ export const sections = {
     description: "Academic background and technical expertise",
   },
   resources: {
-    title: "Recruitment Resources",
+    title: "My Recruitment Resources",
     description:
-      "Curated tools and resources to help you level up your development skills",
+      "Curated tools and resources to help you get a job",
     buttonText: "Get access",
     buttonHref: "https://resources.theuntab.com",
   },
@@ -88,9 +88,30 @@ export const socials = [
 ];
 
 export const resources = [
-  { title: "System Design Cheatsheet", href: "https://xxxxxxxxx" },
-  { title: "Telegram Job-Tracker Group", href: "https://t.me/xxxxxxxxx" },
-  { title: "More Coming Soon…", href: "#" },
+  {
+    title: "System Design Cheatsheet",
+    href: "https://www.linkedin.com/posts/surya-atmuri_systemdesign-softwareengineering-interviewprep-activity-7276018965661794304-3b3a",
+    description: "NeetCode Pro system design for beginners notes + more.",
+    status: "available",
+  },
+  {
+    title: "Job Tracker Bot (Telegram alerts)",
+    href: "https://t.me/summer2026swe",
+    description: "Always be the first to know about the latest openings in tech.",
+    status: "available",
+  },
+  {
+    title: "Neet: Coding Interviewer GPT",
+    href: "https://chatgpt.com/g/g-68d5a88f14c88191bcbdb3444a680082-neet-personal-interviewer",
+    description: "Never get stuck in a technical interview again. Try this personalized GPT in practice.",
+    status: "available",
+  },
+  {
+    title: "Perplexity Comet (AI Browser)",
+    href: "https://pplx.ai/surya-atmuri",
+    description: "Best way I've found to pull the most up-to-date sources.",
+    status: "available",
+  },
 ];
 
 export const experience = [
@@ -140,68 +161,62 @@ export const timelineText = {
 
 export const timeline = [
   {
-    id: "todd",
+    id: "vip-research",
+    title: "Undergraduate Researcher",
+    company: "Automated Algorithm Design - VIP",
+    location: "Atlanta, GA",
+    period: "Jan 2025 -- Present",
+    date: "2025-01-01",
+    type: "research",
+    bullets: [
+      "Developed an LLM-guided AutoML pipeline with Mixtral-8x7B to evolve PyTorch architectures for 3D point cloud classification, running 10 generations and benchmarking 100+ model variants per run with SLURM on PACE ICE",
+      "Advanced PointNet++ performance by evolving a variant that raised test accuracy from 62.7% to 67.1% (+7%), while reducing model complexity metrics to achieve a Pareto-optimal balance of accuracy and efficiency",
+      "Doubled request throughput with asynchronous batching using asyncio, cutting inference latency by 50%",
+    ],
+    technologies: ["Python", "PyTorch", "Mixtral-8x7B", "SLURM", "asyncio"],
+  },
+  {
+    id: "todd-agriscience",
     title: "Software Engineering Intern",
-    company: "Todd",
-    location: "San Francisco, CA",
-    period: "Summer 2024",
+    company: "Todd Agriscience",
+    location: "Los Angeles, CA",
+    period: "Jun 2025 -- Sep 2025",
+    date: "2025-06-01",
+    type: "internship",
+    bullets: [
+      "Engineered a role-based authentication system with NextAuth.js, middleware, and an AWS DynamoDB session store, securing all admin routes against unauthorized access while sustaining sub-10ms latency for 20 client dashboards",
+      "Resolved 4 critical production blockers in a Next.js 15/React 18 SaaS platform, fixing build errors, dependency conflicts, and context propagation failures in route redirects, supporting full internationalization (i18n) and updated test harnesses",
+    ],
+    technologies: ["Next.js", "React", "NextAuth.js", "AWS DynamoDB", "TypeScript"],
+  },
+  {
+    id: "acrotech-biopharma",
+    title: "Software Engineering Intern",
+    company: "Acrotech Biopharma Inc.",
+    location: "East Windsor, NJ",
+    period: "Jun 2024 -- Aug 2024",
     date: "2024-06-01",
     type: "internship",
     bullets: [
-      "Built features in a live startup codebase with React and Node.js",
-      "Shipped fast – measured impact with user feedback and analytics",
-      "Collaborated with cross-functional teams on product development",
-      "Optimized database queries resulting in 40% faster page loads",
+      "Built a SharePoint based intranet platform leveraging SPFx, TypeScript, Webpack, and Gulp driving employee engagement with upwards of 1,100 total visits and 217 visits in the final 30 days of term",
+      "Configured CRUD workflows using Power Automate and JavaScript, improving backend synchronization efficiency and reducing manual input errors, contributing to a seamless experience for 17 unique users over 2 months",
+      "Analyzed data queries using SQL in PowerBI's SQL Server and Excel's command line to model commercial patterns of 400+ health care professionals and compare tele-sales call activity to determine sales impact in weekly reports",
     ],
-    technologies: ["React", "Node.js", "PostgreSQL", "TypeScript"],
-  },
-  {
-    id: "vip-research",
-    title: "VIP Research Program",
-    company: "Georgia Tech",
-    location: "Atlanta, GA",
-    period: "Spring 2024",
-    date: "2024-01-15",
-    type: "research",
-    bullets: [
-      "Conducted research on machine learning applications in healthcare",
-      "Developed predictive models using Python and scikit-learn",
-      "Presented findings at the undergraduate research symposium",
-      "Collaborated with PhD students and faculty on data analysis",
-    ],
-    technologies: ["Python", "scikit-learn", "TensorFlow", "Jupyter"],
-  },
-  {
-    id: "acrotech",
-    title: "Web Developer Intern",
-    company: "Acrotech Solutions",
-    location: "Remote",
-    period: "Fall 2023",
-    date: "2023-09-01",
-    type: "internship",
-    bullets: [
-      "Developed responsive web applications using modern JavaScript frameworks",
-      "Implemented RESTful APIs and integrated third-party services",
-      "Improved website performance by 60% through code optimization",
-      "Mentored junior developers on best practices and code review",
-    ],
-    technologies: ["Vue.js", "Express.js", "MongoDB", "AWS"],
+    technologies: ["SharePoint", "SPFx", "TypeScript", "Power Automate", "SQL"],
   },
   {
     id: "sb-dental",
-    title: "IT Support Specialist",
-    company: "SB Dental Practice",
-    location: "Atlanta, GA",
-    period: "Summer 2023",
+    title: "Data Analyst Intern",
+    company: "SB Dental Studio",
+    location: "Plainsboro, NJ",
+    period: "Jun 2023 -- Jul 2023",
     date: "2023-06-01",
     type: "internship",
     bullets: [
-      "Maintained and upgraded dental practice management systems",
-      "Automated patient data backup processes reducing manual work by 80%",
-      "Provided technical support for 50+ dental equipment systems",
-      "Implemented cybersecurity measures to protect patient data",
+      "Restructured patient data with Dentrix software, automating follow-ups and minimizing scheduling conflicts by 60%",
+      "Streamlined payment processing system, validating insurance policies for 140+ claim forms to ensure compliance",
     ],
-    technologies: ["SQL Server", "Python", "Windows Server", "PowerShell"],
+    technologies: ["Dentrix", "Data Management", "Process Automation"],
   },
 ];
 
@@ -211,14 +226,15 @@ export const projects = [
     summary:
       "Shipped a GitHub Actions pipeline with TTL caching to monitor internship repos, actively delivering alerts to 1,300+ contacts and 60+ active users, scaling reliably on three CI pipelines with sub-15s runtimes and under 1% job failure rate.",
     repo: "https://github.com/suryaatm21/job-tracker",
+    demo: "https://t.me/summer2026swe",
     tech: ["Python", "GitHub Actions", "Telegram API"],
   },
   {
     title: "CloudScribe AI",
     summary:
       "Deploying a serverless pipeline using GCP's Cloud Storage, Pub/Sub, and Firebase Functions to transcribe and summarize multi modal media inputs with sub-30s latency and under 2s trigger response.",
-    repo: "https://github.com/xxxxxxxxx",
-    demo: "https://cloudscribe-demo.vercel.app",
+    repo: "Coming Soon",
+    demo: "Coming Soon",
     tech: ["TypeScript", "Next.js", "Google Cloud", "Docker", "Firebase"],
   },
   {
@@ -226,7 +242,7 @@ export const projects = [
     summary:
       "Designed a FastAPI backend with PostgreSQL and Spotify OAuth, batch processing tracks with average latency under 200ms, and integrated ReccoBeats API to fetch 95%+ of audio features.",
     repo: "https://github.com/suryaatm21/spotify-optimizer",
-    demo: "https://spotify-optimizer.vercel.app",
+    demo: "https://www.youtube.com/watch?v=oDh19udD8h0",
     tech: ["REST APIs", "FastAPI", "PostgreSQL", "scikit-learn"],
   },
   {
@@ -234,7 +250,7 @@ export const projects = [
     summary:
       "Led frontend scrum development of the Fridge dashboard using React, Flask, and Gemini API to automate expiry and category inputs, reducing manual entry steps by 40%.",
     repo: "https://github.com/suryaatm21/spoiler_alert",
-    demo: "https://spoiler-alert-demo.vercel.app",
+    demo: "https://www.youtube.com/watch?v=YOLyiLElo8w",
     tech: ["JavaScript", "Flask", "React", "SQLite"],
   },
 ];
