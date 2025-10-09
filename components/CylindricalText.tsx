@@ -12,33 +12,42 @@ interface CylindricalTextProps {
 export function CylindricalText({
   items,
   className = "",
-}: CylindricalTextProps): React.ReactElement {
+}: CylindricalTextProps): React.ReactElement | null {
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const textWrapperRef = useRef<HTMLDivElement>(null);
-  const itemsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const textWrapperRef = useRef<HTMLUListElement>(null);
+  const itemsRef = useRef<(HTMLLIElement | null)[]>([]);
 
-  // Keep ref array in sync with incoming data to avoid stale nodes
-  itemsRef.current.length = items.length;
+  const containerClassName = ["relative min-h-[80svh]", className]
+    .filter(Boolean)
+    .join(" ");
 
   useLayoutEffect(() => {
     const wrapper = wrapperRef.current;
     const textWrapper = textWrapperRef.current;
-    if (!wrapper || !textWrapper) return;
+
+    if (!wrapper || !textWrapper || items.length === 0) {
+      return;
+    }
 
     gsap.registerPlugin(ScrollTrigger);
 
-    const itemSpacing = items.length > 0 ? 180 / items.length : 0;
+    itemsRef.current = itemsRef.current.slice(0, items.length);
+
+    const spacing = 180 / items.length;
 
     const calculatePositions = () => {
-      // Match geometry to container height so pinning stays consistent
-      const containerHeight = wrapper.clientHeight || 400;
-      const radius = containerHeight * 0.42;
+      const rect = wrapper.getBoundingClientRect();
+      const minDimension = Math.max(
+        1,
+        Math.min(rect.width, rect.height, window.innerWidth, window.innerHeight),
+      );
+      const radius = minDimension * 0.4;
 
       itemsRef.current.forEach((item, index) => {
         if (!item) return;
 
-        const angle = (index * itemSpacing * Math.PI) / 180;
-        const rotationAngle = index * -itemSpacing;
+        const angle = (index * spacing * Math.PI) / 180;
+        const rotationAngle = index * -spacing;
 
         const x = 0;
         const y = Math.sin(angle) * radius;
@@ -53,64 +62,29 @@ export function CylindricalText({
       ScrollTrigger.refresh();
     };
 
-    window.addEventListener("resize", handleResize);
-
     const ctx = gsap.context(() => {
       calculatePositions();
 
-      const startRotation = 80;
-      const totalRotation = itemSpacing * Math.max(items.length - 1, 0);
-      const endRotation = startRotation - totalRotation;
-      const scrollDistance = Math.max(1200, items.length * 220);
+      const animation = gsap.fromTo(
+        textWrapper,
+        { rotateX: -80 },
+        { rotateX: 270, ease: "none" },
+      );
 
       ScrollTrigger.create({
         trigger: wrapper,
-        start: "top center",
-        end: `+=${scrollDistance}`,
-        pin: true,
-        pinSpacing: true,
-        scrub: 1.2,
+        start: "center center",
+        end: "+=2000svh",
+        pin: wrapper,
+        scrub: 2,
+        animation,
         anticipatePin: 1,
-        animation: gsap.fromTo(
-          textWrapper,
-          { rotateX: startRotation },
-          { rotateX: endRotation, ease: "none" },
-        ),
-        onRefreshInit: calculatePositions,
-        onUpdate: (self) => {
-          const rotation =
-            startRotation + (endRotation - startRotation) * self.progress;
-
-          itemsRef.current.forEach((item, index) => {
-            if (!item) return;
-
-            const itemAngle = index * itemSpacing;
-            const normalized = ((rotation + itemAngle + 540) % 360) - 180; // -180 to 180
-            const distance = Math.abs(normalized);
-            const visibleArc = 90;
-            const fadeZone = Math.min(
-              visibleArc,
-              Math.max(12, itemSpacing * 1.4),
-            );
-
-            let opacity = 0;
-            if (distance <= visibleArc) {
-              opacity = 1;
-              if (distance >= visibleArc - fadeZone) {
-                opacity = 1 - (distance - (visibleArc - fadeZone)) / fadeZone;
-              }
-            } else if (distance <= visibleArc + fadeZone) {
-              opacity = 1 - (distance - visibleArc) / fadeZone;
-            }
-
-            item.style.opacity = Math.max(0, Math.min(1, opacity)).toString();
-            const zIndex = Math.max(0, Math.round(visibleArc * 2 - distance));
-            item.style.zIndex = zIndex.toString();
-          });
-        },
+        invalidateOnRefresh: true,
+        onRefresh: calculatePositions,
       });
     }, wrapper);
 
+    window.addEventListener("resize", handleResize);
     ScrollTrigger.refresh();
 
     return () => {
@@ -119,50 +93,45 @@ export function CylindricalText({
     };
   }, [items]);
 
+  if (items.length === 0) {
+    return null;
+  }
+
   return (
-    <div className={`relative ${className}`}>
+    <div className={containerClassName}>
       <div
         ref={wrapperRef}
-        className="cylindrical-wrapper relative h-96 w-full flex flex-col justify-center items-center overflow-hidden soft-card"
-        style={{ perspective: "1200px" }}>
-        {/* Top mask gradient */}
-        <div className="absolute top-0 left-0 right-0 h-16 bg-gradient-to-b from-card to-transparent z-30 pointer-events-none" />
+        className="relative flex h-[100svh] w-full flex-col items-center justify-center overflow-hidden"
+        style={{ perspective: "70vw" }}>
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-card to-transparent" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-card to-transparent" />
 
-        {/* Header moved inside the component */}
-        <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-20">
-          <h3 className="text-xl font-heading font-semibold text-component-header-text">
-            Relevant Coursework
-          </h3>
-        </div>
+        <p className="relative z-10 mb-8 text-xs font-semibold uppercase tracking-[0.4em] text-muted-foreground">
+          Scroll to explore
+        </p>
 
-        {/* Bottom mask gradient */}
-        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-card to-transparent z-30 pointer-events-none" />
-
-        <div className="cylindrical-title relative z-10 w-full h-full flex items-center justify-center">
-          <div
-            ref={textWrapperRef}
-            className="cylindrical-text-wrapper relative"
-            style={{
-              transformStyle: "preserve-3d",
-              transform: "rotateX(80deg)", // Match ScrollTrigger starting rotation
-              backfaceVisibility: "hidden", // Hide back faces
-            }}>
-            {items.map((item, index) => (
-              <div
-                key={index}
-                ref={(el) => {
-                  itemsRef.current[index] = el;
-                }}
-                className="cylindrical-text-item absolute left-1/2 top-1/2 whitespace-nowrap text-base font-medium text-white bg-slate-700/80 px-4 py-3 rounded-md border border-slate-600 backdrop-blur-sm shadow-lg"
-                style={{
-                  transformStyle: "preserve-3d",
-                  backfaceVisibility: "hidden", // Hide back faces of individual items
-                }}>
-                {item}
-              </div>
-            ))}
-          </div>
-        </div>
+        <ul
+          ref={textWrapperRef}
+          className="relative z-10 flex h-full w-full items-center justify-center text-center text-3xl font-semibold uppercase text-component-card-text sm:text-4xl"
+          style={{
+            transformStyle: "preserve-3d",
+            transformOrigin: "50% 50%",
+          }}>
+          {items.map((item, index) => (
+            <li
+              key={`${item}-${index}`}
+              ref={(el) => {
+                itemsRef.current[index] = el;
+              }}
+              className="absolute left-1/2 top-1/2 w-full -translate-x-1/2 -translate-y-1/2 whitespace-nowrap"
+              style={{
+                transformStyle: "preserve-3d",
+                backfaceVisibility: "hidden",
+              }}>
+              {item}
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );

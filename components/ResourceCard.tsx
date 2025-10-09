@@ -9,7 +9,10 @@ interface ResourceCardProps {
   href: string;
 }
 
-export function ResourceCard({ title, href }: ResourceCardProps): React.ReactElement {
+export function ResourceCard({
+  title,
+  href,
+}: ResourceCardProps): React.ReactElement {
   const isComingSoon = href === "#";
 
   return (
