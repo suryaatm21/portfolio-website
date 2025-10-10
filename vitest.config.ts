@@ -11,6 +11,8 @@ export default defineConfig({
   plugins: [tsconfigPaths()],
   test: {
     environment: 'jsdom',
+    // Note: Using relative path here because path aliases (@/) are not resolved
+    // in the config file itself - only in test files after tsconfigPaths plugin loads
     setupFiles: ['./tests/setup/vitest.setup.ts'],
     include: ['**/*.test.{ts,tsx}', '**/__tests__/**/*.{ts,tsx}'],
     globals: true,

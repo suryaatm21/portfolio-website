@@ -55,7 +55,7 @@ export function ContactForm(): React.ReactElement {
     <div className="max-w-4xl mx-auto">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
         {/* Left column centered as a group with equal top/bottom space */}
-        <div className="flex flex-col justify-around h-full lg:row-span-2">
+        <div className="flex flex-col justify-around h-full lg:row-span-2 gap-6">
           {/* Availability Section - Row 1 */}
           <FadeInUp delay={0.2}>
             <Card className="soft-card">

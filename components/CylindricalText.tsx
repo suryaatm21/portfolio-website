@@ -109,7 +109,7 @@ export function CylindricalText({
       {/* 3D text wrapper */}
       <ul
         ref={textWrapperRef}
-        className="absolute left-0 top-0 h-full w-full text-center text-lg font-semibold uppercase leading-tight text-black sm:text-xl md:text-2xl lg:text-3xl"
+        className="absolute left-0 top-0 h-full w-full text-center text-xs font-semibold uppercase leading-tight text-black sm:text-sm md:text-base lg:text-lg xl:text-xl"
         style={{
           transformStyle: "preserve-3d",
           transformOrigin: "center center",

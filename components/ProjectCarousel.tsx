@@ -40,15 +40,9 @@ const TRANSITION_MS = 500;
  */
 export function ProjectCarousel({
   items,
-  autoPlay: _autoPlay = false,
-  autoPlayInterval: _autoPlayInterval = 4000,
   className,
-}: ProjectCarouselProps) {
+}: Omit<ProjectCarouselProps, "autoPlay" | "autoPlayInterval">) {
   const hasItems = items.length > 0;
-
-  // Props retained for API compatibility
-  void _autoPlay;
-  void _autoPlayInterval;
 
   const containerRef = useRef<HTMLDivElement>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -85,8 +79,8 @@ export function ProjectCarousel({
     let height = window.innerHeight * 0.5;
 
     if (isMobile) {
-      width = Math.max(window.innerWidth * 0.8, 260);
-      height = Math.min(window.innerHeight * 0.6, 420);
+      width = Math.min(window.innerWidth * 0.85, 320);
+      height = Math.min(window.innerHeight * 0.55, 400);
     } else if (isTablet) {
       width = Math.max(window.innerWidth * 0.45, 300);
       height = Math.min(window.innerHeight * 0.55, 440);
@@ -276,22 +270,22 @@ export function ProjectCarousel({
                     opacity,
                   }}>
                   <Card className="absolute inset-0 border-2 border-border bg-background/95 backdrop-blur-sm text-white">
-                    <CardContent className="p-6 h-full flex flex-col">
-                      <div className="flex justify-center mb-4">
-                        <div className="w-16 h-16 rounded-xl bg-brand-primary/10 flex items-center justify-center">
-                          <Code2 className="w-8 h-8 text-brand-primary" />
+                    <CardContent className="p-4 sm:p-6 h-full flex flex-col">
+                      <div className="flex justify-center mb-3">
+                        <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-xl bg-brand-primary/10 flex items-center justify-center">
+                          <Code2 className="w-6 h-6 sm:w-8 sm:h-8 text-brand-primary" />
                         </div>
                       </div>
 
-                      <h3 className="text-xl font-heading font-semibold text-center mb-3">
+                      <h3 className="text-lg sm:text-xl font-heading font-semibold text-center mb-2">
                         {project.title}
                       </h3>
 
-                      <p className="text-sm text-white/80 text-center mb-6 flex-grow line-clamp-4">
+                      <p className="text-xs sm:text-sm text-white/80 text-center mb-4 flex-grow line-clamp-3 sm:line-clamp-4">
                         {project.summary}
                       </p>
 
-                      <div className="flex flex-wrap gap-1 justify-center mb-6">
+                      <div className="flex flex-wrap gap-1 justify-center mb-4">
                         {project.tech.slice(0, 3).map((tech) => (
                           <Badge
                             key={tech}

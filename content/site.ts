@@ -32,7 +32,7 @@ export const sections = {
       "My journey in building impactful products and growing as a developer",
   },
   projects: {
-    title: "Projects I'm Proud Of",
+    title: "🔥 Projects 🔥",
   },
   education: {
     title: "Education & Skills",
@@ -269,7 +269,7 @@ export const contact = {
     subjectPlaceholder: "What would you like to discuss?",
     messageLabel: "Message",
     messagePlaceholder:
-      "Tell me about your team, question, or endeavors! Looking for book, song, and anime recs too",
+      "Tell me about your team, question, or endeavors! Or give me a book, song, or anime rec",
     submitText: "Send Message",
     disclaimer:
       "This will open your default email client with a prefilled message. Your email address will not be stored or shared.",
