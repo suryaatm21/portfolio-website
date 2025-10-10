@@ -199,21 +199,35 @@ export function ProjectCarousel({
       aria-roledescription="Project carousel"
       aria-label="Project showcase"
     >
-      <div className="flex items-center justify-center gap-4 sm:gap-8 py-20">
+      <div className="relative w-full overflow-hidden py-20">
+        {/* Left navigation button - overlaid on carousel */}
         <Button
           variant="ghost"
           size="icon"
-          className="flex-shrink-0 w-12 h-12 rounded-full bg-background/80 backdrop-blur-sm border border-border hover:bg-brand-accent/10 hover:border-brand-accent hover:scale-110 transition-all duration-200"
+          className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-background/80 backdrop-blur-sm border border-border hover:bg-brand-accent/10 hover:border-brand-accent hover:scale-110 transition-all duration-200 shadow-lg"
           onClick={goToPrevious}
           aria-label="Previous project"
         >
           <ChevronLeft className="w-6 h-6" />
         </Button>
 
+        {/* Right navigation button - overlaid on carousel */}
+        <Button
+          variant="ghost"
+          size="icon"
+          className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-background/80 backdrop-blur-sm border border-border hover:bg-brand-accent/10 hover:border-brand-accent hover:scale-110 transition-all duration-200 shadow-lg"
+          onClick={goToNext}
+          aria-label="Next project"
+        >
+          <ChevronRight className="w-6 h-6" />
+        </Button>
+
         <div
-          className="relative overflow-hidden flex-1 max-w-6xl"
+          className="relative mx-auto"
           style={{
+            width: "100%",
             height: `${dimensions.height}px`,
+            perspective: "1400px",
           }}
         >
           {items.map((project, index) => {
@@ -392,16 +406,6 @@ export function ProjectCarousel({
             );
           })}
         </div>
-
-        <Button
-          variant="ghost"
-          size="icon"
-          className="flex-shrink-0 w-12 h-12 rounded-full bg-background/80 backdrop-blur-sm border border-border hover:bg-brand-accent/10 hover:border-brand-accent hover:scale-110 transition-all duration-200"
-          onClick={goToNext}
-          aria-label="Next project"
-        >
-          <ChevronRight className="w-6 h-6" />
-        </Button>
       </div>
 
       <div className="flex justify-center gap-2 mt-8">
