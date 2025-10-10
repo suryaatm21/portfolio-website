@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { ArrowRight, Github, Linkedin, Mail, ExternalLink } from "lucide-react";
+import Image from "next/image";
 import type React from "react";
 import { useState, useEffect } from "react";
 
@@ -63,18 +64,13 @@ export function Hero(): React.ReactElement {
                 transition={{ duration: 0.6, ease: "easeOut" }}>
                 <div className="relative">
                   <div className="absolute inset-0 bg-accent/10 rounded-full blur-2xl scale-125" />
-                  <img
+                  <Image
                     src={hero.profileImage}
                     alt={hero.profileImageAlt}
+                    width={256}
+                    height={256}
+                    priority
                     className="relative w-56 h-56 xl:w-64 xl:h-64 rounded-full object-cover border-2 border-accent/20 shadow-xl"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      if (target.src.includes(".jpg")) {
-                        target.src = "https://i.imgur.com/0QUH8nY.png";
-                      } else {
-                        target.src = "/diverse-group-profile.png";
-                      }
-                    }}
                   />
                 </div>
               </motion.div>

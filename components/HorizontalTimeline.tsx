@@ -24,7 +24,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { timelineText } from "@/content/site";
 import { cn } from "@/lib/utils";
 
-interface TimelineEntry {
+export interface TimelineEntry {
   id: string;
   title: string;
   company: string;
@@ -86,15 +86,15 @@ export function HorizontalTimeline({
     [entries.length],
   );
 
-  const goToPrevious = () => {
+  const goToPrevious = useCallback(() => {
     const newIndex = Math.max(0, activeIndex - 1);
     goToEntry(newIndex);
-  };
+  }, [activeIndex, goToEntry]);
 
-  const goToNext = () => {
+  const goToNext = useCallback(() => {
     const newIndex = Math.min(entries.length - 1, activeIndex + 1);
     goToEntry(newIndex);
-  };
+  }, [activeIndex, entries.length, goToEntry]);
 
   // Keyboard navigation
   useEffect(() => {
@@ -110,7 +110,7 @@ export function HorizontalTimeline({
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [activeIndex]);
+  }, [activeIndex, goToNext, goToPrevious]);
 
   // Auto-advance timeline
   useEffect(() => {

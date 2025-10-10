@@ -126,7 +126,7 @@ export default function AnimatedBackground({
       console.error("Failed to initialize Vanta.js:", error);
       healthStatsRef.current.vantaOK = false;
     }
-  }, [theme, prefersReducedMotion, loadScripts]);
+  }, [prefersReducedMotion, loadScripts]);
 
   // Update the CSS variables for sky based on current scroll position
   const updateSkyFromScroll = useCallback(() => {
@@ -187,6 +187,7 @@ export default function AnimatedBackground({
   }, [updateSkyFromScroll]);
 
   useEffect(() => {
+    const healthStats = healthStatsRef.current;
     const timeoutId = setTimeout(() => {
       initializeVanta();
     }, 100);
@@ -228,7 +229,7 @@ export default function AnimatedBackground({
         vantaEffect.current.destroy();
         vantaEffect.current = null;
       }
-      healthStatsRef.current.cloudsActive = false;
+      healthStats.cloudsActive = false;
       clearTimeout(t1);
       clearTimeout(t2);
       detachDPR?.();

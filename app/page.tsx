@@ -7,6 +7,7 @@ import { ContactForm } from "@/components/ContactForm";
 import { CylindricalText } from "@/components/CylindricalText";
 import { Hero } from "@/components/Hero";
 import { HorizontalTimeline } from "@/components/HorizontalTimeline";
+import type { TimelineEntry } from "@/components/HorizontalTimeline";
 import { NavBar } from "@/components/NavBar";
 import { ProjectsCarousel } from "@/components/ProjectsCarousel";
 import { ResourcesList } from "@/components/ResourcesList";
@@ -46,7 +47,7 @@ export default function Home() {
 
         <Section id="experience">
           <div className="max-w-7xl mx-auto">
-            <HorizontalTimeline entries={timeline as any} />
+            <HorizontalTimeline entries={timeline as TimelineEntry[]} />
           </div>
         </Section>
 
