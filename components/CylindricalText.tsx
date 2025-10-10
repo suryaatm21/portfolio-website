@@ -37,10 +37,15 @@ export function CylindricalText({
     const spacing = 180 / items.length;
 
     const calculatePositions = () => {
-      // Match reference: use Math.min of window dimensions * 0.4 offset
-      const offset = 0.4;
-      const radius =
-        Math.min(window.innerWidth, window.innerHeight) * offset;
+      // Calculate radius and depth offset to prevent text upscaling
+      const minDimension = Math.min(window.innerWidth, window.innerHeight);
+      const radius = minDimension * 0.4;
+      const depthOffset = radius * 0.85;
+      
+      // Dynamically set perspective based on radius to keep text at 1:1 scale
+      if (wrapper) {
+        wrapper.style.perspective = `${Math.max(900, radius * 3)}px`;
+      }
 
       itemsRef.current.forEach((item, index) => {
         if (!item) return;
@@ -50,9 +55,10 @@ export function CylindricalText({
 
         const x = 0;
         const y = Math.sin(angle) * radius;
-        const z = Math.cos(angle) * radius;
+        // Push cylinder back so front items render at 1:1 scale (no upscaling blur)
+        const z = Math.cos(angle) * radius - depthOffset;
 
-        // Match reference transform exactly
+        // Apply transform with depth-adjusted z position
         item.style.transform = `translate3d(-50%, -50%, 0) translate3d(${x}px, ${y}px, ${z}px) rotateX(${rotationAngle}deg)`;
       });
     };
@@ -96,7 +102,8 @@ export function CylindricalText({
       ref={wrapperRef}
       className={`relative h-[100svh] w-full overflow-hidden ${className}`}
       style={{
-        perspective: "clamp(400px, 70vw, 2000px)", // Mobile-friendly perspective
+        // Perspective will be set dynamically in calculatePositions
+        perspective: "900px", // Initial fallback, overridden by JS
       }}>
       {/* Scroll prompt - hidden but still serves as trigger element */}
       <p
@@ -126,13 +133,12 @@ export function CylindricalText({
             }}
             className="absolute left-1/2 top-1/2 w-full max-w-[90vw] px-4 text-ellipsis"
             style={{
+              transformStyle: "preserve-3d",
               backfaceVisibility: "hidden",
               WebkitFontSmoothing: "antialiased",
               MozOsxFontSmoothing: "grayscale",
               textRendering: "optimizeLegibility",
               willChange: "transform",
-              transform: "translateZ(0.1px)", // Force hardware acceleration
-              filter: "contrast(1.1)", // Slightly sharpen text
             }}>
             {item}
           </li>

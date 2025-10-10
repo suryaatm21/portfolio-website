@@ -229,6 +229,14 @@ export const timeline = [
 
 export const projects = [
   {
+    title: "This Portfolio Website",
+    summary:
+      "Built a modern portfolio with Next.js 15 featuring custom animation system (TextReveal, FloatingElement, ScrollReveal), GSAP-powered 3D cylindrical text, and smooth parallax effects, deployed on Netlify with 5 9s availability.",
+    repo: "https://github.com/suryaatm21/portfolio-website",
+    demo: "https://surya.theuntab.com",
+    tech: ["Next.js", "TypeScript", "Framer Motion", "GSAP", "Tailwind CSS"],
+  },
+  {
     title: "Job Tracker Bot",
     summary:
       "Shipped a GitHub Actions pipeline with TTL caching to monitor internship repos, actively delivering alerts to 1,300+ contacts and 60+ active users, scaling reliably on three CI pipelines with sub-15s runtimes and under 1% job failure rate.",
