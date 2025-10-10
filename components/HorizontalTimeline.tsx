@@ -24,7 +24,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { timelineText } from "@/content/site";
 import { cn } from "@/lib/utils";
 
-interface TimelineEntry {
+export interface TimelineEntry {
   id: string;
   title: string;
   company: string;
