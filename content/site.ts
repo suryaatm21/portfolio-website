@@ -252,7 +252,7 @@ export const projects = [
     demo: "https://www.youtube.com/watch?v=oDh19udD8h0",
     tech: ["REST APIs", "FastAPI", "PostgreSQL", "scikit-learn"],
   },
-    {
+  {
     title: "This Portfolio Website",
     summary:
       "Built a modern portfolio with Next.js 15 featuring custom animation system (TextReveal, FloatingElement, ScrollReveal), GSAP-powered 3D cylindrical text, and smooth parallax effects, deployed on Netlify with 5 9s availability.",
