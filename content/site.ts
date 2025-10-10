@@ -20,7 +20,7 @@ export const hero = {
     },
     secondary: {
       text: "See resume",
-      href: "https://drive.google.com/file/d/1u5K2wNYF_pDkESpnWuVUmBaAh7oetXnS/view?usp=sharing",
+      href: "https://drive.google.com/file/d/1BxddwN_BnbFDPceLH-sliI9SRgRtgIPN/view?usp=sharing",
     },
   },
 };
@@ -35,7 +35,7 @@ export const sections = {
     title: "🔥 Projects 🔥",
   },
   education: {
-    title: "Education & Skills",
+    title: "My Tuition Benefits",
     description: "Academic background and technical expertise",
   },
   resources: {
@@ -231,7 +231,7 @@ export const projects = [
   {
     title: "Job Tracker Bot",
     summary:
-      "Shipped a GitHub Actions pipeline with TTL caching to monitor internship repos, actively delivering alerts to 1,300+ contacts and 60+ active users, scaling reliably on three CI pipelines with sub-15s runtimes and under 1% job failure rate.",
+      "Be the first to apply to any new entry-level job opening in tech. Join the Telegram channel below.",
     repo: "https://github.com/suryaatm21/job-tracker",
     demo: "https://t.me/summer2026swe",
     tech: ["Python", "GitHub Actions", "Telegram API"],
@@ -239,15 +239,15 @@ export const projects = [
   {
     title: "CloudScribe AI",
     summary:
-      "Deploying a serverless pipeline using GCP's Cloud Storage, Pub/Sub, and Firebase Functions to transcribe and summarize multi modal media inputs with sub-30s latency and under 2s trigger response.",
+      "Building a cloud-native platform to take lecture notes for you.",
     repo: "Coming Soon",
     demo: "Coming Soon",
-    tech: ["TypeScript", "Next.js", "Google Cloud", "Docker", "Firebase"],
+    tech: ["TypeScript", "Next.js", "Google Cloud Platform", "Docker", "Firebase"],
   },
   {
     title: "Spotify Playlist Optimizer",
     summary:
-      "Designed a FastAPI backend with PostgreSQL and Spotify OAuth, batch processing tracks with average latency under 200ms, and integrated ReccoBeats API to fetch 95%+ of audio features.",
+      "Organize your Spotify music library with intent and machine learning.",
     repo: "https://github.com/suryaatm21/spotify-optimizer",
     demo: "https://www.youtube.com/watch?v=oDh19udD8h0",
     tech: ["REST APIs", "FastAPI", "PostgreSQL", "scikit-learn"],
@@ -263,7 +263,7 @@ export const projects = [
   {
     title: "Spoiler Alert - Web Development GT",
     summary:
-      "Led frontend scrum development of the Fridge dashboard using React, Flask, and Gemini API to automate expiry and category inputs, reducing manual entry steps by 40%.",
+      "Track your fridge ingredients, generate recipes, and manage shopping lists for your groceries. And share your fridges with family members, roommates, or colleagues.",
     repo: "https://github.com/suryaatm21/spoiler_alert",
     demo: "https://www.youtube.com/watch?v=YOLyiLElo8w",
     tech: ["JavaScript", "Flask", "React", "SQLite"],
@@ -272,7 +272,7 @@ export const projects = [
 
 export const contact = {
   form: {
-    title: "Send a Message",
+    title: "Slide in DMs",
     subjectLabel: "Subject",
     subjectPlaceholder: "What would you like to discuss?",
     messageLabel: "Message",
@@ -361,56 +361,6 @@ export const professionalExperience = [
       "Built a SharePoint based intranet platform leveraging SPFx, TypeScript, Webpack, and Gulp driving employee engagement with upwards of 1,100 total visits and 217 visits in the final 30 days of term",
       "Configured CRUD workflows using Power Automate and JavaScript, improving backend synchronization efficiency and reducing manual input errors, contributing to a seamless experience for 17 unique users over 2 months",
       "Analyzed data queries using SQL in PowerBI's SQL Server and Excel's command line to model commercial patterns of 400+ health care professionals and compare tele-sales call activity to determine sales impact in weekly reports",
-    ],
-  },
-];
-
-export const resumeProjects = [
-  {
-    id: "job-tracker-bot",
-    title: "Job Tracker Bot",
-    technologies: ["Python", "GitHub Actions", "Telegram API"],
-    period: "Aug 2025 -- Present",
-    repo: "https://github.com/suryaatm21/job-tracker",
-    bullets: [
-      "Shipped a GitHub Actions pipeline with TTL caching to monitor internship repos, actively delivering alerts to 1,300+ contacts and 60+ active users, scaling reliably on three CI pipelines with sub-15s runtimes and under 1% job failure rate.",
-    ],
-  },
-  {
-    id: "cloudscribe-ai",
-    title: "CloudScribe AI",
-    technologies: [
-      "TypeScript",
-      "Next.js",
-      "Google Cloud",
-      "Docker",
-      "Firebase",
-    ],
-    period: "Jan 2025 -- Present",
-    bullets: [
-      "Deploying a serverless pipeline using GCP's Cloud Storage, Pub/Sub, and Firebase Functions to transcribe and summarize multi modal media inputs (e.g., .mp3, .mp4) with sub-30s latency and under 2s trigger response",
-      "Containerized video processing with Docker and deployed to Cloud Run, integrating OpenAI APIs for semantic summarization with over 90% similarity to human-written notes using cosine and ROUGE metrics across 150+ tests",
-    ],
-  },
-  {
-    id: "spotify-optimizer",
-    title: "Spotify Playlist Optimizer",
-    technologies: ["REST APIs", "FastAPI", "PostgreSQL", "scikit-learn"],
-    period: "Oct 2024 -- Aug 2025",
-    repo: "https://github.com/suryaatm21/spotify-optimizer",
-    bullets: [
-      "Designed a FastAPI backend with PostgreSQL and Spotify OAuth, batch processing tracks with average latency under 200ms, and integrated ReccoBeats API to fetch 95%+ of audio features with data imputation fallback",
-      "Applied K-Means and DBSCAN clustering with PCA visualizations on audio features to reveal playlist-level patterns, enabling organization and filtering via CRUD operations through the Spotify Web API",
-    ],
-  },
-  {
-    id: "spoiler-alert",
-    title: "Spoiler Alert - Web Development GT",
-    technologies: ["JavaScript", "Flask", "React", "SQLite"],
-    period: "Sep 2024 -- Dec 2024",
-    repo: "https://github.com/suryaatm21/spoiler_alert",
-    bullets: [
-      "Led frontend scrum development of the Fridge dashboard using React, Flask, and Gemini API to automate expiry and category inputs, reducing manual entry steps by 40% and cutting input time from 30s to under 10s per item",
     ],
   },
 ];
