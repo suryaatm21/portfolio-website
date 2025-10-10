@@ -6,6 +6,8 @@ import type React from "react";
 import { useState, useEffect } from "react";
 
 import { AnimatedButton } from "@/components/animations/AnimatedButton";
+import { FloatingElement } from "@/components/animations/FloatingElement";
+import { TextReveal } from "@/components/animations/TextReveal";
 import { Button } from "@/components/ui/button";
 import { hero } from "@/content/site";
 
@@ -104,55 +106,65 @@ export function Hero(): React.ReactElement {
             </motion.div>
 
             <div className="flex-1 text-center xl:text-left">
-              <motion.h1
-                className="text-5xl sm:text-6xl xl:text-7xl font-sans font-bold mb-6 leading-tight"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, ease: "easeOut" }}>
+              <h1 className="text-5xl sm:text-6xl xl:text-7xl font-sans font-bold mb-6 leading-tight">
                 <span className="bg-gradient-to-r from-accent to-secondary bg-clip-text text-slate-100 font-mono hero-name">
-                  {hero.name}
+                  <TextReveal 
+                    mode="word" 
+                    preset="scale" 
+                    stagger={100}
+                    duration={600}
+                    threshold={0.1}>
+                    {hero.name}
+                  </TextReveal>
                 </span>
-              </motion.h1>
+              </h1>
 
-              <motion.div
-                className="inline-block mb-8 max-w-2xl xl:max-w-none readable-panel"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}>
+              <div className="inline-block mb-8 max-w-2xl xl:max-w-none readable-panel">
                 <p className="text-lg sm:text-xl text-muted-foreground leading-relaxed font-mono">
-                  {hero.tagline}
+                  <TextReveal 
+                    mode="word" 
+                    preset="fadeUp" 
+                    stagger={50}
+                    delay={400}
+                    threshold={0.1}>
+                    {hero.tagline}
+                  </TextReveal>
                 </p>
-              </motion.div>
+              </div>
 
               <motion.div
                 className="flex flex-col sm:flex-row items-center xl:items-start xl:justify-start justify-center gap-4 mb-6"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}>
-                <AnimatedButton
-                  size="lg"
-                  onClick={() => scrollToSection("contact")}
-                  className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 text-base font-medium group shadow-lg hover:shadow-xl transition-shadow">
-                  <span className="flex items-center">
-                    {hero.cta.primary.text}
-                    <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                  </span>
-                </AnimatedButton>
+                transition={{ duration: 0.6, delay: 1.2, ease: "easeOut" }}>
+                <FloatingElement variant="subtle">
+                  <AnimatedButton
+                    size="lg"
+                    onClick={() => scrollToSection("contact")}
+                    className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 text-base font-medium group shadow-lg hover:shadow-xl transition-shadow">
+                    <span className="flex items-center">
+                      {hero.cta.primary.text}
+                      <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                    </span>
+                  </AnimatedButton>
+                </FloatingElement>
 
-                <AnimatedButton
-                  variant="outline"
-                  size="lg"
-                  asChild
-                  className="border-border/50 text-foreground hover:bg-accent/10 px-8 py-3 text-base font-medium group">
-                  <a
-                    href={hero.cta.secondary.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center">
-                    <ExternalLink className="mr-2 h-4 w-4 group-hover:rotate-12 transition-transform" />
-                    {hero.cta.secondary.text}
-                  </a>
-                </AnimatedButton>
+                <FloatingElement variant="subtle">
+                  <AnimatedButton
+                    variant="outline"
+                    size="lg"
+                    asChild
+                    className="border-border/50 text-foreground hover:bg-accent/10 px-8 py-3 text-base font-medium group">
+                    <a
+                      href={hero.cta.secondary.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center">
+                      <ExternalLink className="mr-2 h-4 w-4 group-hover:rotate-12 transition-transform" />
+                      {hero.cta.secondary.text}
+                    </a>
+                  </AnimatedButton>
+                </FloatingElement>
               </motion.div>
 
               <motion.div

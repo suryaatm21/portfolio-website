@@ -1,8 +1,7 @@
 "use client";
 
 import { motion, useInView } from "framer-motion";
-import type React from "react";
-import { useRef } from "react";
+import React, { useRef } from "react";
 
 import { motionDurations, motionDelays, scrollThresholds } from "@/tokens/motion";
 

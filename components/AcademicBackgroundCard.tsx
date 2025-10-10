@@ -1,6 +1,7 @@
 import React from "react";
 
 import { FadeInUp } from "@/components/animations/FadeInUp";
+import { FloatingElement } from "@/components/animations/FloatingElement";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface AcademicBackgroundCardProps {
@@ -22,8 +23,9 @@ export function AcademicBackgroundCard({
 }: AcademicBackgroundCardProps): React.ReactElement {
   return (
     <FadeInUp className={className}>
-      <Card className="soft-card overflow-hidden">
-        <CardContent className="space-y-4 py-8 px-8">
+      <FloatingElement variant="subtle">
+        <Card className="soft-card overflow-hidden">
+          <CardContent className="space-y-4 py-8 px-8">
           {/* Condensed two-line layout */}
                     <div className="space-y-3 text-center">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-center gap-1 sm:gap-2">
@@ -57,6 +59,7 @@ export function AcademicBackgroundCard({
           </div>
         </CardContent>
       </Card>
+      </FloatingElement>
     </FadeInUp>
   );
 }

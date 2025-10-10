@@ -3,6 +3,7 @@
 import { ExternalLink, Github, Eye } from "lucide-react";
 import { useState } from "react";
 
+import { FloatingElement } from "@/components/animations/FloatingElement";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -34,7 +35,8 @@ export function ProjectCard({
 
   return (
     <>
-      <Card className="soft-card group min-w-[320px] flex-shrink-0">
+      <FloatingElement variant="subtle">
+        <Card className="soft-card group min-w-[320px] flex-shrink-0">
         <CardHeader className="pb-3">
           <CardTitle className="text-xl font-heading text-black group-hover:text-brand-accent transition-colors">
             {title}
@@ -137,6 +139,7 @@ export function ProjectCard({
           </div>
         </CardContent>
       </Card>
+      </FloatingElement>
     </>
   );
 }

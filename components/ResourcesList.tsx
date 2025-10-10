@@ -4,6 +4,8 @@ import { ExternalLink, CheckCircle2 } from "lucide-react";
 
 import { AnimatedButton } from "@/components/animations/AnimatedButton";
 import { FadeInUp } from "@/components/animations/FadeInUp";
+import { FloatingElement } from "@/components/animations/FloatingElement";
+import { TextReveal } from "@/components/animations/TextReveal";
 import { sections, resources } from "@/content/site";
 
 export function ResourcesList() {
@@ -15,10 +17,14 @@ export function ResourcesList() {
         <FadeInUp>
           <header className="text-center mb-12">
             <h2 className="text-3xl sm:text-4xl font-heading font-semibold text-white mb-4">
-              {sections.resources.title}
+              <TextReveal mode="word" preset="scale" stagger={80} threshold={0.2}>
+                {sections.resources.title}
+              </TextReveal>
             </h2>
             <p className="text-lg text-white/80 max-w-2xl mx-auto">
-              {sections.resources.description}
+              <TextReveal mode="word" preset="fadeUp" stagger={40} delay={400} threshold={0.2}>
+                {sections.resources.description}
+              </TextReveal>
             </p>
           </header>
         </FadeInUp>
@@ -28,28 +34,30 @@ export function ResourcesList() {
             <ul className="space-y-6 mb-8">
               {resources.map((item, index) => (
                 <FadeInUp key={item.title} delay={0.15 + index * 0.05}>
-                  <li className="flex items-start gap-3 p-4 rounded-lg bg-card/30 border border-border/30 hover:border-brand-accent/30 transition-colors">
-                    {/* Status indicator */}
-                    <CheckCircle2 className="h-5 w-5 text-brand-accent flex-shrink-0 mt-0.5" />
-                    <div className="flex-1">
-                      <a
-                        href={item.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-white hover:text-brand-accent transition-colors font-medium flex items-center gap-2 group mb-1">
-                        {item.title}
-                        <ExternalLink className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
-                      </a>
-                      {item.description && (
-                        <p className="text-sm text-muted-foreground">
-                          {item.description}
-                        </p>
-                      )}
-                    </div>
-                    <span className="inline-flex items-center rounded-md bg-brand-accent/10 px-2 py-1 text-xs font-medium text-brand-accent border border-brand-accent/20">
-                      Available
-                    </span>
-                  </li>
+                  <FloatingElement variant="subtle">
+                    <li className="flex items-start gap-3 p-4 rounded-lg bg-card/30 border border-border/30 hover:border-brand-accent/30 transition-colors">
+                      {/* Status indicator */}
+                      <CheckCircle2 className="h-5 w-5 text-brand-accent flex-shrink-0 mt-0.5" />
+                      <div className="flex-1">
+                        <a
+                          href={item.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-white hover:text-brand-accent transition-colors font-medium flex items-center gap-2 group mb-1">
+                          {item.title}
+                          <ExternalLink className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                        </a>
+                        {item.description && (
+                          <p className="text-sm text-muted-foreground">
+                            {item.description}
+                          </p>
+                        )}
+                      </div>
+                      <span className="inline-flex items-center rounded-md bg-brand-accent/10 px-2 py-1 text-xs font-medium text-brand-accent border border-brand-accent/20">
+                        Available
+                      </span>
+                    </li>
+                  </FloatingElement>
                 </FadeInUp>
               ))}
             </ul>
@@ -57,18 +65,20 @@ export function ResourcesList() {
 
           <FadeInUp delay={0.3}>
             <div className="flex justify-center">
-              <AnimatedButton
-                asChild
-                variant="cta"
-                size="lg"
-                className="shadow-lg">
-                <a
-                  href={sections.resources.buttonHref}
-                  target="_blank"
-                  rel="noopener noreferrer">
-                  {sections.resources.buttonText}
-                </a>
-              </AnimatedButton>
+              <FloatingElement variant="subtle">
+                <AnimatedButton
+                  asChild
+                  variant="cta"
+                  size="lg"
+                  className="shadow-lg">
+                  <a
+                    href={sections.resources.buttonHref}
+                    target="_blank"
+                    rel="noopener noreferrer">
+                    {sections.resources.buttonText}
+                  </a>
+                </AnimatedButton>
+              </FloatingElement>
             </div>
           </FadeInUp>
         </div>

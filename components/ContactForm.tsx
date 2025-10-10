@@ -9,6 +9,7 @@ import { AnimatedHobbiesCard } from "@/components/AnimatedHobbiesCard";
 import { Socials } from "@/components/Socials";
 import { AnimatedButton } from "@/components/animations/AnimatedButton";
 import { FadeInUp } from "@/components/animations/FadeInUp";
+import { FloatingElement } from "@/components/animations/FloatingElement";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -58,14 +59,16 @@ export function ContactForm(): React.ReactElement {
         <div className="flex flex-col justify-around h-full lg:row-span-2 gap-6">
           {/* Availability Section - Row 1 */}
           <FadeInUp delay={0.2}>
-            <Card className="soft-card">
-              <CardContent className="p-6">
-                <h4 className="text-lg font-heading font-medium text-brand-accent mb-3">
-                  {contact.availability.title}
-                </h4>
-                <p className="text-white">{contact.availability.content}</p>
-              </CardContent>
-            </Card>
+            <FloatingElement variant="subtle">
+              <Card className="soft-card">
+                <CardContent className="p-6">
+                  <h4 className="text-lg font-heading font-medium text-brand-accent mb-3">
+                    {contact.availability.title}
+                  </h4>
+                  <p className="text-white">{contact.availability.content}</p>
+                </CardContent>
+              </Card>
+            </FloatingElement>
           </FadeInUp>
 
           {/* Social Links Section - Row 2 */}
@@ -74,7 +77,8 @@ export function ContactForm(): React.ReactElement {
 
         {/* Contact Form - Takes 2 rows */}
         <FadeInUp className="lg:row-span-2">
-          <Card className="soft-card h-full">
+          <FloatingElement variant="subtle">
+            <Card className="soft-card h-full">
             <CardHeader>
               <CardTitle className="text-2xl font-heading text-brand-primary flex items-center gap-2">
                 <Mail className="h-6 w-6 text-brand-accent" />
@@ -145,6 +149,7 @@ export function ContactForm(): React.ReactElement {
               </form>
             </CardContent>
           </Card>
+          </FloatingElement>
         </FadeInUp>
       </div>
     </div>
