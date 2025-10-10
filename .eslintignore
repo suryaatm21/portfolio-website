@@ -1,0 +1,13 @@
+# ESLint ignore patterns
+.next/
+.turbo/
+node_modules/
+coverage/
+dist/
+.reports/
+*.d.ts
+next-env.d.ts
+vitest.config.ts
+tailwind.config.ts
+next.config.mjs
+postcss.config.mjs

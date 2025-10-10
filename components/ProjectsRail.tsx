@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { ProjectCard } from '@/components/ProjectCard';
-import { ScrollHint } from '@/components/animations/ScrollHint';
-import { FadeInUp } from '@/components/animations/FadeInUp';
-import { AnimatedCard } from '@/components/animations/AnimatedCard';
-import { projects } from '@/content/site';
+import { ProjectCard } from "@/components/ProjectCard";
+import { AnimatedCard } from "@/components/animations/AnimatedCard";
+import { FadeInUp } from "@/components/animations/FadeInUp";
+import { ScrollHint } from "@/components/animations/ScrollHint";
+import { projects } from "@/content/site";
 
 export function ProjectsRail() {
   return (
@@ -28,8 +28,8 @@ export function ProjectsRail() {
           role="region"
           aria-label="Projects carousel"
           style={{
-            scrollbarWidth: 'none',
-            msOverflowStyle: 'none',
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
           }}>
           <div className="flex gap-6 w-max px-4">
             {projects.map((project, index) => (
@@ -39,7 +39,7 @@ export function ProjectsRail() {
                     title={project.title}
                     summary={project.summary}
                     repo={project.repo}
-                    demo={project.demo ?? ''}
+                    demo={project.demo ?? ""}
                     tech={project.tech}
                   />
                 </AnimatedCard>

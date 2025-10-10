@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import type React from 'react';
+import { ChevronDown, ChevronRight } from "lucide-react";
+import type React from "react";
+import { useState } from "react";
 
-import { useState } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { ChevronDown, ChevronRight } from 'lucide-react';
-import { experience } from '@/content/site';
-import { cn } from '@/lib/utils';
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { experience } from "@/content/site";
+import { cn } from "@/lib/utils";
 
 export function Timeline() {
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
@@ -19,7 +19,7 @@ export function Timeline() {
   };
 
   const handleKeyDown = (event: React.KeyboardEvent, id: string) => {
-    if (event.key === 'Enter' || event.key === ' ') {
+    if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
       toggleExpanded(id);
     }
@@ -44,10 +44,10 @@ export function Timeline() {
                   onClick={() => toggleExpanded(item.id)}
                   onKeyDown={(e) => handleKeyDown(e, item.id)}
                   className={cn(
-                    'w-16 h-16 rounded-full border-2 transition-all duration-200 hover:scale-110',
+                    "w-16 h-16 rounded-full border-2 transition-all duration-200 hover:scale-110",
                     isExpanded
-                      ? 'bg-brand-accent border-brand-accent text-white shadow-lg shadow-brand-accent/25'
-                      : 'bg-background border-brand-accent/30 text-brand-accent hover:border-brand-accent hover:bg-brand-accent/10',
+                      ? "bg-brand-accent border-brand-accent text-white shadow-lg shadow-brand-accent/25"
+                      : "bg-background border-brand-accent/30 text-brand-accent hover:border-brand-accent hover:bg-brand-accent/10",
                   )}
                   aria-expanded={isExpanded}
                   aria-controls={`timeline-content-${item.id}`}>
@@ -79,8 +79,8 @@ export function Timeline() {
                 <div
                   id={`timeline-content-${item.id}`}
                   className={cn(
-                    'overflow-hidden transition-all duration-300 ease-in-out',
-                    isExpanded ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0',
+                    "overflow-hidden transition-all duration-300 ease-in-out",
+                    isExpanded ? "max-h-96 opacity-100" : "max-h-0 opacity-0",
                   )}>
                   <Card className="soft-card mt-3">
                     <CardContent className="pt-4">

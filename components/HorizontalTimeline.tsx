@@ -1,15 +1,11 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useRef, useCallback } from 'react';
 import {
   motion,
   AnimatePresence,
   useScroll,
   useTransform,
-} from 'framer-motion';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+} from "framer-motion";
 import {
   ChevronLeft,
   ChevronRight,
@@ -17,9 +13,14 @@ import {
   Calendar,
   Briefcase,
   GraduationCap,
-} from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { timelineText } from '@/content/site';
+} from "lucide-react";
+import { useState, useEffect, useRef, useCallback } from "react";
+
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { timelineText } from "@/content/site";
+import { cn } from "@/lib/utils";
 
 interface TimelineEntry {
   id: string;
@@ -28,7 +29,7 @@ interface TimelineEntry {
   location: string;
   period: string;
   date: string;
-  type: 'internship' | 'research' | 'project';
+  type: "internship" | "research" | "project";
   bullets: string[];
   technologies: string[];
 }
@@ -56,7 +57,7 @@ export function HorizontalTimeline({
   // Scroll tracking for rubber duck animation
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ['start end', 'end start'],
+    offset: ["start end", "end start"],
   });
 
   // Transform scroll progress to timeline position
@@ -76,7 +77,7 @@ export function HorizontalTimeline({
 
         timelineRef.current.scrollTo({
           left: Math.max(0, scrollPosition),
-          behavior: 'smooth',
+          behavior: "smooth",
         });
       }
     },
@@ -96,17 +97,17 @@ export function HorizontalTimeline({
   // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowLeft') {
+      if (e.key === "ArrowLeft") {
         e.preventDefault();
         goToPrevious();
-      } else if (e.key === 'ArrowRight') {
+      } else if (e.key === "ArrowRight") {
         e.preventDefault();
         goToNext();
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [activeIndex]);
 
   // Auto-advance timeline
@@ -122,9 +123,9 @@ export function HorizontalTimeline({
 
   const getTypeIcon = (type: string) => {
     switch (type) {
-      case 'internship':
+      case "internship":
         return <Briefcase className="w-4 h-4" />;
-      case 'research':
+      case "research":
         return <GraduationCap className="w-4 h-4" />;
       default:
         return <Briefcase className="w-4 h-4" />;
@@ -133,12 +134,12 @@ export function HorizontalTimeline({
 
   const getTypeColor = (type: string) => {
     switch (type) {
-      case 'internship':
-        return 'text-blue-500 border-blue-500 bg-blue-500/10';
-      case 'research':
-        return 'text-purple-500 border-purple-500 bg-purple-500/10';
+      case "internship":
+        return "text-blue-500 border-blue-500 bg-blue-500/10";
+      case "research":
+        return "text-yellow-500 border-yellow-500 bg-yellow-500/10";
       default:
-        return 'text-brand-primary border-brand-primary bg-brand-primary/10';
+        return "text-brand-primary border-brand-primary bg-brand-primary/10";
     }
   };
 
@@ -146,27 +147,24 @@ export function HorizontalTimeline({
     <div
       ref={containerRef}
       className={cn(
-        'relative w-full xl:flex xl:justify-center xl:items-center',
+        "relative w-full xl:flex xl:justify-center xl:items-center",
         className,
       )}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}>
       {/* Vertical Quick Nav (positioned absolutely to the left) */}
       <div className="hidden xl:flex flex-col gap-3 justify-center items-center absolute left-0 xl:left-8 top-1/2 -translate-y-1/2 z-10">
-        <div className="text-xs font-medium text-muted-foreground mb-2 writing-vertical-rl">
-          {timelineText.quickNav}
-        </div>
         {entries.map((entry, index) => (
           <button
             key={entry.id}
             onClick={() => goToEntry(index)}
             className={cn(
-              'w-3 h-8 rounded-full transition-all duration-200 relative group',
+              "w-3 h-8 rounded-full transition-all duration-200 relative group",
               index === activeIndex
-                ? 'bg-brand-primary'
-                : 'bg-border hover:bg-brand-primary/50',
+                ? "bg-brand-primary"
+                : "bg-border hover:bg-brand-primary/50",
             )}
-            aria-label={`Go to ${entry.company}`}>
+            aria-label={`${timelineText.accessibility.goToCompany} ${entry.company}`}>
             {/* Tooltip */}
             <div className="absolute left-6 top-1/2 -translate-y-1/2 bg-background border border-border rounded-md px-2 py-1 text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
               {entry.company}
@@ -180,6 +178,8 @@ export function HorizontalTimeline({
         {/* Timeline Header */}
         <div className="relative p-8 border-b border-border/50">
           <div className="text-center">
+            {/* Temporarily disabled Professional Journey badge */}
+            {/* 
             <motion.div
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-primary/10 border border-brand-primary/20 mb-4"
               initial={{ opacity: 0, y: 20 }}
@@ -190,18 +190,22 @@ export function HorizontalTimeline({
                 {timelineText.badge}
               </span>
             </motion.div>
+            */}
 
-            <h3 className="text-2xl font-heading font-semibold text-foreground mb-2">
-              {timelineText.title}
-            </h3>
+            <h2
+              id="experience"
+              className="text-3xl sm:text-4xl font-heading font-semibold text-component-section-header-text mb-2">
+              Professional Experience
+            </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              {timelineText.description}
+              My journey in building impactful products and growing as a
+              developer
             </p>
           </div>
         </div>
 
         {/* Horizontal Timeline Track */}
-        <div className="relative p-8 pt-12">
+        <div className="relative p-8 pt-20 pb-16">
           {/* Navigation Buttons */}
           <Button
             variant="ghost"
@@ -209,7 +213,7 @@ export function HorizontalTimeline({
             className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-background/80 backdrop-blur-sm border border-border hover:bg-brand-accent/10 hover:border-brand-accent"
             onClick={goToPrevious}
             disabled={activeIndex === 0}
-            aria-label="Previous experience">
+            aria-label={timelineText.navigationLabels.previous}>
             <ChevronLeft className="w-4 h-4" />
           </Button>
 
@@ -219,15 +223,15 @@ export function HorizontalTimeline({
             className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-background/80 backdrop-blur-sm border border-border hover:bg-brand-accent/10 hover:border-brand-accent"
             onClick={goToNext}
             disabled={activeIndex === entries.length - 1}
-            aria-label="Next experience">
+            aria-label={timelineText.navigationLabels.next}>
             <ChevronRight className="w-4 h-4" />
           </Button>
 
           {/* Timeline Track */}
           <div
             ref={timelineRef}
-            className="overflow-x-auto scrollbar-hide pb-4"
-            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+            className="overflow-x-auto scrollbar-hide py-8"
+            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
             <div className="relative flex items-center justify-between min-w-max px-8">
               {/* Background Line */}
               <div className="absolute top-1/2 left-0 right-0 h-1 bg-border rounded-full" />
@@ -235,11 +239,11 @@ export function HorizontalTimeline({
               {/* Progress Line */}
               <motion.div
                 className="absolute top-1/2 left-0 h-1 bg-brand-primary rounded-full"
-                initial={{ width: '0%' }}
+                initial={{ width: "0%" }}
                 animate={{
                   width: `${((activeIndex + 1) / entries.length) * 100}%`,
                 }}
-                transition={{ duration: 0.8, ease: 'easeOut' }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
               />
 
               {/* Timeline Entries */}
@@ -247,17 +251,17 @@ export function HorizontalTimeline({
                 <div
                   key={entry.id}
                   className="relative flex flex-col items-center"
-                  style={{ minWidth: '200px' }}>
+                  style={{ minWidth: "200px" }}>
                   {/* Entry Circle */}
                   <motion.button
                     onClick={() => goToEntry(index)}
                     className={cn(
-                      'relative z-10 w-16 h-16 rounded-full border-4 transition-all duration-300 flex items-center justify-center',
+                      "relative z-10 w-16 h-16 rounded-full border-4 transition-all duration-300 flex items-center justify-center",
                       index === activeIndex
                         ? `${getTypeColor(entry.type)} scale-110 shadow-lg`
                         : index < activeIndex
-                        ? 'bg-brand-primary/20 border-brand-primary text-brand-primary'
-                        : 'bg-background border-border text-muted-foreground hover:border-brand-primary/50',
+                          ? "bg-brand-primary/20 border-brand-primary text-brand-primary"
+                          : "bg-background border-border text-muted-foreground hover:border-brand-primary/50",
                     )}
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}>
@@ -266,9 +270,9 @@ export function HorizontalTimeline({
                     {/* Active Ring */}
                     {index === activeIndex && (
                       <motion.div
-                        className="absolute inset-0 rounded-full border-2 border-brand-primary"
-                        initial={{ scale: 1, opacity: 0 }}
-                        animate={{ scale: 1.4, opacity: 1 }}
+                        className="absolute inset-0 rounded-full border-2 border-brand-primary overflow-hidden"
+                        initial={{ scale: 0.8, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
                         transition={{ duration: 0.3 }}
                       />
                     )}
@@ -281,10 +285,10 @@ export function HorizontalTimeline({
                     </div>
                     <div
                       className={cn(
-                        'text-sm font-medium transition-colors duration-200',
+                        "text-sm font-medium transition-colors duration-200",
                         index === activeIndex
-                          ? 'text-brand-primary'
-                          : 'text-muted-foreground',
+                          ? "text-brand-primary"
+                          : "text-muted-foreground",
                       )}>
                       {entry.company}
                     </div>
@@ -303,7 +307,7 @@ export function HorizontalTimeline({
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -30 }}
-              transition={{ duration: 0.4, ease: 'easeOut' }}>
+              transition={{ duration: 0.4, ease: "easeOut" }}>
               <Card className="soft-card border-0 bg-gradient-to-br from-card/50 to-card/30 backdrop-blur-sm">
                 <CardContent className="p-8">
                   <div className="grid lg:grid-cols-2 gap-8">
@@ -312,17 +316,17 @@ export function HorizontalTimeline({
                       <div className="flex items-center gap-3 mb-4">
                         <div
                           className={cn(
-                            'w-10 h-10 rounded-xl flex items-center justify-center',
-                            getTypeColor(entries[activeIndex].type),
+                            "w-10 h-10 rounded-xl flex items-center justify-center",
+                            getTypeColor(entries[activeIndex]?.type || ""),
                           )}>
-                          {getTypeIcon(entries[activeIndex].type)}
+                          {getTypeIcon(entries[activeIndex]?.type || "")}
                         </div>
                         <div>
-                          <h4 className="text-xl font-heading font-semibold text-black">
-                            {entries[activeIndex].title}
+                          <h4 className="text-xl font-heading font-semibold text-white">
+                            {entries[activeIndex]?.title}
                           </h4>
                           <p className="text-brand-secondary font-medium">
-                            {entries[activeIndex].company}
+                            {entries[activeIndex]?.company}
                           </p>
                         </div>
                       </div>
@@ -330,21 +334,21 @@ export function HorizontalTimeline({
                       <div className="flex items-center gap-4 text-sm text-white/80 mb-6">
                         <div className="flex items-center gap-1">
                           <MapPin className="w-4 h-4" />
-                          {entries[activeIndex].location}
+                          {entries[activeIndex]?.location}
                         </div>
                         <div className="flex items-center gap-1">
                           <Calendar className="w-4 h-4" />
-                          {entries[activeIndex].period}
+                          {entries[activeIndex]?.period}
                         </div>
                       </div>
 
                       {/* Technologies */}
                       <div className="mb-6">
                         <h5 className="text-sm font-medium text-foreground mb-3">
-                          Technologies
+                          {timelineText.contentLabels.technologies}
                         </h5>
                         <div className="flex flex-wrap gap-2">
-                          {entries[activeIndex].technologies.map((tech) => (
+                          {entries[activeIndex]?.technologies?.map((tech) => (
                             <Badge
                               key={tech}
                               variant="secondary"
@@ -359,10 +363,10 @@ export function HorizontalTimeline({
                     {/* Right Column - Achievements */}
                     <div>
                       <h5 className="text-sm font-medium text-foreground mb-4">
-                        Key Achievements
+                        {timelineText.contentLabels.keyAchievements}
                       </h5>
                       <ul className="space-y-3">
-                        {entries[activeIndex].bullets.map(
+                        {entries[activeIndex]?.bullets?.map(
                           (bullet, bulletIndex) => (
                             <motion.li
                               key={bulletIndex}
@@ -395,12 +399,12 @@ export function HorizontalTimeline({
                 key={index}
                 onClick={() => goToEntry(index)}
                 className={cn(
-                  'w-2 h-2 rounded-full transition-all duration-200',
+                  "w-2 h-2 rounded-full transition-all duration-200",
                   index === activeIndex
-                    ? 'bg-brand-primary w-8'
-                    : 'bg-border hover:bg-brand-primary/50',
+                    ? "bg-brand-primary w-8"
+                    : "bg-border hover:bg-brand-primary/50",
                 )}
-                aria-label={`Go to experience ${index + 1}`}
+                aria-label={`${timelineText.accessibility.goToExperience} ${index + 1}`}
               />
             ))}
           </div>

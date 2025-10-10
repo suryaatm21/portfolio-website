@@ -1,26 +1,27 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import React from "react";
 
 // Client-only dynamic loads avoid SSR evaluation
 const BirdsCursor = dynamic(
   () => import("@/components/FX/BirdsCursor").then((m) => m.BirdsCursor),
-  { ssr: false }
+  { ssr: false },
 );
 
 const PerformanceMonitor = dynamic(
   () =>
     import("@/components/FX/PerformanceMonitor").then(
-      (m) => m.PerformanceMonitor
+      (m) => m.PerformanceMonitor,
     ),
-  { ssr: false }
+  { ssr: false },
 );
 
 // Quick toggles for optional dev-only FX widgets
 const ENABLE_BIRDS_CURSOR = false;
 const ENABLE_PERFORMANCE_MONITOR = false;
 
-export function FXMounts() {
+export function FXMounts(): JSX.Element | null {
   if (process.env.NODE_ENV !== "development") return null;
 
   return (

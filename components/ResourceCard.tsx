@@ -1,14 +1,19 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { ExternalLink } from 'lucide-react';
+import { ExternalLink } from "lucide-react";
+import React from "react";
+
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface ResourceCardProps {
   title: string;
   href: string;
 }
 
-export function ResourceCard({ title, href }: ResourceCardProps) {
-  const isComingSoon = href === '#';
+export function ResourceCard({
+  title,
+  href,
+}: ResourceCardProps): React.ReactElement {
+  const isComingSoon = href === "#";
 
   return (
     <Card className="soft-card group">

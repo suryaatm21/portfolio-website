@@ -1,5 +1,5 @@
-@import 'tailwindcss';
-@import 'tw-animate-css';
+@import "tailwindcss";
+@import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -8,7 +8,9 @@
   --nav-height: 10rem; /* increased navbar height */
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
-  --card: oklch(var(--card-opacity) 0 0); /* Dark gray cards using custom variable */
+  --card: oklch(
+    var(--card-opacity) 0 0
+  ); /* Dark gray cards using custom variable */
   --card-foreground: oklch(0.985 0 0); /* White text on dark gray cards */
   --popover: oklch(0 0 0);
   --popover-foreground: oklch(0.985 0 0);
@@ -51,17 +53,24 @@
 
   /* Custom adjustable variables for fine-tuning */
   --header-color: oklch(0.25 0 0); /* Adjustable header color (dark gray) */
-  --card-opacity: 0.20; /* Adjustable card background opacity */
+  --card-opacity: 0.2; /* Adjustable card background opacity */
   --text-shadow: none; /* Adjustable text shadow for sections (excluding hero) */
 
   /* Added page background token */
   --bg-page: #131b23;
+
+  /* Component color tokens for consistency */
+  --component-card-text: var(--brand-primary);
+  --component-header-text: var(--brand-primary);
+  --component-section-header-text: var(--brand-primary);
 }
 
 .dark {
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
-  --card: oklch(var(--card-opacity) 0 0); /* Dark gray cards using custom variable */
+  --card: oklch(
+    var(--card-opacity) 0 0
+  ); /* Dark gray cards using custom variable */
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.145 0 0);
   --popover-foreground: oklch(0.985 0 0);
@@ -102,6 +111,11 @@
 
   /* Same dark background for consistency */
   --bg-page: #131b23;
+
+  /* Component color tokens for consistency - dark mode */
+  --component-card-text: var(--brand-primary);
+  --component-header-text: var(--brand-primary);
+  --component-section-header-text: var(--brand-primary);
 }
 
 @theme inline {
@@ -155,6 +169,11 @@
 
   /* Added page background token */
   --color-bg-page: var(--bg-page);
+
+  /* Component color tokens for consistency */
+  --color-component-card-text: var(--brand-primary);
+  --color-component-header-text: var(--brand-primary);
+  --color-component-section-header-text: var(--brand-primary);
 }
 
 @layer base {
@@ -190,7 +209,9 @@
   /* Hero section name should keep its drop shadow */
   .hero-name,
   .hero-name * {
-    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.28), 0 16px 40px rgba(0, 0, 0, 0.18) !important;
+    text-shadow:
+      0 2px 6px rgba(0, 0, 0, 0.28),
+      0 16px 40px rgba(0, 0, 0, 0.18) !important;
   }
 
   /* Custom utility classes */

@@ -1,22 +1,23 @@
-'use client';
+"use client";
 
-import type React from 'react';
+import { motion } from "framer-motion";
+import { Send, Mail } from "lucide-react";
+import type React from "react";
+import { useState } from "react";
 
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { AnimatedButton } from '@/components/animations/AnimatedButton';
-import { FadeInUp } from '@/components/animations/FadeInUp';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Socials } from '@/components/Socials';
-import { Send, Mail } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
-import { contact } from '@/content/site';
+import { AnimatedHobbiesCard } from "@/components/AnimatedHobbiesCard";
+import { Socials } from "@/components/Socials";
+import { AnimatedButton } from "@/components/animations/AnimatedButton";
+import { FadeInUp } from "@/components/animations/FadeInUp";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { contact } from "@/content/site";
+import { useToast } from "@/hooks/use-toast";
 
-export function ContactForm() {
-  const [subject, setSubject] = useState('');
-  const [message, setMessage] = useState('');
+export function ContactForm(): React.ReactElement {
+  const [subject, setSubject] = useState("");
+  const [message, setMessage] = useState("");
   const { toast } = useToast();
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -24,9 +25,9 @@ export function ContactForm() {
 
     if (!subject.trim() || !message.trim()) {
       toast({
-        title: 'Missing information',
-        description: 'Please fill in both subject and message fields.',
-        variant: 'destructive',
+        title: "Missing information",
+        description: "Please fill in both subject and message fields.",
+        variant: "destructive",
       });
       return;
     }
@@ -40,19 +41,37 @@ export function ContactForm() {
     window.location.href = mailtoLink;
 
     toast({
-      title: 'Email client opened',
+      title: "Email client opened",
       description:
-        'Your default email client should open with the prefilled message.',
+        "Your default email client should open with the prefilled message.",
     });
 
     // Reset form
-    setSubject('');
-    setMessage('');
+    setSubject("");
+    setMessage("");
   };
 
   return (
     <div className="max-w-4xl mx-auto">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
+        {/* Left column centered as a group with equal top/bottom space */}
+        <div className="flex flex-col justify-around h-full lg:row-span-2 gap-6">
+          {/* Availability Section - Row 1 */}
+          <FadeInUp delay={0.2}>
+            <Card className="soft-card">
+              <CardContent className="p-6">
+                <h4 className="text-lg font-heading font-medium text-brand-accent mb-3">
+                  {contact.availability.title}
+                </h4>
+                <p className="text-white">{contact.availability.content}</p>
+              </CardContent>
+            </Card>
+          </FadeInUp>
+
+          {/* Social Links Section - Row 2 */}
+          <AnimatedHobbiesCard />
+        </div>
+
         {/* Contact Form - Takes 2 rows */}
         <FadeInUp className="lg:row-span-2">
           <Card className="soft-card h-full">
@@ -127,33 +146,6 @@ export function ContactForm() {
             </CardContent>
           </Card>
         </FadeInUp>
-
-        {/* Right column centered as a group with equal top/bottom space */}
-        <div className="flex flex-col justify-around h-full lg:row-span-2">
-          {/* Availability Section - Row 1 */}
-          <FadeInUp delay={0.2}>
-            <Card className="soft-card">
-              <CardContent className="p-6">
-                <h4 className="text-lg font-heading font-medium text-brand-accent mb-3">
-                  {contact.availability.title}
-                </h4>
-                <p className="text-white">{contact.availability.content}</p>
-              </CardContent>
-            </Card>
-          </FadeInUp>
-
-          {/* Social Links Section - Row 2 */}
-          <FadeInUp delay={0.3}>
-            <Card className="soft-card">
-              <CardContent className="p-6">
-                <h4 className="text-lg font-heading font-medium text-white mb-4">
-                  {contact.social.title}
-                </h4>
-                <Socials variant="footer" className="justify-start" />
-              </CardContent>
-            </Card>
-          </FadeInUp>
-        </div>
       </div>
     </div>
   );

@@ -1,26 +1,26 @@
-'use client';
+"use client";
 
-import type React from 'react';
+import { motion } from "framer-motion";
+import { ArrowRight, Github, Linkedin, Mail, ExternalLink } from "lucide-react";
+import type React from "react";
+import { useState, useEffect } from "react";
 
-import { motion } from 'framer-motion';
-import { AnimatedButton } from '@/components/animations/AnimatedButton';
-import { ArrowRight, Github, Linkedin, Mail, ExternalLink } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { useState, useEffect } from 'react';
-import { hero } from '@/content/site';
+import { AnimatedButton } from "@/components/animations/AnimatedButton";
+import { Button } from "@/components/ui/button";
+import { hero } from "@/content/site";
 
-export function Hero() {
+export function Hero(): React.ReactElement {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isReducedMotion, setIsReducedMotion] = useState(false);
 
   // Check for reduced motion preference
   useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     setIsReducedMotion(mediaQuery.matches);
 
     const handleChange = () => setIsReducedMotion(mediaQuery.matches);
-    mediaQuery.addEventListener('change', handleChange);
-    return () => mediaQuery.removeEventListener('change', handleChange);
+    mediaQuery.addEventListener("change", handleChange);
+    return () => mediaQuery.removeEventListener("change", handleChange);
   }, []);
 
   // Track mouse position for parallax effect
@@ -36,7 +36,7 @@ export function Hero() {
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      element.scrollIntoView({ behavior: "smooth" });
     }
   };
 
@@ -54,7 +54,7 @@ export function Hero() {
           transition={{
             duration: 8,
             repeat: Number.POSITIVE_INFINITY,
-            ease: 'easeInOut',
+            ease: "easeInOut",
           }}
         />
         <motion.div
@@ -66,7 +66,7 @@ export function Hero() {
           transition={{
             duration: 10,
             repeat: Number.POSITIVE_INFINITY,
-            ease: 'easeInOut',
+            ease: "easeInOut",
             delay: 2,
           }}
         />
@@ -84,7 +84,7 @@ export function Hero() {
                 x: isReducedMotion ? 0 : mousePosition.x,
                 y: isReducedMotion ? 0 : mousePosition.y,
               }}
-              transition={{ duration: 0.6, ease: 'easeOut' }}>
+              transition={{ duration: 0.6, ease: "easeOut" }}>
               <div className="relative">
                 <div className="absolute inset-0 bg-accent/10 rounded-full blur-2xl scale-125" />
                 <img
@@ -93,10 +93,10 @@ export function Hero() {
                   className="relative w-56 h-56 xl:w-64 xl:h-64 rounded-full object-cover border-2 border-accent/20 shadow-xl"
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
-                    if (target.src.includes('.jpg')) {
-                      target.src = 'https://i.imgur.com/0QUH8nY.png';
+                    if (target.src.includes(".jpg")) {
+                      target.src = "https://i.imgur.com/0QUH8nY.png";
                     } else {
-                      target.src = '/diverse-group-profile.png';
+                      target.src = "/diverse-group-profile.png";
                     }
                   }}
                 />
@@ -108,7 +108,7 @@ export function Hero() {
                 className="text-5xl sm:text-6xl xl:text-7xl font-sans font-bold mb-6 leading-tight"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, ease: 'easeOut' }}>
+                transition={{ duration: 0.6, ease: "easeOut" }}>
                 <span className="bg-gradient-to-r from-accent to-secondary bg-clip-text text-slate-100 font-mono hero-name">
                   {hero.name}
                 </span>
@@ -118,7 +118,7 @@ export function Hero() {
                 className="inline-block mb-8 max-w-2xl xl:max-w-none readable-panel"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2, ease: 'easeOut' }}>
+                transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}>
                 <p className="text-lg sm:text-xl text-muted-foreground leading-relaxed font-mono">
                   {hero.tagline}
                 </p>
@@ -128,17 +128,15 @@ export function Hero() {
                 className="flex flex-col sm:flex-row items-center xl:items-start xl:justify-start justify-center gap-4 mb-6"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.4, ease: 'easeOut' }}>
+                transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}>
                 <AnimatedButton
                   size="lg"
-                  asChild
+                  onClick={() => scrollToSection("contact")}
                   className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 text-base font-medium group shadow-lg hover:shadow-xl transition-shadow">
-                  <a
-                    href={hero.cta.primary.href}
-                    className="flex items-center">
+                  <span className="flex items-center">
                     {hero.cta.primary.text}
                     <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                  </a>
+                  </span>
                 </AnimatedButton>
 
                 <AnimatedButton
@@ -161,7 +159,7 @@ export function Hero() {
                 className="flex items-center xl:justify-start justify-center gap-3 mb-8"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.6, ease: 'easeOut' }}>
+                transition={{ duration: 0.6, delay: 0.6, ease: "easeOut" }}>
                 <Button
                   variant="ghost"
                   size="icon"
@@ -203,7 +201,7 @@ export function Hero() {
                 className="inline-block"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.8, ease: 'easeOut' }}>
+                transition={{ duration: 0.6, delay: 0.8, ease: "easeOut" }}>
                 <p className="text-sm font-medium text-secondary tracking-wide uppercase m-0">
                   Solve first, refine later.
                 </p>
