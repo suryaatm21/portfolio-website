@@ -14,8 +14,8 @@ interface FloatingElementProps {
   className?: string;
   /**
    * Scale factor for mouse movement
-   * subtle: 3 (small movement)
-   * gentle: 6 (larger movement)
+   * subtle: 8 (small movement)
+   * gentle: 10 (larger movement)
    * Custom: provide your own number
    */
   intensity?: number;
@@ -32,8 +32,8 @@ interface FloatingElementProps {
  * Elements follow cursor movement within their container for an interactive feel.
  * 
  * Variants:
- * - subtle: Small parallax movement (intensity: 3) - for cards and buttons
- * - gentle: Larger parallax movement (intensity: 6) - for hero elements
+ * - subtle: Small parallax movement (intensity: 8) - for cards and buttons
+ * - gentle: Larger parallax movement (intensity: 10) - for hero elements
  * - none: No animation (respects reduced motion)
  * 
  * @example
@@ -58,7 +58,7 @@ export function FloatingElement({
   const [isReducedMotion, setIsReducedMotion] = useState(false);
 
   // Determine intensity based on variant if not explicitly provided
-  const parallaxIntensity = intensity ?? (variant === "gentle" ? 6 : 3);
+  const parallaxIntensity = intensity ?? (variant === "gentle" ? 10 : 8);
 
   // Check for reduced motion preference
   useEffect(() => {
@@ -105,7 +105,10 @@ export function FloatingElement({
       }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      style={{ transformStyle: "preserve-3d" }}>
+      style={{ 
+        transformStyle: "preserve-3d",
+        cursor: "pointer",
+      }}>
       {children}
     </motion.div>
   );

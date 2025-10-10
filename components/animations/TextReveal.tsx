@@ -80,7 +80,7 @@ export function TextReveal({
   stagger = motionDelays.step,
   delay = 0,
   duration = motionDurations.md,
-  once = true,
+  once = false,
   threshold = 0.3,
   className = "",
   as = "span",

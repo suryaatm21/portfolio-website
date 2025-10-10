@@ -52,7 +52,7 @@ export function Hero(): React.ReactElement {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col xl:flex-row items-center gap-12 xl:gap-16">
-            <FloatingElement variant="gentle" intensity={4}>
+            <FloatingElement variant="gentle" intensity={12}>
               <motion.div
                 className="flex-shrink-0"
                 initial={{ opacity: 0, scale: 0.8 }}
