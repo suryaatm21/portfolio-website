@@ -23,7 +23,6 @@ export function ProjectsCarousel({ items }: ProjectsCarouselProps) {
     <div className="w-full">
       <ProjectCarousel
         items={items}
-        autoPlay={false}
         className="max-w-6xl mx-auto"
       />
     </div>
