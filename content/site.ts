@@ -35,7 +35,7 @@ export const sections = {
     title: "🔥 Projects 🔥",
   },
   education: {
-    title: "My Tuition 💸",
+    title: "Education & Certifications",
     description: "Academic background and technical expertise",
   },
   resources: {
