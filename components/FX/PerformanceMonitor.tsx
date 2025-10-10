@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useCallback } from "react";
 
 interface PerformanceStats {
   fps: number;
@@ -37,7 +37,7 @@ export function PerformanceMonitor({
   const lastTimeRef = useRef<number>(performance.now());
   const rafRef = useRef<number>();
 
-  const measurePerformance = () => {
+  const measurePerformance = useCallback(() => {
     const now = performance.now();
     frameCountRef.current++;
 
@@ -66,7 +66,7 @@ export function PerformanceMonitor({
     if (enabled) {
       rafRef.current = requestAnimationFrame(measurePerformance);
     }
-  };
+  }, [enabled, sampleInterval]);
 
   useEffect(() => {
     if (enabled) {
@@ -79,7 +79,7 @@ export function PerformanceMonitor({
         cancelAnimationFrame(rafRef.current);
       }
     };
-  }, [enabled, sampleInterval]);
+  }, [enabled, sampleInterval, measurePerformance]);
 
   if (!enabled) {
     return null;
