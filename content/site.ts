@@ -238,11 +238,16 @@ export const projects = [
   },
   {
     title: "CloudScribe AI",
-    summary:
-      "Building a cloud-native platform to take lecture notes for you.",
+    summary: "Building a cloud-native platform to take lecture notes for you.",
     repo: "Coming Soon",
     demo: "Coming Soon",
-    tech: ["TypeScript", "Next.js", "Google Cloud Platform", "Docker", "Firebase"],
+    tech: [
+      "TypeScript",
+      "Next.js",
+      "Google Cloud Platform",
+      "Docker",
+      "Firebase",
+    ],
   },
   {
     title: "Spotify Playlist Optimizer",
@@ -255,7 +260,7 @@ export const projects = [
   {
     title: "This Portfolio Website",
     summary:
-      "Built a modern portfolio with Next.js 15 featuring custom animation system (TextReveal, FloatingElement, ScrollReveal), GSAP-powered 3D cylindrical text, and smooth parallax effects, deployed on Netlify with 5 9s availability.",
+      "Stop stalking and go build your own, just reference this source code when you do.",
     repo: "https://github.com/suryaatm21/portfolio-website",
     demo: "https://surya.theuntab.com",
     tech: ["Next.js", "TypeScript", "Framer Motion", "GSAP", "Tailwind CSS"],
