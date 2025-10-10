@@ -54,7 +54,7 @@ export function AnimatedHobbiesCard() {
                 <motion.span
                   className={`text-base text-white font-medium flex-1 break-words ${
                     hobbies[currentIndex]?.color
-                      ? `bg-gradient-to-r ${hobbies[currentIndex].color} bg-clip-text text-transparent`
+                      ? `bg-gradient-to-r ${hobbies[currentIndex]?.color} bg-clip-text text-transparent`
                       : "text-white"
                   }`}
                   initial={{ opacity: 0 }}

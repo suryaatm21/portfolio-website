@@ -44,7 +44,7 @@ export function AnimatedHobbies() {
                     <motion.div
                       className={`text-4xl mb-2 ${
                         hobbies[currentIndex]?.color
-                          ? `bg-gradient-to-r ${hobbies[currentIndex].color} bg-clip-text text-transparent`
+                          ? `bg-gradient-to-r ${hobbies[currentIndex]?.color} bg-clip-text text-transparent`
                           : ""
                       }`}
                       animate={{
@@ -55,7 +55,7 @@ export function AnimatedHobbies() {
                         repeat: Infinity,
                         ease: "easeInOut",
                       }}>
-                      {hobbies[currentIndex].emoji}
+                      {hobbies[currentIndex]?.emoji}
                     </motion.div>
 
                     <motion.span
@@ -63,7 +63,7 @@ export function AnimatedHobbies() {
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ delay: 0.2 }}>
-                      {hobbies[currentIndex].name}
+                      {hobbies[currentIndex]?.name}
                     </motion.span>
                   </>
                 )}
