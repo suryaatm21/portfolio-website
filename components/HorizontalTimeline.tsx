@@ -17,6 +17,7 @@ import {
 import { useState, useEffect, useRef, useCallback } from "react";
 
 import { FloatingElement } from "@/components/animations/FloatingElement";
+import { TextReveal } from "@/components/animations/TextReveal";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -193,40 +194,52 @@ export function HorizontalTimeline({
             </motion.div>
             */}
 
-            <h2
-              id="experience"
-              className="text-3xl sm:text-4xl font-heading font-semibold text-component-section-header-text mb-2">
-              Professional Experience
-            </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              My journey in building impactful products and growing as a
-              developer
-            </p>
+            <FloatingElement variant="subtle">
+              <h2
+                id="experience"
+                className="text-3xl sm:text-4xl font-heading font-semibold text-component-section-header-text mb-2">
+                <TextReveal mode="word" preset="scale" stagger={60} threshold={0.3}>
+                  Professional Experience
+                </TextReveal>
+              </h2>
+            </FloatingElement>
+            <FloatingElement variant="subtle">
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                <TextReveal mode="word" preset="fadeUp" stagger={40} delay={300} threshold={0.3}>
+                  My journey in building impactful products and growing as a
+                  developer
+                </TextReveal>
+              </p>
+            </FloatingElement>
           </div>
         </div>
 
         {/* Horizontal Timeline Track */}
         <div className="relative p-8 pt-20 pb-16">
           {/* Navigation Buttons */}
-          <Button
-            variant="ghost"
-            size="icon"
-            className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-background/80 backdrop-blur-sm border border-border hover:bg-brand-accent/10 hover:border-brand-accent"
-            onClick={goToPrevious}
-            disabled={activeIndex === 0}
-            aria-label={timelineText.navigationLabels.previous}>
-            <ChevronLeft className="w-4 h-4" />
-          </Button>
+          <FloatingElement variant="subtle">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-background/80 backdrop-blur-sm border border-border hover:bg-brand-accent/10 hover:border-brand-accent"
+              onClick={goToPrevious}
+              disabled={activeIndex === 0}
+              aria-label={timelineText.navigationLabels.previous}>
+              <ChevronLeft className="w-4 h-4" />
+            </Button>
+          </FloatingElement>
 
-          <Button
-            variant="ghost"
-            size="icon"
-            className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-background/80 backdrop-blur-sm border border-border hover:bg-brand-accent/10 hover:border-brand-accent"
-            onClick={goToNext}
-            disabled={activeIndex === entries.length - 1}
-            aria-label={timelineText.navigationLabels.next}>
-            <ChevronRight className="w-4 h-4" />
-          </Button>
+          <FloatingElement variant="subtle">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-background/80 backdrop-blur-sm border border-border hover:bg-brand-accent/10 hover:border-brand-accent"
+              onClick={goToNext}
+              disabled={activeIndex === entries.length - 1}
+              aria-label={timelineText.navigationLabels.next}>
+              <ChevronRight className="w-4 h-4" />
+            </Button>
+          </FloatingElement>
 
           {/* Timeline Track */}
           <div
