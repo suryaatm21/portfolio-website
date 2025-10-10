@@ -50,7 +50,7 @@ export function ProjectCarousel({
 
   const slideSpan = useMemo(
     () => dimensions.width + ITEM_MARGIN_X * 2,
-    [dimensions.width],
+    [dimensions.width]
   );
 
   // Ensure current index stays within bounds when dataset changes
@@ -119,7 +119,7 @@ export function ProjectCarousel({
       }
       return delta;
     },
-    [hasItems, totalItems],
+    [hasItems, totalItems]
   );
 
   const getRelativeMetrics = useCallback(
@@ -130,10 +130,8 @@ export function ProjectCarousel({
       const distance = Math.abs(delta);
       const isActive = delta === 0;
 
+      // Match reference: perspective applied per-item, only rotateY rotation, no scale/opacity/translateZ
       const rotateY = isActive ? 0 : delta < 0 ? 40 : -40;
-      const translateZ = isActive ? 32 : -80;
-      const scale = isActive ? 1 : Math.max(0.82, 1 - distance * 0.08);
-      const opacity = isActive ? 1 : Math.max(0.55, 1 - distance * 0.18);
       const zIndex = isActive ? totalItems + 1 : totalItems - distance;
 
       return {
@@ -142,13 +140,10 @@ export function ProjectCarousel({
         distance,
         isActive,
         rotateY,
-        translateZ,
-        scale,
-        opacity,
         zIndex,
       };
     },
-    [clampDelta, currentIndex, slideSpan, totalItems],
+    [clampDelta, currentIndex, slideSpan, totalItems]
   );
 
   const goToPrevious = useCallback(() => {
@@ -167,7 +162,7 @@ export function ProjectCarousel({
       const normalized = ((index % totalItems) + totalItems) % totalItems;
       setCurrentIndex(normalized);
     },
-    [currentIndex, hasItems, totalItems],
+    [currentIndex, hasItems, totalItems]
   );
 
   const handleKeyNavigation = useCallback(
@@ -180,7 +175,7 @@ export function ProjectCarousel({
         goToPrevious();
       }
     },
-    [goToNext, goToPrevious],
+    [goToNext, goToPrevious]
   );
 
   useEffect(() => {
@@ -202,50 +197,42 @@ export function ProjectCarousel({
       tabIndex={0}
       role="region"
       aria-roledescription="Project carousel"
-      aria-label="Project showcase">
-      <div className="relative w-full overflow-hidden py-20">
+      aria-label="Project showcase"
+    >
+      <div className="flex items-center justify-center gap-4 sm:gap-8 py-20">
         <Button
           variant="ghost"
           size="icon"
-          className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-background/80 backdrop-blur-sm border border-border hover:bg-brand-accent/10 hover:border-brand-accent hover:scale-110 transition-all duration-200"
+          className="flex-shrink-0 w-12 h-12 rounded-full bg-background/80 backdrop-blur-sm border border-border hover:bg-brand-accent/10 hover:border-brand-accent hover:scale-110 transition-all duration-200"
           onClick={goToPrevious}
-          aria-label="Previous project">
+          aria-label="Previous project"
+        >
           <ChevronLeft className="w-6 h-6" />
         </Button>
 
-        <Button
-          variant="ghost"
-          size="icon"
-          className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-background/80 backdrop-blur-sm border border-border hover:bg-brand-accent/10 hover:border-brand-accent hover:scale-110 transition-all duration-200"
-          onClick={goToNext}
-          aria-label="Next project">
-          <ChevronRight className="w-6 h-6" />
-        </Button>
-
         <div
-          className="relative mx-auto"
+          className="relative overflow-hidden flex-1 max-w-6xl"
           style={{
-            width: "100%",
             height: `${dimensions.height}px`,
-            perspective: "1400px",
-          }}>
+          }}
+        >
           {items.map((project, index) => {
-            const {
-              offsetX,
-              isActive,
-              rotateY,
-              translateZ,
-              scale,
-              opacity,
-              zIndex,
-            } = getRelativeMetrics(index);
+            const { offsetX, distance, isActive, rotateY, zIndex } =
+              getRelativeMetrics(index);
 
-            const transition = `transform ${TRANSITION_MS}ms ease-out, opacity ${Math.max(
-              350,
-              TRANSITION_MS - 120,
-            )}ms ease-out`;
+            const transition = `transform ${TRANSITION_MS}ms ease-in-out, opacity ${TRANSITION_MS}ms ease-in-out`;
 
             const outerTransform = `translateX(calc(-50% + ${offsetX}px))`;
+
+            // Match reference: apply perspective to each item individually
+            const innerTransform = isActive
+              ? "perspective(1200px)"
+              : `perspective(1200px) rotateY(${rotateY}deg)`;
+
+            // Hide cards that are too far away (during wrap-around transition)
+            // Only show active card and immediate neighbors
+            const isVisible = distance <= 1;
+            const opacity = isVisible ? 1 : 0;
 
             return (
               <div
@@ -261,14 +248,16 @@ export function ProjectCarousel({
                   transition,
                   zIndex,
                   pointerEvents: "auto",
-                }}>
+                  opacity,
+                }}
+              >
                 <div
-                  className="relative w-full h-full transition-transform duration-500 ease-out"
+                  className="relative w-full h-full transition-transform duration-1000 ease-in-out"
                   style={{
                     transformStyle: "preserve-3d",
-                    transform: `scale(${scale}) rotateY(${rotateY}deg) translateZ(${translateZ}px)`,
-                    opacity,
-                  }}>
+                    transform: innerTransform,
+                  }}
+                >
                   <Card className="absolute inset-0 border-2 border-border bg-background/95 backdrop-blur-sm text-white">
                     <CardContent className="p-4 sm:p-6 h-full flex flex-col">
                       <div className="flex justify-center mb-3">
@@ -290,14 +279,16 @@ export function ProjectCarousel({
                           <Badge
                             key={tech}
                             variant="secondary"
-                            className="text-xs px-2 py-1">
+                            className="text-xs px-2 py-1"
+                          >
                             {tech}
                           </Badge>
                         ))}
                         {project.tech.length > 3 && (
                           <Badge
                             variant="outline"
-                            className="text-xs px-2 py-1">
+                            className="text-xs px-2 py-1"
+                          >
                             +{project.tech.length - 3}
                           </Badge>
                         )}
@@ -308,12 +299,14 @@ export function ProjectCarousel({
                           <Button
                             size="sm"
                             className="flex-1 bg-brand-primary hover:bg-brand-primary/90"
-                            asChild>
+                            asChild
+                          >
                             <a
                               href={project.demo}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="flex items-center gap-2">
+                              className="flex items-center gap-2"
+                            >
                               {project.demo.includes("youtube.com") ||
                               project.demo.includes("youtu.be") ? (
                                 <>
@@ -339,12 +332,14 @@ export function ProjectCarousel({
                             size="sm"
                             variant="outline"
                             className="flex-1"
-                            asChild>
+                            asChild
+                          >
                             <a
                               href={project.repo}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="flex items-center gap-2">
+                              className="flex items-center gap-2"
+                            >
                               <Github className="w-3 h-3" />
                               Code
                             </a>
@@ -358,7 +353,8 @@ export function ProjectCarousel({
                             size="sm"
                             variant="outline"
                             className="flex-1 cursor-not-allowed opacity-60"
-                            disabled>
+                            disabled
+                          >
                             Coming Soon
                           </Button>
                         )}
@@ -388,7 +384,7 @@ export function ProjectCarousel({
                     className="absolute bottom-0 w-full h-10 bg-black/10 rounded-full blur-sm"
                     style={{
                       transform: "rotateX(90deg) translate3d(0px, -20px, 0px)",
-                      opacity: isActive ? 0.6 : 0.3,
+                      opacity: 0.85,
                     }}
                   />
                 </div>
@@ -396,6 +392,16 @@ export function ProjectCarousel({
             );
           })}
         </div>
+
+        <Button
+          variant="ghost"
+          size="icon"
+          className="flex-shrink-0 w-12 h-12 rounded-full bg-background/80 backdrop-blur-sm border border-border hover:bg-brand-accent/10 hover:border-brand-accent hover:scale-110 transition-all duration-200"
+          onClick={goToNext}
+          aria-label="Next project"
+        >
+          <ChevronRight className="w-6 h-6" />
+        </Button>
       </div>
 
       <div className="flex justify-center gap-2 mt-8">
@@ -407,7 +413,7 @@ export function ProjectCarousel({
               "w-2 h-2 rounded-full transition-all duration-200",
               index === currentIndex
                 ? "bg-brand-primary w-8"
-                : "bg-border hover:bg-brand-primary/50",
+                : "bg-border hover:bg-brand-primary/50"
             )}
             aria-label={`Go to project ${index + 1}`}
           />
