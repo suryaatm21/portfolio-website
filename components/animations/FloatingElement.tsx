@@ -4,19 +4,21 @@ import { motion } from "framer-motion";
 import type React from "react";
 import { useState, useEffect } from "react";
 
-import { floatAnimations, motionSprings } from "@/tokens/motion";
+import { motionSprings } from "@/tokens/motion";
 
-export type FloatVariant = "gentle" | "subtle" | "parallax" | "none";
+export type FloatVariant = "gentle" | "subtle" | "none";
 
 interface FloatingElementProps {
   children: React.ReactNode;
   variant?: FloatVariant;
   className?: string;
   /**
-   * For parallax variant: scale factor for mouse movement
-   * Higher = more movement. Default: 4
+   * Scale factor for mouse movement
+   * subtle: 3 (small movement)
+   * gentle: 6 (larger movement)
+   * Custom: provide your own number
    */
-  parallaxIntensity?: number;
+  intensity?: number;
   /**
    * Whether to respect reduced motion preferences
    */
@@ -26,23 +28,22 @@ interface FloatingElementProps {
 /**
  * FloatingElement Component
  * 
- * Creates a floating/hovering animation effect inspired by clouds in the sky.
- * Extracted from Hero component for reuse across the site.
+ * Creates a mouse-tracking parallax hover effect inspired by the Hero profile picture.
+ * Elements follow cursor movement within their container for an interactive feel.
  * 
  * Variants:
- * - gentle: Slow, wide floating motion (cloud-like)
- * - subtle: Quick, small floating motion (gentle hover)
- * - parallax: Mouse-tracking 3D effect (like hero image)
+ * - subtle: Small parallax movement (intensity: 3) - for cards and buttons
+ * - gentle: Larger parallax movement (intensity: 6) - for hero elements
  * - none: No animation (respects reduced motion)
  * 
  * @example
  * ```tsx
- * <FloatingElement variant="gentle">
- *   <img src="/image.jpg" alt="Floating image" />
+ * <FloatingElement variant="subtle">
+ *   <Card>Hovers with mouse</Card>
  * </FloatingElement>
  * 
- * <FloatingElement variant="parallax" parallaxIntensity={6}>
- *   <Card>Content</Card>
+ * <FloatingElement variant="gentle" intensity={8}>
+ *   <img src="/hero.jpg" alt="Hero image" />
  * </FloatingElement>
  * ```
  */
@@ -50,11 +51,14 @@ export function FloatingElement({
   children,
   variant = "subtle",
   className = "",
-  parallaxIntensity = 4,
+  intensity,
   respectReducedMotion = true,
 }: FloatingElementProps): React.ReactElement {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isReducedMotion, setIsReducedMotion] = useState(false);
+
+  // Determine intensity based on variant if not explicitly provided
+  const parallaxIntensity = intensity ?? (variant === "gentle" ? 6 : 3);
 
   // Check for reduced motion preference
   useEffect(() => {
@@ -70,7 +74,7 @@ export function FloatingElement({
 
   // Track mouse position for parallax effect
   const handleMouseMove = (e: React.MouseEvent) => {
-    if (variant !== "parallax" || isReducedMotion) return;
+    if (isReducedMotion || variant === "none") return;
 
     const rect = e.currentTarget.getBoundingClientRect();
     const x = (e.clientX - rect.left - rect.width / 2) / rect.width;
@@ -78,39 +82,30 @@ export function FloatingElement({
     setMousePosition({ x: x * parallaxIntensity, y: y * parallaxIntensity });
   };
 
+  const handleMouseLeave = () => {
+    // Return to center when mouse leaves
+    setMousePosition({ x: 0, y: 0 });
+  };
+
   // Return static element if reduced motion or variant is none
   if (isReducedMotion || variant === "none") {
     return <div className={className}>{children}</div>;
   }
 
-  // Parallax variant with mouse tracking
-  if (variant === "parallax") {
-    return (
-      <motion.div
-        className={className}
-        animate={{
-          x: mousePosition.x,
-          y: mousePosition.y,
-        }}
-        transition={{
-          type: "spring",
-          ...motionSprings.gentle,
-        }}
-        onMouseMove={handleMouseMove}
-        style={{ transformStyle: "preserve-3d" }}>
-        {children}
-      </motion.div>
-    );
-  }
-
-  // Gentle or subtle floating animation
-  const animation = variant === "gentle" ? floatAnimations.gentle : floatAnimations.subtle;
-
   return (
     <motion.div
       className={className}
-      animate={animation.y ? { y: animation.y } : undefined}
-      transition={animation.transition}>
+      animate={{
+        x: mousePosition.x,
+        y: mousePosition.y,
+      }}
+      transition={{
+        type: "spring",
+        ...motionSprings.gentle,
+      }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{ transformStyle: "preserve-3d" }}>
       {children}
     </motion.div>
   );

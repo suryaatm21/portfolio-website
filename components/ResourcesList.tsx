@@ -16,16 +16,20 @@ export function ResourcesList() {
         style={{ backgroundColor: "oklch(var(--card-opacity) 0 0)" }}>
         <FadeInUp>
           <header className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-heading font-semibold text-white mb-4">
-              <TextReveal mode="word" preset="scale" stagger={80} threshold={0.2}>
-                {sections.resources.title}
-              </TextReveal>
-            </h2>
-            <p className="text-lg text-white/80 max-w-2xl mx-auto">
-              <TextReveal mode="word" preset="fadeUp" stagger={40} delay={400} threshold={0.2}>
-                {sections.resources.description}
-              </TextReveal>
-            </p>
+            <FloatingElement variant="subtle">
+              <h2 className="text-3xl sm:text-4xl font-heading font-semibold text-white mb-4">
+                <TextReveal mode="word" preset="scale" stagger={80} threshold={0.2}>
+                  {sections.resources.title}
+                </TextReveal>
+              </h2>
+            </FloatingElement>
+            <FloatingElement variant="subtle">
+              <p className="text-lg text-white/80 max-w-2xl mx-auto">
+                <TextReveal mode="word" preset="fadeUp" stagger={40} delay={400} threshold={0.2}>
+                  {sections.resources.description}
+                </TextReveal>
+              </p>
+            </FloatingElement>
           </header>
         </FadeInUp>
 

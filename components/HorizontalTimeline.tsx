@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { useState, useEffect, useRef, useCallback } from "react";
 
+import { FloatingElement } from "@/components/animations/FloatingElement";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -308,7 +309,8 @@ export function HorizontalTimeline({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -30 }}
               transition={{ duration: 0.4, ease: "easeOut" }}>
-              <Card className="soft-card border-0 bg-gradient-to-br from-card/50 to-card/30 backdrop-blur-sm">
+              <FloatingElement variant="subtle">
+                <Card className="soft-card border-0 bg-gradient-to-br from-card/50 to-card/30 backdrop-blur-sm">
                 <CardContent className="p-8">
                   <div className="grid lg:grid-cols-2 gap-8">
                     {/* Left Column - Info */}
@@ -387,6 +389,7 @@ export function HorizontalTimeline({
                   </div>
                 </CardContent>
               </Card>
+              </FloatingElement>
             </motion.div>
           </AnimatePresence>
         </div>

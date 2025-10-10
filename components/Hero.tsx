@@ -12,29 +12,6 @@ import { Button } from "@/components/ui/button";
 import { hero } from "@/content/site";
 
 export function Hero(): React.ReactElement {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [isReducedMotion, setIsReducedMotion] = useState(false);
-
-  // Check for reduced motion preference
-  useEffect(() => {
-    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setIsReducedMotion(mediaQuery.matches);
-
-    const handleChange = () => setIsReducedMotion(mediaQuery.matches);
-    mediaQuery.addEventListener("change", handleChange);
-    return () => mediaQuery.removeEventListener("change", handleChange);
-  }, []);
-
-  // Track mouse position for parallax effect
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (isReducedMotion) return;
-
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = (e.clientX - rect.left - rect.width / 2) / rect.width;
-    const y = (e.clientY - rect.top - rect.height / 2) / rect.height;
-    setMousePosition({ x: x * 4, y: y * 4 });
-  };
-
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
@@ -43,9 +20,7 @@ export function Hero(): React.ReactElement {
   };
 
   return (
-    <div
-      className="min-h-[80vh] md:min-h-[85vh] flex items-center justify-center relative overflow-visible"
-      onMouseMove={handleMouseMove}>
+    <div className="min-h-[80vh] md:min-h-[85vh] flex items-center justify-center relative overflow-visible">
       <div className="absolute inset-0 -z-10">
         <motion.div
           className="absolute top-1/4 left-1/4 w-72 h-72 bg-accent/5 rounded-full blur-3xl"
@@ -77,60 +52,64 @@ export function Hero(): React.ReactElement {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col xl:flex-row items-center gap-12 xl:gap-16">
-            <motion.div
-              className="flex-shrink-0"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{
-                opacity: 1,
-                scale: 1,
-                x: isReducedMotion ? 0 : mousePosition.x,
-                y: isReducedMotion ? 0 : mousePosition.y,
-              }}
-              transition={{ duration: 0.6, ease: "easeOut" }}>
-              <div className="relative">
-                <div className="absolute inset-0 bg-accent/10 rounded-full blur-2xl scale-125" />
-                <img
-                  src={hero.profileImage}
-                  alt={hero.profileImageAlt}
-                  className="relative w-56 h-56 xl:w-64 xl:h-64 rounded-full object-cover border-2 border-accent/20 shadow-xl"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    if (target.src.includes(".jpg")) {
-                      target.src = "https://i.imgur.com/0QUH8nY.png";
-                    } else {
-                      target.src = "/diverse-group-profile.png";
-                    }
-                  }}
-                />
-              </div>
-            </motion.div>
+            <FloatingElement variant="gentle" intensity={4}>
+              <motion.div
+                className="flex-shrink-0"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{
+                  opacity: 1,
+                  scale: 1,
+                }}
+                transition={{ duration: 0.6, ease: "easeOut" }}>
+                <div className="relative">
+                  <div className="absolute inset-0 bg-accent/10 rounded-full blur-2xl scale-125" />
+                  <img
+                    src={hero.profileImage}
+                    alt={hero.profileImageAlt}
+                    className="relative w-56 h-56 xl:w-64 xl:h-64 rounded-full object-cover border-2 border-accent/20 shadow-xl"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      if (target.src.includes(".jpg")) {
+                        target.src = "https://i.imgur.com/0QUH8nY.png";
+                      } else {
+                        target.src = "/diverse-group-profile.png";
+                      }
+                    }}
+                  />
+                </div>
+              </motion.div>
+            </FloatingElement>
 
             <div className="flex-1 text-center xl:text-left">
-              <h1 className="text-5xl sm:text-6xl xl:text-7xl font-sans font-bold mb-6 leading-tight">
-                <span className="bg-gradient-to-r from-accent to-secondary bg-clip-text text-slate-100 font-mono hero-name">
-                  <TextReveal 
-                    mode="word" 
-                    preset="scale" 
-                    stagger={100}
-                    duration={600}
-                    threshold={0.1}>
-                    {hero.name}
-                  </TextReveal>
-                </span>
-              </h1>
+              <FloatingElement variant="subtle">
+                <h1 className="text-5xl sm:text-6xl xl:text-7xl font-sans font-bold mb-6 leading-tight">
+                  <span className="bg-gradient-to-r from-accent to-secondary bg-clip-text text-slate-100 font-mono hero-name">
+                    <TextReveal 
+                      mode="word" 
+                      preset="scale" 
+                      stagger={100}
+                      duration={600}
+                      threshold={0.1}>
+                      {hero.name}
+                    </TextReveal>
+                  </span>
+                </h1>
+              </FloatingElement>
 
-              <div className="inline-block mb-8 max-w-2xl xl:max-w-none readable-panel">
-                <p className="text-lg sm:text-xl text-muted-foreground leading-relaxed font-mono">
-                  <TextReveal 
-                    mode="word" 
-                    preset="fadeUp" 
-                    stagger={50}
-                    delay={400}
-                    threshold={0.1}>
-                    {hero.tagline}
-                  </TextReveal>
-                </p>
-              </div>
+              <FloatingElement variant="subtle">
+                <div className="inline-block mb-8 max-w-2xl xl:max-w-none readable-panel">
+                  <p className="text-lg sm:text-xl text-muted-foreground leading-relaxed font-mono">
+                    <TextReveal 
+                      mode="word" 
+                      preset="fadeUp" 
+                      stagger={50}
+                      delay={400}
+                      threshold={0.1}>
+                      {hero.tagline}
+                    </TextReveal>
+                  </p>
+                </div>
+              </FloatingElement>
 
               <motion.div
                 className="flex flex-col sm:flex-row items-center xl:items-start xl:justify-start justify-center gap-4 mb-6"
@@ -172,41 +151,47 @@ export function Hero(): React.ReactElement {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.6, ease: "easeOut" }}>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  asChild
-                  className="hover:bg-black/10 hover:text-black text-black">
-                  <a
-                    href="https://github.com/suryaatm21"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="GitHub">
-                    <Github className="h-5 w-5" />
-                  </a>
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  asChild
-                  className="hover:bg-black/10 hover:text-black text-black">
-                  <a
-                    href="https://linkedin.com/in/surya-atmuri"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="LinkedIn">
-                    <Linkedin className="h-5 w-5" />
-                  </a>
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  asChild
-                  className="hover:bg-black/10 hover:text-black text-black">
-                  <a href="mailto:surya@theuntab.com" aria-label="Email">
-                    <Mail className="h-5 w-5" />
-                  </a>
-                </Button>
+                <FloatingElement variant="subtle">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    asChild
+                    className="hover:bg-black/10 hover:text-black text-black">
+                    <a
+                      href="https://github.com/suryaatm21"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="GitHub">
+                      <Github className="h-5 w-5" />
+                    </a>
+                  </Button>
+                </FloatingElement>
+                <FloatingElement variant="subtle">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    asChild
+                    className="hover:bg-black/10 hover:text-black text-black">
+                    <a
+                      href="https://linkedin.com/in/surya-atmuri"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="LinkedIn">
+                      <Linkedin className="h-5 w-5" />
+                    </a>
+                  </Button>
+                </FloatingElement>
+                <FloatingElement variant="subtle">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    asChild
+                    className="hover:bg-black/10 hover:text-black text-black">
+                    <a href="mailto:surya@theuntab.com" aria-label="Email">
+                      <Mail className="h-5 w-5" />
+                    </a>
+                  </Button>
+                </FloatingElement>
               </motion.div>
 
               <motion.div
