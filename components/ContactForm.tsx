@@ -10,6 +10,7 @@ import { Socials } from "@/components/Socials";
 import { AnimatedButton } from "@/components/animations/AnimatedButton";
 import { FadeInUp } from "@/components/animations/FadeInUp";
 import { FloatingElement } from "@/components/animations/FloatingElement";
+import { TextReveal } from "@/components/animations/TextReveal";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -63,9 +64,15 @@ export function ContactForm(): React.ReactElement {
               <Card className="soft-card">
                 <CardContent className="p-6">
                   <h4 className="text-lg font-heading font-medium text-brand-accent mb-3">
-                    {contact.availability.title}
+                    <TextReveal preset="scale" stagger={80}>
+                      {contact.availability.title}
+                    </TextReveal>
                   </h4>
-                  <p className="text-white">{contact.availability.content}</p>
+                  <p className="text-white">
+                    <TextReveal preset="fadeUp" stagger={40} delay={300}>
+                      {contact.availability.content}
+                    </TextReveal>
+                  </p>
                 </CardContent>
               </Card>
             </FloatingElement>
@@ -82,7 +89,9 @@ export function ContactForm(): React.ReactElement {
             <CardHeader>
               <CardTitle className="text-2xl font-heading text-brand-primary flex items-center gap-2">
                 <Mail className="h-6 w-6 text-brand-accent" />
-                {contact.form.title}
+                <TextReveal preset="scale" stagger={100}>
+                  {contact.form.title}
+                </TextReveal>
               </CardTitle>
             </CardHeader>
             <CardContent className="p-6">
