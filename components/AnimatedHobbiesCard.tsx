@@ -4,6 +4,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 
 import { FadeInUp } from "@/components/animations/FadeInUp";
+import { FloatingElement } from "@/components/animations/FloatingElement";
+import { TextReveal } from "@/components/animations/TextReveal";
 import { Card, CardContent } from "@/components/ui/card";
 import { hobbies } from "@/content/site";
 
@@ -20,10 +22,13 @@ export function AnimatedHobbiesCard() {
 
   return (
     <FadeInUp delay={0.3}>
-      <Card className="soft-card">
-        <CardContent className="p-6">
+      <FloatingElement variant="subtle">
+        <Card className="soft-card">
+          <CardContent className="p-6">
           <h4 className="text-lg font-heading font-medium text-brand-accent mb-3">
-            Find Me...
+            <TextReveal preset="scale" stagger={120}>
+              Find Me...
+            </TextReveal>
           </h4>
 
           <div className="relative h-20 flex items-center">
@@ -67,6 +72,7 @@ export function AnimatedHobbiesCard() {
           </div>
         </CardContent>
       </Card>
+      </FloatingElement>
     </FadeInUp>
   );
 }

@@ -13,6 +13,8 @@ import { ResourcesList } from "@/components/ResourcesList";
 import { Section } from "@/components/Section";
 import { SkipToContent } from "@/components/SkipToContent";
 import { Socials } from "@/components/Socials";
+import { FloatingElement } from "@/components/animations/FloatingElement";
+import { TextReveal } from "@/components/animations/TextReveal";
 import { Button } from "@/components/ui/button";
 import {
   projects,
@@ -51,9 +53,13 @@ export default function Home() {
         <Section id="projects">
           <div className="max-w-7xl mx-auto">
             <header className="text-center mb-16">
-              <h2 className="text-3xl sm:text-4xl font-heading font-semibold text-black mb-4 drop-shadow-sm">
-                {sections.projects.title}
-              </h2>
+              <FloatingElement variant="subtle">
+                <h2 className="text-3xl sm:text-4xl font-heading font-semibold text-black mb-4 drop-shadow-sm">
+                  <TextReveal mode="word" preset="scale" stagger={150} threshold={0.3}>
+                    {sections.projects.title}
+                  </TextReveal>
+                </h2>
+              </FloatingElement>
             </header>
 
             <ProjectsCarousel items={projects} />
@@ -63,9 +69,13 @@ export default function Home() {
         <Section id="education">
           <div className="max-w-4xl mx-auto">
             <header className="text-center mb-12">
-              <h2 className="text-3xl sm:text-4xl font-heading font-semibold text-black mb-4 drop-shadow-sm">
-                {sections.education.title}
-              </h2>
+              <FloatingElement variant="subtle">
+                <h2 className="text-3xl sm:text-4xl font-heading font-semibold text-black mb-4 drop-shadow-sm">
+                  <TextReveal mode="word" preset="scale" stagger={150} threshold={0.3}>
+                    {sections.education.title}
+                  </TextReveal>
+                </h2>
+              </FloatingElement>
             </header>
 
             <div className="space-y-8">
@@ -92,9 +102,13 @@ export default function Home() {
         <Section id="contact">
           <div className="max-w-6xl mx-auto">
             <header className="text-center mb-12">
-              <h2 className="text-3xl sm:text-4xl font-heading font-semibold text-black mb-4 drop-shadow-sm">
-                {sections.contact.title}
-              </h2>
+              <FloatingElement variant="subtle">
+                <h2 className="text-3xl sm:text-4xl font-heading font-semibold text-black mb-4 drop-shadow-sm">
+                  <TextReveal mode="word" preset="scale" stagger={200} threshold={0.3}>
+                    {sections.contact.title}
+                  </TextReveal>
+                </h2>
+              </FloatingElement>
             </header>
 
             <ContactForm />

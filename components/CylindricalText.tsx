@@ -109,10 +109,12 @@ export function CylindricalText({
       {/* 3D text wrapper */}
       <ul
         ref={textWrapperRef}
-        className="absolute left-0 top-0 h-full w-full text-center text-xs font-semibold uppercase leading-tight text-black sm:text-sm md:text-base lg:text-lg xl:text-xl"
+        className="absolute left-0 top-0 h-full w-full text-center text-sm font-semibold uppercase leading-tight text-black sm:text-base md:text-lg lg:text-xl xl:text-2xl"
         style={{
           transformStyle: "preserve-3d",
           transformOrigin: "center center",
+          WebkitFontSmoothing: "antialiased",
+          MozOsxFontSmoothing: "grayscale",
         }}>
         {items.map((item, index) => (
           <li
@@ -123,6 +125,9 @@ export function CylindricalText({
             className="absolute left-1/2 top-1/2 w-full max-w-[90vw] px-4 text-ellipsis"
             style={{
               backfaceVisibility: "hidden",
+              WebkitFontSmoothing: "antialiased",
+              MozOsxFontSmoothing: "grayscale",
+              textRendering: "geometricPrecision",
             }}>
             {item}
           </li>
