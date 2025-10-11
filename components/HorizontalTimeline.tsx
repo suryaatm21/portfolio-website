@@ -28,6 +28,7 @@ export interface TimelineEntry {
   id: string;
   title: string;
   company: string;
+  team?: string; // Optional team name within the company
   location: string;
   period: string;
   date: string;
@@ -343,6 +344,11 @@ export function HorizontalTimeline({
                           <p className="text-brand-secondary font-medium">
                             {entries[activeIndex]?.company}
                           </p>
+                          {entries[activeIndex]?.team && (
+                            <p className="text-sm text-white/70 mt-1">
+                              {entries[activeIndex]?.team}
+                            </p>
+                          )}
                         </div>
                       </div>
 
