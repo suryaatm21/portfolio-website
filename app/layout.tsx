@@ -25,10 +25,10 @@ const urbanist = Urbanist({
 export const metadata: Metadata = {
   title: "Surya's Portfolio Website",
   description:
-    "Personal portfolio of Surya Atmuri - full stack developer specializing in modern web technologies, cloud/data driven systems, and scalable applications. Building the future of browser productivity.",
+    "Surya Atmuri - full stack developer specializing in modern web technologies, cloud/data driven systems, and scalable applications. Building the future of browser productivity.",
   keywords: [
     "Full Stack Developer",
-    "Cloud Computing",
+    "Cloud Computing Infrastructure",
     "Applied AI",
     "Machine, Deep Learning",
     "Data Driven Systems",
@@ -67,7 +67,7 @@ export const metadata: Metadata = {
   creator: "Surya Atmuri",
   publisher: "Surya Atmuri",
   generator: "Next.js",
-  applicationName: "Surya Portfolio",
+  applicationName: "Surya's Portfolio",
   referrer: "origin-when-cross-origin",
   colorScheme: "light dark",
   viewport: "width=device-width, initial-scale=1",
@@ -78,11 +78,11 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://yoursite.com",
+    url: "https://surya.theuntab.com",
     title: "Surya - Full Stack Developer | Modern Web Solutions",
     description:
-      "Personal portfolio of Surya - Full Stack Developer specializing in modern web technologies, React, Next.js, and scalable applications.",
-    siteName: "Surya Portfolio",
+      " surya atmuri - full stack developer specializing in scalable web technologies, cloud computing, and applied AI.",
+    siteName: "Surya's Portfolio",
     images: [
       {
         url: "/og.png",
