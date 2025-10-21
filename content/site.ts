@@ -10,7 +10,7 @@ export const navigation = [
 export const hero = {
   name: "Surya Atmuri",
   tagline:
-    "Junior in cs @ georgia tech building solutions to real problems. Currently scaling Untab and sharing recruitment resources on LinkedIn 😁",
+    "Junior in cs @ georgia tech building solutions to real problems. Bootstrapping Untab and sharing recruitment resources on LinkedIn 😁",
   profileImage: "https://i.imgur.com/0QUH8nY.jpg",
   profileImageAlt: "Profile picture",
   cta: {
