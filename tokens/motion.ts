@@ -10,18 +10,18 @@ export type MotionEasingType = "in" | "out" | "inOut";
  * Duration scale in milliseconds
  */
 export const motionDurations: Record<MotionDurationScale, number> = {
-  xs: 120,   // Micro interactions
-  sm: 200,   // Quick transitions
-  md: 320,   // Standard animations
-  lg: 480,   // Deliberate movements
-  xl: 720,   // Hero/showcase animations
+  xs: 120, // Micro interactions
+  sm: 200, // Quick transitions
+  md: 320, // Standard animations
+  lg: 480, // Deliberate movements
+  xl: 720, // Hero/showcase animations
 };
 
 /**
  * Stagger delays for sequential animations
  */
 export const motionDelays = {
-  step: 80,      // Standard stagger increment
+  step: 80, // Standard stagger increment
   stepLong: 160, // Slower stagger for emphasis
 };
 
@@ -133,10 +133,10 @@ export const textRevealPresets = {
  * Scroll reveal thresholds
  */
 export const scrollThresholds = {
-  immediate: 0.1,  // Trigger as soon as visible
-  quarter: 0.25,   // Trigger at 25% visible
-  half: 0.5,       // Trigger at 50% visible
-  full: 1.0,       // Trigger when fully visible
+  immediate: 0.1, // Trigger as soon as visible
+  quarter: 0.25, // Trigger at 25% visible
+  half: 0.5, // Trigger at 50% visible
+  full: 1.0, // Trigger when fully visible
 };
 
 /**

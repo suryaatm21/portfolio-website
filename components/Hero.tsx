@@ -80,9 +80,9 @@ export function Hero(): React.ReactElement {
               <FloatingElement variant="subtle">
                 <h1 className="text-5xl sm:text-6xl xl:text-7xl font-sans font-bold mb-6 leading-tight">
                   <span className="bg-gradient-to-r from-accent to-secondary bg-clip-text text-slate-100 font-mono hero-name">
-                    <TextReveal 
-                      mode="word" 
-                      preset="scale" 
+                    <TextReveal
+                      mode="word"
+                      preset="scale"
                       stagger={100}
                       duration={600}
                       threshold={0.1}>
@@ -95,9 +95,9 @@ export function Hero(): React.ReactElement {
               <FloatingElement variant="subtle">
                 <div className="inline-block mb-8 max-w-2xl xl:max-w-none readable-panel">
                   <p className="text-lg sm:text-xl text-muted-foreground leading-relaxed font-mono">
-                    <TextReveal 
-                      mode="word" 
-                      preset="fadeUp" 
+                    <TextReveal
+                      mode="word"
+                      preset="fadeUp"
                       stagger={50}
                       delay={400}
                       threshold={0.1}>

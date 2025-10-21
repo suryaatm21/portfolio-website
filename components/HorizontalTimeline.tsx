@@ -199,14 +199,23 @@ export function HorizontalTimeline({
               <h2
                 id="experience"
                 className="text-3xl sm:text-4xl font-heading font-semibold text-component-section-header-text mb-2">
-                <TextReveal mode="word" preset="scale" stagger={60} threshold={0.3}>
+                <TextReveal
+                  mode="word"
+                  preset="scale"
+                  stagger={60}
+                  threshold={0.3}>
                   Professional Experience
                 </TextReveal>
               </h2>
             </FloatingElement>
             <FloatingElement variant="subtle">
               <p className="text-muted-foreground max-w-2xl mx-auto">
-                <TextReveal mode="word" preset="fadeUp" stagger={40} delay={300} threshold={0.3}>
+                <TextReveal
+                  mode="word"
+                  preset="fadeUp"
+                  stagger={40}
+                  delay={300}
+                  threshold={0.3}>
                   My journey in building impactful products and growing as a
                   developer
                 </TextReveal>
@@ -325,89 +334,89 @@ export function HorizontalTimeline({
               transition={{ duration: 0.4, ease: "easeOut" }}>
               <FloatingElement variant="subtle">
                 <Card className="soft-card border-0 bg-gradient-to-br from-card/50 to-card/30 backdrop-blur-sm">
-                <CardContent className="p-8">
-                  <div className="grid lg:grid-cols-2 gap-8">
-                    {/* Left Column - Info */}
-                    <div>
-                      <div className="flex items-center gap-3 mb-4">
-                        <div
-                          className={cn(
-                            "w-10 h-10 rounded-xl flex items-center justify-center",
-                            getTypeColor(entries[activeIndex]?.type || ""),
-                          )}>
-                          {getTypeIcon(entries[activeIndex]?.type || "")}
-                        </div>
-                        <div>
-                          <h4 className="text-xl font-heading font-semibold text-white">
-                            {entries[activeIndex]?.title}
-                          </h4>
-                          <p className="text-brand-secondary font-medium">
-                            {entries[activeIndex]?.company}
-                          </p>
-                          {entries[activeIndex]?.team && (
-                            <p className="text-sm text-white/70 mt-1">
-                              {entries[activeIndex]?.team}
+                  <CardContent className="p-8">
+                    <div className="grid lg:grid-cols-2 gap-8">
+                      {/* Left Column - Info */}
+                      <div>
+                        <div className="flex items-center gap-3 mb-4">
+                          <div
+                            className={cn(
+                              "w-10 h-10 rounded-xl flex items-center justify-center",
+                              getTypeColor(entries[activeIndex]?.type || ""),
+                            )}>
+                            {getTypeIcon(entries[activeIndex]?.type || "")}
+                          </div>
+                          <div>
+                            <h4 className="text-xl font-heading font-semibold text-white">
+                              {entries[activeIndex]?.title}
+                            </h4>
+                            <p className="text-brand-secondary font-medium">
+                              {entries[activeIndex]?.company}
                             </p>
-                          )}
+                            {entries[activeIndex]?.team && (
+                              <p className="text-sm text-white/70 mt-1">
+                                {entries[activeIndex]?.team}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-4 text-sm text-white/80 mb-6">
+                          <div className="flex items-center gap-1">
+                            <MapPin className="w-4 h-4" />
+                            {entries[activeIndex]?.location}
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <Calendar className="w-4 h-4" />
+                            {entries[activeIndex]?.period}
+                          </div>
+                        </div>
+
+                        {/* Technologies */}
+                        <div className="mb-6">
+                          <h5 className="text-sm font-medium text-foreground mb-3">
+                            {timelineText.contentLabels.technologies}
+                          </h5>
+                          <div className="flex flex-wrap gap-2">
+                            {entries[activeIndex]?.technologies?.map((tech) => (
+                              <Badge
+                                key={tech}
+                                variant="secondary"
+                                className="text-xs">
+                                {tech}
+                              </Badge>
+                            ))}
+                          </div>
                         </div>
                       </div>
 
-                      <div className="flex items-center gap-4 text-sm text-white/80 mb-6">
-                        <div className="flex items-center gap-1">
-                          <MapPin className="w-4 h-4" />
-                          {entries[activeIndex]?.location}
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <Calendar className="w-4 h-4" />
-                          {entries[activeIndex]?.period}
-                        </div>
-                      </div>
-
-                      {/* Technologies */}
-                      <div className="mb-6">
-                        <h5 className="text-sm font-medium text-foreground mb-3">
-                          {timelineText.contentLabels.technologies}
+                      {/* Right Column - Achievements */}
+                      <div>
+                        <h5 className="text-sm font-medium text-foreground mb-4">
+                          {timelineText.contentLabels.keyAchievements}
                         </h5>
-                        <div className="flex flex-wrap gap-2">
-                          {entries[activeIndex]?.technologies?.map((tech) => (
-                            <Badge
-                              key={tech}
-                              variant="secondary"
-                              className="text-xs">
-                              {tech}
-                            </Badge>
-                          ))}
-                        </div>
+                        <ul className="space-y-3">
+                          {entries[activeIndex]?.bullets?.map(
+                            (bullet, bulletIndex) => (
+                              <motion.li
+                                key={bulletIndex}
+                                initial={{ opacity: 0, x: -20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{
+                                  delay: bulletIndex * 0.1,
+                                  duration: 0.3,
+                                }}
+                                className="flex items-start gap-3 text-sm text-white/80">
+                                <div className="w-2 h-2 rounded-full bg-brand-accent mt-2 flex-shrink-0" />
+                                {bullet}
+                              </motion.li>
+                            ),
+                          )}
+                        </ul>
                       </div>
                     </div>
-
-                    {/* Right Column - Achievements */}
-                    <div>
-                      <h5 className="text-sm font-medium text-foreground mb-4">
-                        {timelineText.contentLabels.keyAchievements}
-                      </h5>
-                      <ul className="space-y-3">
-                        {entries[activeIndex]?.bullets?.map(
-                          (bullet, bulletIndex) => (
-                            <motion.li
-                              key={bulletIndex}
-                              initial={{ opacity: 0, x: -20 }}
-                              animate={{ opacity: 1, x: 0 }}
-                              transition={{
-                                delay: bulletIndex * 0.1,
-                                duration: 0.3,
-                              }}
-                              className="flex items-start gap-3 text-sm text-white/80">
-                              <div className="w-2 h-2 rounded-full bg-brand-accent mt-2 flex-shrink-0" />
-                              {bullet}
-                            </motion.li>
-                          ),
-                        )}
-                      </ul>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
               </FloatingElement>
             </motion.div>
           </AnimatePresence>

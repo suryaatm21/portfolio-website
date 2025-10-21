@@ -50,7 +50,7 @@ export function ProjectCarousel({
 
   const slideSpan = useMemo(
     () => dimensions.width + ITEM_MARGIN_X * 2,
-    [dimensions.width]
+    [dimensions.width],
   );
 
   // Ensure current index stays within bounds when dataset changes
@@ -119,7 +119,7 @@ export function ProjectCarousel({
       }
       return delta;
     },
-    [hasItems, totalItems]
+    [hasItems, totalItems],
   );
 
   const getRelativeMetrics = useCallback(
@@ -143,7 +143,7 @@ export function ProjectCarousel({
         zIndex,
       };
     },
-    [clampDelta, currentIndex, slideSpan, totalItems]
+    [clampDelta, currentIndex, slideSpan, totalItems],
   );
 
   const goToPrevious = useCallback(() => {
@@ -162,7 +162,7 @@ export function ProjectCarousel({
       const normalized = ((index % totalItems) + totalItems) % totalItems;
       setCurrentIndex(normalized);
     },
-    [currentIndex, hasItems, totalItems]
+    [currentIndex, hasItems, totalItems],
   );
 
   const handleKeyNavigation = useCallback(
@@ -175,7 +175,7 @@ export function ProjectCarousel({
         goToPrevious();
       }
     },
-    [goToNext, goToPrevious]
+    [goToNext, goToPrevious],
   );
 
   useEffect(() => {
@@ -197,8 +197,7 @@ export function ProjectCarousel({
       tabIndex={0}
       role="region"
       aria-roledescription="Project carousel"
-      aria-label="Project showcase"
-    >
+      aria-label="Project showcase">
       <div className="relative w-full overflow-hidden py-20">
         {/* Left navigation button - overlaid on carousel */}
         <Button
@@ -206,8 +205,7 @@ export function ProjectCarousel({
           size="icon"
           className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-background/80 backdrop-blur-sm border border-border hover:bg-brand-accent/10 hover:border-brand-accent hover:scale-110 transition-all duration-200 shadow-lg"
           onClick={goToPrevious}
-          aria-label="Previous project"
-        >
+          aria-label="Previous project">
           <ChevronLeft className="w-6 h-6" />
         </Button>
 
@@ -217,8 +215,7 @@ export function ProjectCarousel({
           size="icon"
           className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-background/80 backdrop-blur-sm border border-border hover:bg-brand-accent/10 hover:border-brand-accent hover:scale-110 transition-all duration-200 shadow-lg"
           onClick={goToNext}
-          aria-label="Next project"
-        >
+          aria-label="Next project">
           <ChevronRight className="w-6 h-6" />
         </Button>
 
@@ -228,8 +225,7 @@ export function ProjectCarousel({
             width: "100%",
             height: `${dimensions.height}px`,
             perspective: "1400px",
-          }}
-        >
+          }}>
           {items.map((project, index) => {
             const { offsetX, distance, isActive, rotateY, zIndex } =
               getRelativeMetrics(index);
@@ -263,15 +259,13 @@ export function ProjectCarousel({
                   zIndex,
                   pointerEvents: "auto",
                   opacity,
-                }}
-              >
+                }}>
                 <div
                   className="relative w-full h-full transition-transform duration-1000 ease-in-out"
                   style={{
                     transformStyle: "preserve-3d",
                     transform: innerTransform,
-                  }}
-                >
+                  }}>
                   <Card className="absolute inset-0 border-2 border-border bg-background/95 backdrop-blur-sm text-white">
                     <CardContent className="p-4 sm:p-6 h-full flex flex-col">
                       <div className="flex justify-center mb-3">
@@ -293,16 +287,14 @@ export function ProjectCarousel({
                           <Badge
                             key={tech}
                             variant="secondary"
-                            className="text-xs px-2 py-1"
-                          >
+                            className="text-xs px-2 py-1">
                             {tech}
                           </Badge>
                         ))}
                         {project.tech.length > 3 && (
                           <Badge
                             variant="outline"
-                            className="text-xs px-2 py-1"
-                          >
+                            className="text-xs px-2 py-1">
                             +{project.tech.length - 3}
                           </Badge>
                         )}
@@ -313,14 +305,12 @@ export function ProjectCarousel({
                           <Button
                             size="sm"
                             className="flex-1 bg-brand-primary hover:bg-brand-primary/90"
-                            asChild
-                          >
+                            asChild>
                             <a
                               href={project.demo}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="flex items-center gap-2"
-                            >
+                              className="flex items-center gap-2">
                               {project.demo.includes("youtube.com") ||
                               project.demo.includes("youtu.be") ? (
                                 <>
@@ -346,14 +336,12 @@ export function ProjectCarousel({
                             size="sm"
                             variant="outline"
                             className="flex-1"
-                            asChild
-                          >
+                            asChild>
                             <a
                               href={project.repo}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="flex items-center gap-2"
-                            >
+                              className="flex items-center gap-2">
                               <Github className="w-3 h-3" />
                               Code
                             </a>
@@ -367,8 +355,7 @@ export function ProjectCarousel({
                             size="sm"
                             variant="outline"
                             className="flex-1 cursor-not-allowed opacity-60"
-                            disabled
-                          >
+                            disabled>
                             Coming Soon
                           </Button>
                         )}
@@ -417,7 +404,7 @@ export function ProjectCarousel({
               "w-2 h-2 rounded-full transition-all duration-200",
               index === currentIndex
                 ? "bg-brand-primary w-8"
-                : "bg-border hover:bg-brand-primary/50"
+                : "bg-border hover:bg-brand-primary/50",
             )}
             aria-label={`Go to project ${index + 1}`}
           />

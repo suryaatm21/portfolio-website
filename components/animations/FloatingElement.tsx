@@ -27,21 +27,21 @@ interface FloatingElementProps {
 
 /**
  * FloatingElement Component
- * 
+ *
  * Creates a mouse-tracking parallax hover effect inspired by the Hero profile picture.
  * Elements follow cursor movement within their container for an interactive feel.
- * 
+ *
  * Variants:
  * - subtle: Small parallax movement (intensity: 8) - for cards and buttons
  * - gentle: Larger parallax movement (intensity: 10) - for hero elements
  * - none: No animation (respects reduced motion)
- * 
+ *
  * @example
  * ```tsx
  * <FloatingElement variant="subtle">
  *   <Card>Hovers with mouse</Card>
  * </FloatingElement>
- * 
+ *
  * <FloatingElement variant="gentle" intensity={8}>
  *   <img src="/hero.jpg" alt="Hero image" />
  * </FloatingElement>
@@ -105,7 +105,7 @@ export function FloatingElement({
       }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      style={{ 
+      style={{
         transformStyle: "preserve-3d",
         cursor: "pointer",
       }}>

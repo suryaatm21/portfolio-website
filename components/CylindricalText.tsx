@@ -41,7 +41,7 @@ export function CylindricalText({
       const minDimension = Math.min(window.innerWidth, window.innerHeight);
       const radius = minDimension * 0.4;
       const depthOffset = radius * 0.85;
-      
+
       // Dynamically set perspective based on radius to keep text at 1:1 scale
       if (wrapper) {
         wrapper.style.perspective = `${Math.max(900, radius * 3)}px`;
@@ -76,7 +76,7 @@ export function CylindricalText({
       animation: gsap.fromTo(
         textWrapper,
         { rotateX: -80 },
-        { rotateX: 270, ease: "none" }
+        { rotateX: 270, ease: "none" },
       ),
     });
 

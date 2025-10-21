@@ -25,53 +25,53 @@ export function AnimatedHobbiesCard() {
       <FloatingElement variant="subtle">
         <Card className="soft-card">
           <CardContent className="p-6">
-          <h4 className="text-lg font-heading font-medium text-brand-accent mb-3">
-            <TextReveal preset="scale" stagger={120}>
-              Find Me...
-            </TextReveal>
-          </h4>
+            <h4 className="text-lg font-heading font-medium text-brand-accent mb-3">
+              <TextReveal preset="scale" stagger={120}>
+                Find Me...
+              </TextReveal>
+            </h4>
 
-          <div className="relative h-20 flex items-center">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={currentIndex}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{
-                  duration: 0.4,
-                  ease: [0.4, 0, 0.2, 1],
-                }}
-                className="absolute inset-0 flex items-center">
-                <motion.span
-                  className="text-2xl mr-3 flex-shrink-0"
-                  animate={{
-                    rotate: [0, 5, -5, 0],
-                  }}
+            <div className="relative h-20 flex items-center">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={currentIndex}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
                   transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}>
-                  {hobbies[currentIndex]?.emoji}
-                </motion.span>
+                    duration: 0.4,
+                    ease: [0.4, 0, 0.2, 1],
+                  }}
+                  className="absolute inset-0 flex items-center">
+                  <motion.span
+                    className="text-2xl mr-3 flex-shrink-0"
+                    animate={{
+                      rotate: [0, 5, -5, 0],
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                    }}>
+                    {hobbies[currentIndex]?.emoji}
+                  </motion.span>
 
-                <motion.span
-                  className={`text-base text-white font-medium flex-1 break-words ${
-                    hobbies[currentIndex]?.color
-                      ? `bg-gradient-to-r ${hobbies[currentIndex]?.color} bg-clip-text text-transparent`
-                      : "text-white"
-                  }`}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.1 }}>
-                  {hobbies[currentIndex]?.name}
-                </motion.span>
-              </motion.div>
-            </AnimatePresence>
-          </div>
-        </CardContent>
-      </Card>
+                  <motion.span
+                    className={`text-base text-white font-medium flex-1 break-words ${
+                      hobbies[currentIndex]?.color
+                        ? `bg-gradient-to-r ${hobbies[currentIndex]?.color} bg-clip-text text-transparent`
+                        : "text-white"
+                    }`}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.1 }}>
+                    {hobbies[currentIndex]?.name}
+                  </motion.span>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          </CardContent>
+        </Card>
       </FloatingElement>
     </FadeInUp>
   );

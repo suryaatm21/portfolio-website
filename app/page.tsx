@@ -56,7 +56,11 @@ export default function Home() {
             <header className="text-center mb-16">
               <FloatingElement variant="subtle">
                 <h2 className="text-3xl sm:text-4xl font-heading font-semibold text-black mb-4 drop-shadow-sm">
-                  <TextReveal mode="word" preset="scale" stagger={150} threshold={0.3}>
+                  <TextReveal
+                    mode="word"
+                    preset="scale"
+                    stagger={150}
+                    threshold={0.3}>
                     {sections.projects.title}
                   </TextReveal>
                 </h2>
@@ -72,7 +76,11 @@ export default function Home() {
             <header className="text-center mb-12">
               <FloatingElement variant="subtle">
                 <h2 className="text-3xl sm:text-4xl font-heading font-semibold text-black mb-4 drop-shadow-sm">
-                  <TextReveal mode="word" preset="scale" stagger={150} threshold={0.3}>
+                  <TextReveal
+                    mode="word"
+                    preset="scale"
+                    stagger={150}
+                    threshold={0.3}>
                     {sections.education.title}
                   </TextReveal>
                 </h2>
@@ -105,7 +113,11 @@ export default function Home() {
             <header className="text-center mb-12">
               <FloatingElement variant="subtle">
                 <h2 className="text-3xl sm:text-4xl font-heading font-semibold text-black mb-4 drop-shadow-sm">
-                  <TextReveal mode="word" preset="scale" stagger={200} threshold={0.3}>
+                  <TextReveal
+                    mode="word"
+                    preset="scale"
+                    stagger={200}
+                    threshold={0.3}>
                     {sections.contact.title}
                   </TextReveal>
                 </h2>

@@ -44,7 +44,7 @@ export function PerformanceMonitor({
     // Update stats every sample interval
     if (now - lastTimeRef.current >= sampleInterval) {
       const fps = Math.round(
-        (frameCountRef.current * 1000) / (now - lastTimeRef.current)
+        (frameCountRef.current * 1000) / (now - lastTimeRef.current),
       );
 
       // Memory usage (if available)
@@ -87,8 +87,7 @@ export function PerformanceMonitor({
 
   return (
     <div
-      className={`fixed top-20 right-4 bg-black/80 text-white text-xs p-3 rounded-lg font-mono z-50 ${className}`}
-    >
+      className={`fixed top-20 right-4 bg-black/80 text-white text-xs p-3 rounded-lg font-mono z-50 ${className}`}>
       <div className="space-y-1">
         <div className="text-green-400 font-semibold">Performance Monitor</div>
         <div className="flex justify-between gap-4">
@@ -98,10 +97,9 @@ export function PerformanceMonitor({
               stats.fps < 30
                 ? "text-red-400"
                 : stats.fps < 50
-                ? "text-yellow-400"
-                : "text-green-400"
-            }
-          >
+                  ? "text-yellow-400"
+                  : "text-green-400"
+            }>
             {stats.fps}
           </span>
         </div>
@@ -113,10 +111,9 @@ export function PerformanceMonitor({
                 stats.memory > 100
                   ? "text-red-400"
                   : stats.memory > 50
-                  ? "text-yellow-400"
-                  : "text-green-400"
-              }
-            >
+                    ? "text-yellow-400"
+                    : "text-green-400"
+              }>
               {stats.memory}MB
             </span>
           </div>
@@ -132,4 +129,3 @@ export function PerformanceMonitor({
     </div>
   );
 }
-

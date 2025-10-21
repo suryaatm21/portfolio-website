@@ -3,7 +3,11 @@
 import { motion, useInView } from "framer-motion";
 import React, { useRef } from "react";
 
-import { motionDurations, motionDelays, scrollThresholds } from "@/tokens/motion";
+import {
+  motionDurations,
+  motionDelays,
+  scrollThresholds,
+} from "@/tokens/motion";
 
 interface ScrollRevealProps {
   children: React.ReactNode;
@@ -66,22 +70,22 @@ const variants = {
 
 /**
  * ScrollReveal Component
- * 
+ *
  * Wraps content and animates it when scrolled into view.
  * Uses framer-motion's useInView hook for efficient scroll detection.
- * 
+ *
  * Perfect for:
  * - Section reveals
  * - Card grids
  * - Image galleries
  * - Any content that should animate on scroll
- * 
+ *
  * @example
  * ```tsx
  * <ScrollReveal variant="fadeUp" threshold={0.3}>
  *   <Card>This will fade up when scrolled into view</Card>
  * </ScrollReveal>
- * 
+ *
  * <ScrollReveal variant="scale" delay={200}>
  *   <div>This will scale in with a delay</div>
  * </ScrollReveal>
@@ -121,10 +125,10 @@ export function ScrollReveal({
 
 /**
  * StaggeredScrollReveal Component
- * 
+ *
  * Animates children with staggered timing for a cascading effect.
  * Perfect for lists, grids, and repeated elements.
- * 
+ *
  * @example
  * ```tsx
  * <StaggeredScrollReveal stagger={100}>
@@ -142,7 +146,9 @@ export function StaggeredScrollReveal({
   once = true,
   threshold = scrollThresholds.quarter,
   className = "",
-}: Omit<ScrollRevealProps, "delay"> & { stagger?: number }): React.ReactElement {
+}: Omit<ScrollRevealProps, "delay"> & {
+  stagger?: number;
+}): React.ReactElement {
   const ref = useRef(null);
   const isInView = useInView(ref, { once, amount: threshold });
   const variantConfig = variants[variant];

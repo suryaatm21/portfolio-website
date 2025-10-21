@@ -86,78 +86,78 @@ export function ContactForm(): React.ReactElement {
         <FadeInUp className="lg:row-span-2">
           <FloatingElement variant="subtle">
             <Card className="soft-card h-full">
-            <CardHeader>
-              <CardTitle className="text-2xl font-heading text-brand-primary flex items-center gap-2">
-                <Mail className="h-6 w-6 text-brand-accent" />
-                <TextReveal preset="scale" stagger={100}>
-                  {contact.form.title}
-                </TextReveal>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-6">
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1, duration: 0.3 }}>
-                  <label
-                    htmlFor="subject"
-                    className="block text-sm font-medium text-white mb-2">
-                    {contact.form.subjectLabel}
-                  </label>
-                  <Input
-                    id="subject"
-                    type="text"
-                    value={subject}
-                    onChange={(e) => setSubject(e.target.value)}
-                    placeholder={contact.form.subjectPlaceholder}
-                    className="border-brand-accent/20 focus:border-brand-accent focus:ring-brand-accent/20 transition-colors"
-                    required
-                  />
-                </motion.div>
+              <CardHeader>
+                <CardTitle className="text-2xl font-heading text-brand-primary flex items-center gap-2">
+                  <Mail className="h-6 w-6 text-brand-accent" />
+                  <TextReveal preset="scale" stagger={100}>
+                    {contact.form.title}
+                  </TextReveal>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-6">
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1, duration: 0.3 }}>
+                    <label
+                      htmlFor="subject"
+                      className="block text-sm font-medium text-white mb-2">
+                      {contact.form.subjectLabel}
+                    </label>
+                    <Input
+                      id="subject"
+                      type="text"
+                      value={subject}
+                      onChange={(e) => setSubject(e.target.value)}
+                      placeholder={contact.form.subjectPlaceholder}
+                      className="border-brand-accent/20 focus:border-brand-accent focus:ring-brand-accent/20 transition-colors"
+                      required
+                    />
+                  </motion.div>
 
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2, duration: 0.3 }}>
-                  <label
-                    htmlFor="message"
-                    className="block text-sm font-medium text-white mb-2">
-                    {contact.form.messageLabel}
-                  </label>
-                  <Textarea
-                    id="message"
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    placeholder={contact.form.messagePlaceholder}
-                    rows={8}
-                    className="border-brand-accent/20 focus:border-brand-accent focus:ring-brand-accent/20 resize-none transition-colors"
-                    required
-                  />
-                </motion.div>
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2, duration: 0.3 }}>
+                    <label
+                      htmlFor="message"
+                      className="block text-sm font-medium text-white mb-2">
+                      {contact.form.messageLabel}
+                    </label>
+                    <Textarea
+                      id="message"
+                      value={message}
+                      onChange={(e) => setMessage(e.target.value)}
+                      placeholder={contact.form.messagePlaceholder}
+                      rows={8}
+                      className="border-brand-accent/20 focus:border-brand-accent focus:ring-brand-accent/20 resize-none transition-colors"
+                      required
+                    />
+                  </motion.div>
 
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3, duration: 0.3 }}>
-                  <AnimatedButton
-                    type="submit"
-                    className="w-full bg-brand-cta hover:bg-brand-cta-hover text-white group shadow-lg">
-                    <Send className="mr-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                    {contact.form.submitText}
-                  </AnimatedButton>
-                </motion.div>
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3, duration: 0.3 }}>
+                    <AnimatedButton
+                      type="submit"
+                      className="w-full bg-brand-cta hover:bg-brand-cta-hover text-white group shadow-lg">
+                      <Send className="mr-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                      {contact.form.submitText}
+                    </AnimatedButton>
+                  </motion.div>
 
-                <motion.p
-                  className="text-xs text-white/70 text-center mt-4"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.4, duration: 0.3 }}>
-                  {contact.form.disclaimer}
-                </motion.p>
-              </form>
-            </CardContent>
-          </Card>
+                  <motion.p
+                    className="text-xs text-white/70 text-center mt-4"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.4, duration: 0.3 }}>
+                    {contact.form.disclaimer}
+                  </motion.p>
+                </form>
+              </CardContent>
+            </Card>
           </FloatingElement>
         </FadeInUp>
       </div>
