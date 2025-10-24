@@ -51,11 +51,11 @@ export const sections = {
 
 export const hobbies = [
   {
-    name: "Weightlifting, Hooping, and Jogging",
+    name: "Weightlifting, Hooping, Jogging",
     emoji: "💪🏽",
   },
   {
-    name: "Anime: Watching Clannad After Story",
+    name: "Anime: Food Wars",
     emoji: "🎥",
     color: "from-pink-500 to-purple-500",
   },
@@ -65,7 +65,7 @@ export const hobbies = [
     color: "from-blue-500 to-green-500",
   },
   {
-    name: "Cloudgazing: This Portfolio's Inspiration",
+    name: "Cloudgazing: My Portfolio's Inspiration",
     emoji: "☁️",
     color: "from-sky-400 to-blue-500",
   },
