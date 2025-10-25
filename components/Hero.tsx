@@ -195,8 +195,8 @@ export function Hero(): React.ReactElement {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.8, ease: "easeOut" }}>
-                <p className="text-sm font-medium text-secondary tracking-wide uppercase m-0">
-                  watch the clouds follow your cursor
+                <p className="text-sm font-medium text-secondary tracking-wide m-0">
+                  Watch the clouds follow your cursor
                 </p>
               </motion.div>
             </div>
