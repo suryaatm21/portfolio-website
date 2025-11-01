@@ -11,9 +11,7 @@ import { sections, resources } from "@/content/site";
 export function ResourcesList() {
   return (
     <div className="max-w-6xl mx-auto">
-      <div
-        className="soft-card text-card-foreground p-8 sm:p-12"
-        style={{ backgroundColor: "oklch(var(--card-opacity) 0 0)" }}>
+      <div className="soft-card text-card-foreground p-8 sm:p-12">
         <FadeInUp>
           <header className="text-center mb-12">
             <FloatingElement variant="subtle">
