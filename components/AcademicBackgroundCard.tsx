@@ -73,7 +73,7 @@ export function AcademicBackgroundCard({
               <p className="text-sm font-medium text-brand-accent flex items-center justify-center gap-2">
                 <span className="animate-bounce">↓</span>
                 <TextReveal preset="fadeUp" stagger={50} delay={700} as="span">
-                  Scroll to explore coursework in 3D
+                  Scroll and transition through my coursework to contact me!
                 </TextReveal>
                 <span className="animate-bounce">↓</span>
               </p>
