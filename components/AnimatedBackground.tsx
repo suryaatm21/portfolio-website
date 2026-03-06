@@ -37,54 +37,77 @@ export default function AnimatedBackground({
       ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
       : false;
 
+  const loadScript = useCallback(
+    (src: string, key: "THREE" | "VANTA"): Promise<boolean> => {
+      if (typeof window === "undefined") return Promise.resolve(false);
+      if (window[key]) return Promise.resolve(true);
+
+      return new Promise((resolve) => {
+        const existing = document.querySelector(
+          `script[data-animated-bg="${key}"]`,
+        ) as HTMLScriptElement | null;
+
+        if (existing) {
+          existing.addEventListener("load", () => resolve(true), { once: true });
+          existing.addEventListener("error", () => resolve(false), {
+            once: true,
+          });
+          return;
+        }
+
+        const script = document.createElement("script");
+        script.src = src;
+        script.async = true;
+        script.crossOrigin = "anonymous";
+        script.dataset.animatedBg = key;
+
+        const handleLoad = () => resolve(true);
+        const handleError = (event: Event) => {
+          event.preventDefault?.();
+          event.stopPropagation?.();
+          console.warn(`Failed to load background dependency: ${key}`);
+          resolve(false);
+        };
+
+        script.addEventListener("load", handleLoad, { once: true });
+        script.addEventListener("error", handleError, {
+          once: true,
+          capture: true,
+        });
+        document.head.appendChild(script);
+      });
+    },
+    [],
+  );
+
   const loadScripts = useCallback(async (): Promise<boolean> => {
     if (scriptsLoadedRef.current) return true;
 
-    return new Promise((resolve) => {
-      let scriptsToLoad = 2;
-      let scriptsLoaded = 0;
+    const [threeLoaded, vantaLoaded] = await Promise.all([
+      loadScript(
+        "https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js",
+        "THREE",
+      ),
+      loadScript(
+        "https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.clouds.min.js",
+        "VANTA",
+      ),
+    ]);
 
-      const checkComplete = () => {
-        scriptsLoaded++;
-        if (scriptsLoaded === scriptsToLoad) {
-          scriptsLoadedRef.current = true;
-          healthStatsRef.current.threeOK = !!window.THREE;
-          healthStatsRef.current.vantaOK = !!window.VANTA;
-          resolve(true);
-        }
-      };
+    scriptsLoadedRef.current = true;
+    healthStatsRef.current.threeOK = !!window.THREE;
+    healthStatsRef.current.vantaOK = !!window.VANTA;
 
-      // Load Three.js
-      const threeScript = document.createElement("script");
-      threeScript.src =
-        "https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js";
-      threeScript.onload = checkComplete;
-      threeScript.onerror = () => {
-        console.warn("Failed to load Three.js");
-        checkComplete();
-      };
-      document.head.appendChild(threeScript);
-
-      // Load Vanta Clouds
-      const vantaScript = document.createElement("script");
-      vantaScript.src =
-        "https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.clouds.min.js";
-      vantaScript.onload = checkComplete;
-      vantaScript.onerror = () => {
-        console.warn("Failed to load Vanta.js clouds");
-        checkComplete();
-      };
-      document.head.appendChild(vantaScript);
-    });
-  }, []);
+    return threeLoaded && vantaLoaded && !!window.THREE && !!window.VANTA;
+  }, [loadScript]);
 
   const initializeVanta = useCallback(async () => {
     if (!vantaRef.current) return;
 
     try {
-      await loadScripts();
+      const scriptsReady = await loadScripts();
 
-      if (!window.VANTA || !window.THREE) {
+      if (!scriptsReady || !window.VANTA || !window.THREE) {
         console.warn("Vanta.js or Three.js not loaded properly");
         return;
       }

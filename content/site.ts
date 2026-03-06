@@ -11,6 +11,7 @@ export const hero = {
   name: 'Surya Atmuri',
   tagline:
     'Junior in cs @ georgia tech building solutions to real problems. Bootstrapping Untab and sharing recruitment resources on LinkedIn 😁',
+  interactionHint: 'Birds track your cursor — press {key} to toggle the flock.',
   profileImage: 'https://i.imgur.com/0QUH8nY.jpg',
   profileImageAlt: 'Profile picture',
   cta: {

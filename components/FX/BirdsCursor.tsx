@@ -1,12 +1,17 @@
-// @ts-nocheck
 "use client";
 
-import { useRef, useEffect, useCallback } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 interface CursorPoint {
   x: number;
   y: number;
   t: number;
+}
+
+interface BirdPalette {
+  body: string;
+  wing: string;
+  tail: string;
 }
 
 interface BoidForces {
@@ -25,405 +30,485 @@ interface BirdsCursorProps {
   forces?: BoidForces;
   zIndex?: number;
   className?: string;
-  useSprite?: boolean;
-  spritePath?: string;
 }
 
-/**
- * Cursor-Following Birds Effect
- *
- * Implements a performant boids algorithm where a small flock of birds
- * follows the user's cursor path using separation, alignment, cohesion,
- * and cursor-seeking behaviors.
- *
- * Features:
- * - Respects prefers-reduced-motion
- * - Optimized for 60fps on both DPR=1 and DPR=2
- * - Uses typed arrays for performance
- * - Automatic mobile detection and disabling
- */
+const DEFAULT_FORCES: BoidForces = {
+  separation: 2.6,
+  alignment: 0.95,
+  cohesion: 0.35,
+  trail: 2.9,
+};
+
+const CURSOR_RETENTION_MS = 320;
+const MAX_TRAIL_POINTS = 10;
+const IDLE_TIMEOUT_MS = 220;
+
+function clamp(value: number, min: number, max: number): number {
+  return Math.min(Math.max(value, min), max);
+}
+
+function mixHexColors(source: string, target: string, amount: number): string {
+  const normalize = (hex: string): string => {
+    const trimmed = hex.replace("#", "");
+    if (trimmed.length === 3) {
+      return trimmed
+        .split("")
+        .map((part) => `${part}${part}`)
+        .join("");
+    }
+    return trimmed.length === 6 ? trimmed : "111111";
+  };
+
+  const sourceHex = normalize(source);
+  const targetHex = normalize(target);
+  const ratio = clamp(amount, 0, 1);
+
+  const toRgb = (hex: string, offset: number) =>
+    Number.parseInt(hex.slice(offset, offset + 2), 16);
+
+  const red = Math.round(
+    toRgb(sourceHex, 0) + (toRgb(targetHex, 0) - toRgb(sourceHex, 0)) * ratio,
+  );
+  const green = Math.round(
+    toRgb(sourceHex, 2) + (toRgb(targetHex, 2) - toRgb(sourceHex, 2)) * ratio,
+  );
+  const blue = Math.round(
+    toRgb(sourceHex, 4) + (toRgb(targetHex, 4) - toRgb(sourceHex, 4)) * ratio,
+  );
+
+  return `rgb(${red} ${green} ${blue})`;
+}
+
+function getPaletteColor(colors: string[], index: number): string {
+  return colors[index % colors.length] ?? "#111111";
+}
+
 export function BirdsCursor({
   enabled = false,
-  count = 12,
-  colors = ["#2d3748", "#d69e2e", "#38b2ac"],
-  size = 8,
-  speedCap = 2.5,
-  forces = {
-    separation: 1.5,
-    alignment: 1.0,
-    cohesion: 1.0,
-    trail: 2.0,
-  },
-  zIndex = 5,
+  count = 7,
+  colors = ["#050505", "#111111", "#1a1a1a"],
+  size = 15,
+  speedCap = 5.2,
+  forces = DEFAULT_FORCES,
+  zIndex = 0,
   className = "",
-  useSprite = true,
-  spritePath = "/sprites/bird.png",
-}: BirdsCursorProps) {
+}: BirdsCursorProps): JSX.Element | null {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const rafRef = useRef<number>();
   const contextRef = useRef<CanvasRenderingContext2D | null>(null);
-
-  // Boids state - using typed arrays for performance
+  const rafRef = useRef<number>();
   const positionsRef = useRef<Float32Array>(new Float32Array(count * 2));
   const velocitiesRef = useRef<Float32Array>(new Float32Array(count * 2));
-  const colorsRef = useRef<string[]>([]);
-
-  // Sprite state
-  const spriteRef = useRef<HTMLImageElement | null>(null);
-  const spriteLoadedRef = useRef<boolean>(false);
-
-  // Cursor trail state
+  const phasesRef = useRef<Float32Array>(new Float32Array(count));
+  const palettesRef = useRef<BirdPalette[]>([]);
   const cursorTrailRef = useRef<CursorPoint[]>([]);
-  const lastFrameTimeRef = useRef<number>(0);
+  const lastFrameTimeRef = useRef(0);
+  const lastPointerMoveRef = useRef(0);
+  const lastTargetRef = useRef<{ x: number; y: number } | null>(null);
+  const reducedMotionRef = useRef(false);
+  const coarsePointerRef = useRef(false);
 
-  // Performance and accessibility checks
-  const prefersReducedMotion =
-    typeof window !== "undefined"
-      ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
-      : false;
+  const syncPreferences = useCallback(() => {
+    reducedMotionRef.current = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    coarsePointerRef.current = window.matchMedia("(pointer: coarse)").matches;
+  }, []);
 
-  const isMobileDevice =
-    typeof window !== "undefined"
-      ? window.matchMedia("(pointer: coarse)").matches
-      : false;
+  const resetBuffers = useCallback(() => {
+    positionsRef.current = new Float32Array(count * 2);
+    velocitiesRef.current = new Float32Array(count * 2);
+    phasesRef.current = new Float32Array(count);
+    palettesRef.current = [];
+  }, [count]);
 
-  // Throttled cursor tracking
-  const updateCursorTrail = useCallback((e: MouseEvent) => {
+  const seedBoids = useCallback(() => {
+    const positions = positionsRef.current;
+    const velocities = velocitiesRef.current;
+    const phases = phasesRef.current;
+    const anchorX = window.innerWidth * 0.5;
+    const anchorY = window.innerHeight * 0.18;
+
+    lastTargetRef.current = { x: anchorX, y: anchorY };
+    palettesRef.current = Array.from({ length: count }, (_, index) => {
+      const base = getPaletteColor(colors, index);
+      return {
+        body: mixHexColors(base, "#ffffff", 0.03),
+        wing: mixHexColors(base, "#ffffff", 0.12),
+        tail: mixHexColors(base, "#000000", 0.08),
+      };
+    });
+
+    for (let index = 0; index < count; index += 1) {
+      const xSpread = (Math.random() - 0.5) * window.innerWidth * 0.38;
+      const ySpread = (Math.random() - 0.5) * window.innerHeight * 0.18;
+
+      positions[index * 2] = anchorX + xSpread;
+      positions[index * 2 + 1] = anchorY + ySpread;
+      velocities[index * 2] = 2.8 + Math.random() * 1.8;
+      velocities[index * 2 + 1] = (Math.random() - 0.5) * 2;
+      phases[index] = Math.random() * Math.PI * 2;
+    }
+  }, [colors, count]);
+
+  const updateCursorTrail = useCallback((event: MouseEvent) => {
     const now = performance.now();
     cursorTrailRef.current.push({
-      x: e.clientX,
-      y: e.clientY,
+      x: event.clientX,
+      y: event.clientY,
       t: now,
     });
 
-    // Keep only recent points (last 350ms)
-    const cutoff = now - 350;
-    cursorTrailRef.current = cursorTrailRef.current.filter((p) => p.t > cutoff);
+    cursorTrailRef.current = cursorTrailRef.current.filter(
+      (point) => point.t > now - CURSOR_RETENTION_MS,
+    );
 
-    // Limit trail length for performance
-    if (cursorTrailRef.current.length > 10) {
-      cursorTrailRef.current = cursorTrailRef.current.slice(-10);
+    if (cursorTrailRef.current.length > MAX_TRAIL_POINTS) {
+      cursorTrailRef.current = cursorTrailRef.current.slice(-MAX_TRAIL_POINTS);
     }
+
+    lastPointerMoveRef.current = now;
   }, []);
 
-  // Load sprite image
-  const loadSprite = useCallback(() => {
-    if (!useSprite || spriteLoadedRef.current) return;
+  const getTargetPosition = useCallback(
+    (time: number): { x: number; y: number } => {
+      const trail = cursorTrailRef.current;
 
-    const img = new Image();
-    img.onload = () => {
-      spriteRef.current = img;
-      spriteLoadedRef.current = true;
-    };
-    img.onerror = () => {
-      console.warn("Failed to load bird sprite, falling back to shapes");
-      spriteLoadedRef.current = false;
-    };
-    img.src = spritePath;
-  }, [useSprite, spritePath]);
+      if (trail.length > 0) {
+        let totalX = 0;
+        let totalY = 0;
+        let totalWeight = 0;
 
-  // Initialize boids positions and colors
-  const initializeBoids = useCallback(() => {
-    const positions = positionsRef.current;
-    const boidColors = colorsRef.current;
+        for (const point of trail) {
+          const age = time - point.t;
+          const weight = Math.exp(-age / 90);
+          totalX += point.x * weight;
+          totalY += point.y * weight;
+          totalWeight += weight;
+        }
 
-    for (let i = 0; i < count; i++) {
-      // Random initial positions
-      positions[i * 2] = Math.random() * window.innerWidth;
-      positions[i * 2 + 1] = Math.random() * window.innerHeight;
+        const target =
+          totalWeight > 0
+            ? { x: totalX / totalWeight, y: totalY / totalWeight }
+            : { x: trail[trail.length - 1]!.x, y: trail[trail.length - 1]!.y };
 
-      // Random initial velocities
-      velocitiesRef.current[i * 2] = (Math.random() - 0.5) * 2;
-      velocitiesRef.current[i * 2 + 1] = (Math.random() - 0.5) * 2;
+        lastTargetRef.current = target;
+        return target;
+      }
 
-      // Assign colors
-      const colorIndex = i % colors.length;
-      boidColors[i] = colors[colorIndex] || colors[0] || "#2d3748";
-    }
-  }, [count, colors]);
+      const fallback =
+        lastTargetRef.current ?? {
+          x: window.innerWidth * 0.5,
+          y: window.innerHeight * 0.18,
+        };
 
-  // Get average cursor position from recent trail
-  const getAverageCursorPosition = useCallback((): { x: number; y: number } => {
-    const trail = cursorTrailRef.current;
-    if (trail.length === 0) {
-      return { x: window.innerWidth / 2, y: window.innerHeight / 2 };
-    }
+      if (time - lastPointerMoveRef.current < IDLE_TIMEOUT_MS) {
+        return fallback;
+      }
 
-    let totalX = 0;
-    let totalY = 0;
-    let totalWeight = 0;
-    const now = performance.now();
+      const angle = time * 0.0013;
+      return {
+        x: fallback.x + Math.cos(angle) * 36,
+        y: fallback.y + Math.sin(angle * 1.35) * 20,
+      };
+    },
+    [],
+  );
 
-    for (const point of trail) {
-      // Exponential decay based on age
-      const age = now - point.t;
-      const weight = Math.exp(-age / 100); // Decay over 100ms
-
-      totalX += point.x * weight;
-      totalY += point.y * weight;
-      totalWeight += weight;
-    }
-
-    return {
-      x: totalWeight > 0 ? totalX / totalWeight : trail[trail.length - 1].x,
-      y: totalWeight > 0 ? totalY / totalWeight : trail[trail.length - 1].y,
-    };
-  }, []);
-
-  // Boids algorithm implementation
   const applyBoidForces = useCallback(
     (boidIndex: number, target: { x: number; y: number }) => {
       const positions = positionsRef.current;
       const velocities = velocitiesRef.current;
+      const baseIndex = boidIndex * 2;
+      const boidX = positions[baseIndex] ?? 0;
+      const boidY = positions[baseIndex + 1] ?? 0;
+      let velocityX = velocities[baseIndex] ?? 0;
+      let velocityY = velocities[baseIndex + 1] ?? 0;
 
-      const bx = positions[boidIndex * 2];
-      const by = positions[boidIndex * 2 + 1];
-      let vx = velocities[boidIndex * 2];
-      let vy = velocities[boidIndex * 2 + 1];
-
-      // Separation, alignment, cohesion vectors
-      let sepX = 0,
-        sepY = 0;
-      let aliX = 0,
-        aliY = 0;
-      let cohX = 0,
-        cohY = 0;
+      let separationX = 0;
+      let separationY = 0;
+      let alignmentX = 0;
+      let alignmentY = 0;
+      let cohesionX = 0;
+      let cohesionY = 0;
       let neighbors = 0;
 
-      const neighborRadius = 50;
+      const neighborRadius = 90;
 
-      for (let i = 0; i < count; i++) {
-        if (i === boidIndex) continue;
+      for (let index = 0; index < count; index += 1) {
+        if (index === boidIndex) continue;
 
-        const ox = positions[i * 2];
-        const oy = positions[i * 2 + 1];
-        const dx = bx - ox;
-        const dy = by - oy;
-        const distSq = dx * dx + dy * dy;
+        const otherIndex = index * 2;
+        const otherX = positions[otherIndex] ?? 0;
+        const otherY = positions[otherIndex + 1] ?? 0;
+        const deltaX = boidX - otherX;
+        const deltaY = boidY - otherY;
+        const distanceSquared = deltaX * deltaX + deltaY * deltaY;
 
-        if (distSq < neighborRadius * neighborRadius && distSq > 0) {
-          const dist = Math.sqrt(distSq);
-          neighbors++;
-
-          // Separation - steer away from neighbors
-          sepX += dx / dist;
-          sepY += dy / dist;
-
-          // Alignment - match neighbor velocities
-          aliX += velocities[i * 2];
-          aliY += velocities[i * 2 + 1];
-
-          // Cohesion - steer toward neighbor center
-          cohX += ox;
-          cohY += oy;
+        if (
+          distanceSquared === 0 ||
+          distanceSquared > neighborRadius * neighborRadius
+        ) {
+          continue;
         }
+
+        const distance = Math.sqrt(distanceSquared);
+        neighbors += 1;
+        separationX += deltaX / distance;
+        separationY += deltaY / distance;
+        alignmentX += velocities[otherIndex] ?? 0;
+        alignmentY += velocities[otherIndex + 1] ?? 0;
+        cohesionX += otherX;
+        cohesionY += otherY;
       }
 
       if (neighbors > 0) {
-        // Average the forces
-        sepX /= neighbors;
-        sepY /= neighbors;
-        aliX /= neighbors;
-        aliY /= neighbors;
-        cohX = cohX / neighbors - bx;
-        cohY = cohY / neighbors - by;
+        separationX /= neighbors;
+        separationY /= neighbors;
+        alignmentX /= neighbors;
+        alignmentY /= neighbors;
+        cohesionX = cohesionX / neighbors - boidX;
+        cohesionY = cohesionY / neighbors - boidY;
       }
 
-      // Cursor trail seeking
-      const trailX = target.x - bx;
-      const trailY = target.y - by;
-      const trailDist = Math.sqrt(trailX * trailX + trailY * trailY);
-      const normalizedTrailX = trailDist > 0 ? trailX / trailDist : 0;
-      const normalizedTrailY = trailDist > 0 ? trailY / trailDist : 0;
+      const targetX = target.x - boidX;
+      const targetY = target.y - boidY;
+      const targetDistance = Math.sqrt(targetX * targetX + targetY * targetY);
+      const normalizedTargetX = targetDistance > 0 ? targetX / targetDistance : 0;
+      const normalizedTargetY = targetDistance > 0 ? targetY / targetDistance : 0;
 
-      // Apply forces
-      vx += sepX * forces.separation * 0.1;
-      vy += sepY * forces.separation * 0.1;
-      vx += aliX * forces.alignment * 0.05;
-      vy += aliY * forces.alignment * 0.05;
-      vx += cohX * forces.cohesion * 0.05;
-      vy += cohY * forces.cohesion * 0.05;
-      vx += normalizedTrailX * forces.trail * 0.1;
-      vy += normalizedTrailY * forces.trail * 0.1;
+      velocityX += separationX * forces.separation * 0.12;
+      velocityY += separationY * forces.separation * 0.12;
+      velocityX += alignmentX * forces.alignment * 0.04;
+      velocityY += alignmentY * forces.alignment * 0.04;
+      velocityX += cohesionX * forces.cohesion * 0.03;
+      velocityY += cohesionY * forces.cohesion * 0.03;
+      velocityX += normalizedTargetX * forces.trail * 0.12;
+      velocityY += normalizedTargetY * forces.trail * 0.12;
 
-      // Limit speed
-      const speed = Math.sqrt(vx * vx + vy * vy);
+      const speed = Math.sqrt(velocityX * velocityX + velocityY * velocityY);
       if (speed > speedCap) {
-        vx = (vx / speed) * speedCap;
-        vy = (vy / speed) * speedCap;
+        velocityX = (velocityX / speed) * speedCap;
+        velocityY = (velocityY / speed) * speedCap;
       }
 
-      velocities[boidIndex * 2] = vx;
-      velocities[boidIndex * 2 + 1] = vy;
+      velocities[baseIndex] = velocityX;
+      velocities[baseIndex + 1] = velocityY;
     },
     [count, forces, speedCap],
   );
 
-  // Update boid positions
   const updateBoidPositions = useCallback(
     (deltaTime: number) => {
       const positions = positionsRef.current;
       const velocities = velocitiesRef.current;
 
-      for (let i = 0; i < count; i++) {
-        let x = positions[i * 2] + velocities[i * 2] * deltaTime * 60;
-        let y = positions[i * 2 + 1] + velocities[i * 2 + 1] * deltaTime * 60;
+      for (let index = 0; index < count; index += 1) {
+        const baseIndex = index * 2;
+        let x =
+          (positions[baseIndex] ?? 0) +
+          (velocities[baseIndex] ?? 0) * deltaTime * 60;
+        let y =
+          (positions[baseIndex + 1] ?? 0) +
+          (velocities[baseIndex + 1] ?? 0) * deltaTime * 60;
 
-        // Screen wrapping with soft bounce
-        const margin = 50;
+        const margin = 72;
         if (x < -margin) x = window.innerWidth + margin;
         if (x > window.innerWidth + margin) x = -margin;
         if (y < -margin) y = window.innerHeight + margin;
         if (y > window.innerHeight + margin) y = -margin;
 
-        positions[i * 2] = x;
-        positions[i * 2 + 1] = y;
+        positions[baseIndex] = x;
+        positions[baseIndex + 1] = y;
       }
     },
     [count],
   );
 
-  // Render boids
-  const drawBoids = useCallback(() => {
-    const canvas = canvasRef.current;
-    const ctx = contextRef.current;
-    if (!canvas || !ctx) return;
+  const drawBird = useCallback(
+    (
+      context: CanvasRenderingContext2D,
+      palette: BirdPalette,
+      x: number,
+      y: number,
+      rotation: number,
+      wingFlap: number,
+    ) => {
+      context.save();
+      context.translate(x, y);
+      context.rotate(rotation);
+      context.shadowColor = "rgba(255,255,255,0.08)";
+      context.shadowBlur = 4;
+      context.strokeStyle = "rgba(255,255,255,0.08)";
+      context.lineWidth = 1;
 
-    // Clear canvas
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+      context.fillStyle = palette.body;
+      context.beginPath();
+      context.moveTo(size * 1.15, 0);
+      context.lineTo(size * 0.18, -size * 0.28);
+      context.lineTo(-size * 0.72, 0);
+      context.lineTo(size * 0.18, size * 0.28);
+      context.closePath();
+      context.fill();
+      context.stroke();
 
-    const positions = positionsRef.current;
-    const velocities = velocitiesRef.current;
-    const boidColors = colorsRef.current;
-    const sprite = spriteRef.current;
-    const useActualSprite = useSprite && spriteLoadedRef.current && sprite;
+      context.fillStyle = palette.wing;
+      context.beginPath();
+      context.moveTo(size * 0.28, -size * 0.04);
+      context.lineTo(-size * 0.1, -size * (1.18 + wingFlap));
+      context.lineTo(-size * 1.2, -size * 0.14);
+      context.closePath();
+      context.fill();
+      context.stroke();
 
-    for (let i = 0; i < count; i++) {
-      const x = positions[i * 2];
-      const y = positions[i * 2 + 1];
-      const vx = velocities[i * 2];
-      const vy = velocities[i * 2 + 1];
+      context.globalAlpha = 0.92;
+      context.beginPath();
+      context.moveTo(size * 0.08, size * 0.08);
+      context.lineTo(-size * 0.08, size * (0.82 + wingFlap * 0.42));
+      context.lineTo(-size * 0.9, size * 0.16);
+      context.closePath();
+      context.fill();
+      context.stroke();
+      context.globalAlpha = 1;
 
-      // Calculate rotation from velocity
-      const angle = Math.atan2(vy, vx);
+      context.fillStyle = palette.tail;
+      context.beginPath();
+      context.moveTo(-size * 0.72, 0);
+      context.lineTo(-size * 1.34, -size * 0.32);
+      context.lineTo(-size * 1.06, -size * 0.04);
+      context.lineTo(-size * 1.34, size * 0.32);
+      context.closePath();
+      context.fill();
+      context.stroke();
 
-      ctx.save();
-      ctx.translate(x, y);
-      ctx.rotate(angle);
+      context.restore();
+    },
+    [size],
+  );
 
-      if (useActualSprite && sprite) {
-        // Draw sprite with color tinting
-        ctx.globalCompositeOperation = "source-over";
-        const spriteSize = size * 2;
-        ctx.drawImage(
-          sprite,
-          -spriteSize / 2,
-          -spriteSize / 2,
-          spriteSize,
-          spriteSize,
+  const drawBoids = useCallback(
+    (time: number) => {
+      const canvas = canvasRef.current;
+      const context = contextRef.current;
+
+      if (!canvas || !context) return;
+
+      context.clearRect(0, 0, canvas.width, canvas.height);
+
+      const positions = positionsRef.current;
+      const velocities = velocitiesRef.current;
+      const palettes = palettesRef.current;
+      const phases = phasesRef.current;
+
+      for (let index = 0; index < count; index += 1) {
+        const baseIndex = index * 2;
+        const velocityX = velocities[baseIndex] ?? 0;
+        const velocityY = velocities[baseIndex + 1] ?? 0;
+        const angle = Math.atan2(velocityY, velocityX);
+        const wingFlap =
+          Math.sin(time * 0.024 + (phases[index] ?? 0) + index * 0.6) * 0.42;
+
+        drawBird(
+          context,
+          palettes[index] ?? {
+            body: "#050505",
+            wing: "#151515",
+            tail: "#000000",
+          },
+          positions[baseIndex] ?? 0,
+          positions[baseIndex + 1] ?? 0,
+          angle,
+          wingFlap,
         );
+      }
+    },
+    [count, drawBird],
+  );
 
-        // Apply color tint
-        ctx.globalCompositeOperation = "source-atop";
-        ctx.fillStyle = boidColors[i];
-        ctx.fillRect(-spriteSize / 2, -spriteSize / 2, spriteSize, spriteSize);
-      } else {
-        // Draw simple triangle bird shape
-        ctx.fillStyle = boidColors[i];
-        ctx.beginPath();
-        ctx.moveTo(size, 0);
-        ctx.lineTo(-size / 2, -size / 3);
-        ctx.lineTo(-size / 3, 0);
-        ctx.lineTo(-size / 2, size / 3);
-        ctx.closePath();
-        ctx.fill();
+  const animate = useCallback(
+    (time: number) => {
+      if (!enabled || reducedMotionRef.current || coarsePointerRef.current) {
+        return;
       }
 
-      ctx.restore();
-    }
-  }, [count, size, useSprite]);
+      const deltaTime = time - lastFrameTimeRef.current;
+      lastFrameTimeRef.current = time;
 
-  // Main animation loop
-  const animate = useCallback(
-    (currentTime: number) => {
-      if (!enabled || prefersReducedMotion || isMobileDevice) return;
-
-      const deltaTime = currentTime - lastFrameTimeRef.current;
-      lastFrameTimeRef.current = currentTime;
-
-      // Skip frame if delta is too large (tab was hidden)
       if (deltaTime > 100) {
         rafRef.current = requestAnimationFrame(animate);
         return;
       }
 
-      const target = getAverageCursorPosition();
+      const target = getTargetPosition(time);
 
-      // Update boids
-      for (let i = 0; i < count; i++) {
-        applyBoidForces(i, target);
+      for (let index = 0; index < count; index += 1) {
+        applyBoidForces(index, target);
       }
 
       updateBoidPositions(deltaTime / 1000);
-      drawBoids();
-
+      drawBoids(time);
       rafRef.current = requestAnimationFrame(animate);
     },
-    [
-      enabled,
-      prefersReducedMotion,
-      isMobileDevice,
-      count,
-      getAverageCursorPosition,
-      applyBoidForces,
-      updateBoidPositions,
-      drawBoids,
-    ],
+    [applyBoidForces, count, drawBoids, enabled, getTargetPosition, updateBoidPositions],
   );
 
-  // Canvas setup and resize handling
   const setupCanvas = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+    const context = canvas.getContext("2d");
+    if (!context) return;
 
-    contextRef.current = ctx;
-
-    // Set canvas size with DPR scaling
+    contextRef.current = context;
     const dpr = window.devicePixelRatio || 1;
-    const rect = canvas.getBoundingClientRect();
-
     canvas.width = window.innerWidth * dpr;
     canvas.height = window.innerHeight * dpr;
     canvas.style.width = `${window.innerWidth}px`;
     canvas.style.height = `${window.innerHeight}px`;
-
-    ctx.scale(dpr, dpr);
-    ctx.imageSmoothingEnabled = true;
+    context.setTransform(dpr, 0, 0, dpr, 0, 0);
+    context.imageSmoothingEnabled = true;
   }, []);
-
-  // Start/stop animation
-  const startAnimation = useCallback(() => {
-    if (rafRef.current) return;
-
-    loadSprite();
-    initializeBoids();
-    lastFrameTimeRef.current = performance.now();
-    rafRef.current = requestAnimationFrame(animate);
-  }, [loadSprite, initializeBoids, animate]);
 
   const stopAnimation = useCallback(() => {
-    if (rafRef.current) {
-      cancelAnimationFrame(rafRef.current);
-      rafRef.current = undefined;
-    }
+    if (!rafRef.current) return;
+    cancelAnimationFrame(rafRef.current);
+    rafRef.current = undefined;
   }, []);
 
-  // Effects
+  const startAnimation = useCallback(() => {
+    stopAnimation();
+    resetBuffers();
+    seedBoids();
+    lastFrameTimeRef.current = performance.now();
+    rafRef.current = requestAnimationFrame(animate);
+  }, [animate, resetBuffers, seedBoids, stopAnimation]);
+
   useEffect(() => {
-    if (!enabled || prefersReducedMotion || isMobileDevice) {
+    if (typeof window === "undefined") return;
+
+    syncPreferences();
+
+    const reducedMotionQuery = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    );
+    const coarsePointerQuery = window.matchMedia("(pointer: coarse)");
+    const resync = () => syncPreferences();
+
+    reducedMotionQuery.addEventListener("change", resync);
+    coarsePointerQuery.addEventListener("change", resync);
+
+    return () => {
+      reducedMotionQuery.removeEventListener("change", resync);
+      coarsePointerQuery.removeEventListener("change", resync);
+    };
+  }, [syncPreferences]);
+
+  useEffect(() => {
+    if (
+      typeof window === "undefined" ||
+      !enabled ||
+      reducedMotionRef.current ||
+      coarsePointerRef.current
+    ) {
       stopAnimation();
       return;
     }
@@ -431,37 +516,43 @@ export function BirdsCursor({
     setupCanvas();
     startAnimation();
 
-    // Event listeners
-    const throttledCursorUpdate = (e: MouseEvent) => {
-      // Throttle to ~60fps
-      if (performance.now() - (updateCursorTrail as any).lastCall > 16) {
-        updateCursorTrail(e);
-        (updateCursorTrail as any).lastCall = performance.now();
+    const throttledCursorUpdate = (event: MouseEvent) => {
+      const lastCall = (
+        throttledCursorUpdate as typeof throttledCursorUpdate & {
+          lastCall?: number;
+        }
+      ).lastCall;
+
+      if (lastCall && performance.now() - lastCall <= 16) {
+        return;
       }
+
+      updateCursorTrail(event);
+      (
+        throttledCursorUpdate as typeof throttledCursorUpdate & {
+          lastCall?: number;
+        }
+      ).lastCall = performance.now();
+    };
+
+    const handleResize = () => {
+      setupCanvas();
+      seedBoids();
     };
 
     window.addEventListener("mousemove", throttledCursorUpdate, {
       passive: true,
     });
-    window.addEventListener("resize", setupCanvas);
+    window.addEventListener("resize", handleResize);
 
     return () => {
       stopAnimation();
       window.removeEventListener("mousemove", throttledCursorUpdate);
-      window.removeEventListener("resize", setupCanvas);
+      window.removeEventListener("resize", handleResize);
     };
-  }, [
-    enabled,
-    prefersReducedMotion,
-    isMobileDevice,
-    setupCanvas,
-    startAnimation,
-    stopAnimation,
-    updateCursorTrail,
-  ]);
+  }, [enabled, seedBoids, setupCanvas, startAnimation, stopAnimation, updateCursorTrail]);
 
-  // Don't render if disabled
-  if (!enabled || prefersReducedMotion || isMobileDevice) {
+  if (!enabled || reducedMotionRef.current || coarsePointerRef.current) {
     return null;
   }
 
@@ -474,15 +565,3 @@ export function BirdsCursor({
     />
   );
 }
-
-// Export ref-based API for external control
-export interface BirdsCursorRef {
-  start: () => void;
-  stop: () => void;
-  setEnabled: (enabled: boolean) => void;
-  setCount: (count: number) => void;
-  setColors: (colors: string[]) => void;
-  setIntensity: (forces: Partial<BoidForces>) => void;
-}
-
-export const BirdsCursorWithRef = BirdsCursor;

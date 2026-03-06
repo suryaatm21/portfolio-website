@@ -1,49 +1,34 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import React from "react";
+import { useBirdsFx } from "@/components/FX/BirdsProvider";
 
-// Client-only dynamic loads avoid SSR evaluation
 const BirdsCursor = dynamic(
-  () => import("@/components/FX/BirdsCursor").then((m) => m.BirdsCursor),
+  () => import("@/components/FX/BirdsCursor").then((module) => module.BirdsCursor),
   { ssr: false },
 );
-
-const PerformanceMonitor = dynamic(
-  () =>
-    import("@/components/FX/PerformanceMonitor").then(
-      (m) => m.PerformanceMonitor,
-    ),
-  { ssr: false },
-);
-
-// Quick toggles for optional dev-only FX widgets
-const ENABLE_BIRDS_CURSOR = false;
-const ENABLE_PERFORMANCE_MONITOR = false;
 
 export function FXMounts(): JSX.Element | null {
-  if (process.env.NODE_ENV !== "development") return null;
+  const { visible } = useBirdsFx();
 
   return (
     <>
-      {ENABLE_BIRDS_CURSOR && (
+      {visible && (
         <BirdsCursor
           enabled
-          count={6}
-          colors={["#2d3748", "#d69e2e", "#38b2ac"]}
-          size={12}
-          speedCap={3}
+          count={7}
+          colors={["#050505", "#111111", "#1a1a1a"]}
+          size={15}
+          speedCap={5.2}
           forces={{
-            separation: 1.2,
-            alignment: 0.8,
-            cohesion: 0.6,
-            trail: 1.5,
+            separation: 2.6,
+            alignment: 0.95,
+            cohesion: 0.35,
+            trail: 2.9,
           }}
-          useSprite
-          zIndex={10}
+          zIndex={0}
         />
       )}
-      {ENABLE_PERFORMANCE_MONITOR && <PerformanceMonitor enabled />}
     </>
   );
 }

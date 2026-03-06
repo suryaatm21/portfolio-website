@@ -42,25 +42,20 @@ export default function Home() {
         </Section>
 
         <Section id="resources">
-          <div className="preview-manrope">
-            <ResourcesList />
-          </div>
+          <ResourcesList />
         </Section>
 
         <Section id="experience">
-          <div className="max-w-7xl mx-auto preview-space-grotesk">
+          <div className="max-w-7xl mx-auto">
             <HorizontalTimeline entries={timeline as TimelineEntry[]} />
           </div>
         </Section>
 
         <Section id="projects">
-          <div className="max-w-7xl mx-auto preview-outfit">
+          <div className="max-w-7xl mx-auto">
             <header className="text-center mb-16">
               <FloatingElement variant="subtle">
-                <h2
-                  className="text-3xl sm:text-4xl font-heading font-semibold text-black mb-4 drop-shadow-sm"
-                  data-font-label="Font 3 · Outfit">
-                  <span className="font-preview-label" />
+                <h2 className="text-3xl sm:text-4xl font-heading font-semibold text-black mb-4 drop-shadow-sm">
                   <TextReveal
                     mode="word"
                     preset="scale"
@@ -106,7 +101,7 @@ export default function Home() {
           </div>
         </Section>
 
-        {/* Coursework Cylindrical Animation — Oxanium (Font 5: geometric sci-fi) */}
+        {/* Coursework cylindrical animation — Oxanium for the sci-fi scroll feel */}
         <div className="w-full py-12 md:py-16 preview-oxanium">
           <CylindricalText
             items={education.coursework}
@@ -115,13 +110,10 @@ export default function Home() {
         </div>
 
         <Section id="contact">
-          <div className="max-w-6xl mx-auto preview-dm-sans">
+          <div className="max-w-6xl mx-auto">
             <header className="text-center mb-12">
               <FloatingElement variant="subtle">
-                <h2
-                  className="text-3xl sm:text-4xl font-heading font-semibold text-black mb-4 drop-shadow-sm"
-                  data-font-label="Font 4 · DM Sans">
-                  <span className="font-preview-label" />
+                <h2 className="text-3xl sm:text-4xl font-heading font-semibold text-black mb-4 drop-shadow-sm">
                   <TextReveal
                     mode="word"
                     preset="scale"
