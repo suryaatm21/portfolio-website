@@ -1,8 +1,8 @@
-import { ExternalLink } from "lucide-react";
-import React from "react";
+import { ExternalLink } from 'lucide-react';
+import React from 'react';
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface ResourceCardProps {
   title: string;
@@ -13,10 +13,10 @@ export function ResourceCard({
   title,
   href,
 }: ResourceCardProps): React.ReactElement {
-  const isComingSoon = href === "#";
+  const isComingSoon = href === '#';
 
   return (
-    <Card className="soft-card group">
+    <Card className="tinted-glass-light group">
       <CardHeader className="pb-3">
         <CardTitle className="text-lg font-heading text-black flex items-center justify-between">
           {title}

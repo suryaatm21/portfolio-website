@@ -104,7 +104,7 @@ export default function AnimatedBackground({
         minHeight: 200.0,
         minWidth: 200.0,
         backgroundColor: 0xffffff, // White background
-        skyColor: 0x68b8d7, // Light blue sky
+        skyColor: 0x4cc5f6, // Light blue sky
         cloudColor: 0xadc1de, // Warm gray clouds
         cloudShadowColor: 0x183550, // Blue shadow
         sunColor: 0xff9919, // Warm sun

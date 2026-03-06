@@ -1,17 +1,17 @@
-"use client";
+'use client';
 
-import { ExternalLink, CheckCircle2 } from "lucide-react";
+import { ExternalLink, CheckCircle2 } from 'lucide-react';
 
-import { AnimatedButton } from "@/components/animations/AnimatedButton";
-import { FadeInUp } from "@/components/animations/FadeInUp";
-import { FloatingElement } from "@/components/animations/FloatingElement";
-import { TextReveal } from "@/components/animations/TextReveal";
-import { sections, resources } from "@/content/site";
+import { AnimatedButton } from '@/components/animations/AnimatedButton';
+import { FadeInUp } from '@/components/animations/FadeInUp';
+import { FloatingElement } from '@/components/animations/FloatingElement';
+import { TextReveal } from '@/components/animations/TextReveal';
+import { sections, resources } from '@/content/site';
 
 export function ResourcesList() {
   return (
     <div className="max-w-6xl mx-auto">
-      <div className="soft-card text-card-foreground p-8 sm:p-12">
+      <div className="tinted-glass text-card-foreground p-8 sm:p-12">
         <FadeInUp>
           <header className="text-center mb-12">
             <FloatingElement variant="subtle">

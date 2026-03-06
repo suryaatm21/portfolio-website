@@ -93,7 +93,7 @@ export function Hero(): React.ReactElement {
               </FloatingElement>
 
               <FloatingElement variant="subtle">
-                <div className="inline-block mb-8 max-w-2xl xl:max-w-none readable-panel">
+                <div className="inline-block mb-8 max-w-2xl xl:max-w-none tinted-glass-light">
                   <p className="text-lg sm:text-xl text-muted-foreground leading-relaxed font-mono">
                     <TextReveal
                       mode="word"

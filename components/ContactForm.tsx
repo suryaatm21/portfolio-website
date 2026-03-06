@@ -61,7 +61,7 @@ export function ContactForm(): React.ReactElement {
           {/* Availability Section - Row 1 */}
           <FadeInUp delay={0.2}>
             <FloatingElement variant="subtle">
-              <Card className="soft-card">
+              <Card className="tinted-glass">
                 <CardContent className="p-6">
                   <h4 className="text-lg font-heading font-medium text-brand-accent mb-3">
                     <TextReveal preset="scale" stagger={80}>
@@ -85,7 +85,7 @@ export function ContactForm(): React.ReactElement {
         {/* Contact Form - Takes 2 rows */}
         <FadeInUp className="lg:row-span-2">
           <FloatingElement variant="subtle">
-            <Card className="soft-card h-full">
+            <Card className="tinted-glass h-full">
               <CardHeader>
                 <CardTitle className="text-2xl font-heading text-brand-primary flex items-center gap-2">
                   <Mail className="h-6 w-6 text-brand-accent" />
