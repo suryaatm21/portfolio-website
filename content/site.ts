@@ -94,7 +94,7 @@ export const resources = [
     status: 'available',
   },
   {
-    title: 'Job Tracker Bot (Telegram alerts)',
+    title: 'Telegram Job Tracker',
     href: 'https://t.me/summer2026swe',
     description:
       'Always be the first to know about the latest openings in tech.',
@@ -236,7 +236,7 @@ export const timeline = [
 
 export const projects = [
   {
-    title: 'Job Tracker Bot',
+    title: 'Telegram Job Tracker',
     summary:
       'Be the first to apply to any new entry-level job opening in tech. Join the Telegram channel below.',
     repo: 'https://github.com/suryaatm21/job-tracker',
@@ -284,12 +284,12 @@ export const projects = [
 
 export const contact = {
   form: {
-    title: 'Slide in DMs',
+    title: 'Slide a DM',
     subjectLabel: 'Subject',
-    subjectPlaceholder: 'What would you like to discuss?',
+    subjectPlaceholder: 'Exercise free will here',
     messageLabel: 'Message',
     messagePlaceholder:
-      'Tell me about your team, question, or endeavors! Or give me a book, song, or anime rec',
+      'Tell me about your team, question, or endeavors!',
     submitText: 'Send Message',
     disclaimer:
       'This will open your default email client with a prefilled message. Your email address will not be stored or shared.',
