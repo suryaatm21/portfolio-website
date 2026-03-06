@@ -214,21 +214,32 @@
       0 16px 40px rgba(0, 0, 0, 0.18) !important;
   }
 
-  /* Custom utility classes */
+  /* ============================================================
+   * HOVER SWEEP – light gleam on interaction
+   * Uses ::after so it doesn't collide with ::before grain overlays
+   * on .tinted-glass / .soft-card / .tinted-glass-light
+   * ============================================================ */
   .hover-sweep {
-    @apply relative overflow-hidden;
-  }
-  
-  .hover-sweep::before {
-    content: "";
-    @apply absolute top-0 -left-[150%] w-[150%] h-full z-10 transform -skew-x-[30deg] 
-           bg-gradient-to-r from-transparent via-white/20 to-transparent 
-           transition-all duration-700 ease-in-out;
-    pointer-events: none; /* ensures the beam doesn't block clicks */
+    position: relative;
+    overflow: hidden;
   }
 
-  .hover-sweep:hover::before {
-    @apply left-[150%]; /* sweeps across the entire element on hover */
+  .hover-sweep::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 150%;
+    height: 100%;
+    z-index: 20;
+    transform: skewX(-30deg);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.22), transparent);
+    transition: left 0.65s ease-in-out;
+    pointer-events: none;
+  }
+
+  .hover-sweep:hover::after {
+    left: 150%;
   }
 
   .soft-card {
@@ -333,9 +344,10 @@
       inset 0 -1px 0 0 rgba(0, 0, 0, 0.4) !important;
   }
 
-  /* Lighter variant for Hero and other elements needing less opacity */
+  /* Lighter variant for Hero and other elements needing less opacity.
+   * Background aligned with .tinted-glass for visual consistency. */
   .tinted-glass-light {
-    background: rgba(0, 0, 0, 0.35) !important;
+    background: rgba(0, 0, 0, 0.72) !important;
     backdrop-filter: blur(24px) saturate(120%) !important;
     -webkit-backdrop-filter: blur(24px) saturate(120%) !important;
     border: 1px solid rgba(255, 255, 255, 0.12) !important;

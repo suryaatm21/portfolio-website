@@ -203,7 +203,7 @@ export function ProjectCarousel({
         <Button
           variant="ghost"
           size="icon"
-          className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-background/80 backdrop-blur-sm border border-border hover:bg-brand-accent/10 hover:border-brand-accent hover:scale-110 transition-all duration-200 shadow-lg"
+          className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-background/80 backdrop-blur-sm border border-border hover:bg-brand-accent/10 hover:border-brand-accent hover:scale-110 hover-sweep transition-all duration-200 shadow-lg"
           onClick={goToPrevious}
           aria-label="Previous project">
           <ChevronLeft className="w-6 h-6" />
@@ -213,7 +213,7 @@ export function ProjectCarousel({
         <Button
           variant="ghost"
           size="icon"
-          className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-background/80 backdrop-blur-sm border border-border hover:bg-brand-accent/10 hover:border-brand-accent hover:scale-110 transition-all duration-200 shadow-lg"
+          className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-background/80 backdrop-blur-sm border border-border hover:bg-brand-accent/10 hover:border-brand-accent hover:scale-110 hover-sweep transition-all duration-200 shadow-lg"
           onClick={goToNext}
           aria-label="Next project">
           <ChevronRight className="w-6 h-6" />
@@ -362,32 +362,6 @@ export function ProjectCarousel({
                       </div>
                     </CardContent>
                   </Card>
-
-                  <div
-                    className="absolute top-0 left-0 w-10 h-full bg-brand-primary/5 border-l-2 border-brand-primary/20"
-                    style={{
-                      transform: "translate3d(1px, 0, -40px) rotateY(-90deg)",
-                      transformOrigin: "0%",
-                      backfaceVisibility: "hidden",
-                    }}
-                  />
-
-                  <div
-                    className="absolute top-0 right-0 w-10 h-full bg-brand-primary/5 border-r-2 border-brand-primary/20"
-                    style={{
-                      transform: "translate3d(-1px, 0, -40px) rotateY(90deg)",
-                      transformOrigin: "100%",
-                      backfaceVisibility: "hidden",
-                    }}
-                  />
-
-                  <div
-                    className="absolute bottom-0 w-full h-10 bg-black/10 rounded-full blur-sm"
-                    style={{
-                      transform: "rotateX(90deg) translate3d(0px, -20px, 0px)",
-                      opacity: 0.85,
-                    }}
-                  />
                 </div>
               </div>
             );

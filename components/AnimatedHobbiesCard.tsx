@@ -23,7 +23,7 @@ export function AnimatedHobbiesCard() {
   return (
     <FadeInUp delay={0.3}>
       <FloatingElement variant="subtle">
-        <Card className="tinted-glass">
+        <Card className="tinted-glass hover-sweep">
           <CardContent className="p-6">
             <h4 className="text-lg font-heading font-medium text-brand-accent mb-3">
               <TextReveal preset="scale" stagger={120}>
