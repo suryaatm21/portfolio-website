@@ -16,7 +16,7 @@ export function ResourceCard({
   const isComingSoon = href === '#';
 
   return (
-    <Card className="tinted-glass-light group">
+    <Card className="tinted-glass-light hover-sweep group">
       <CardHeader className="pb-3">
         <CardTitle className="text-lg font-heading text-black flex items-center justify-between">
           {title}

@@ -116,7 +116,7 @@ export function Hero(): React.ReactElement {
                   <AnimatedButton
                     size="lg"
                     onClick={() => scrollToSection("contact")}
-                    className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 text-base font-medium group shadow-lg hover:shadow-xl transition-shadow">
+                    className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 text-base font-medium group shadow-lg hover:shadow-xl hover-sweep transition-shadow">
                     <span className="flex items-center">
                       {hero.cta.primary.text}
                       <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />

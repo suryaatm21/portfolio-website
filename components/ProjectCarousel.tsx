@@ -266,7 +266,7 @@ export function ProjectCarousel({
                     transformStyle: "preserve-3d",
                     transform: innerTransform,
                   }}>
-                  <Card className="absolute inset-0 tinted-glass text-white">
+                  <Card className="absolute inset-0 tinted-glass hover-sweep text-white">
                     <CardContent className="p-4 sm:p-6 h-full flex flex-col">
                       <div className="flex justify-center mb-3">
                         <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-xl bg-brand-primary/10 flex items-center justify-center">
