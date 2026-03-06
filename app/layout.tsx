@@ -1,5 +1,13 @@
 import type { Metadata } from "next";
-import { Inter, Urbanist } from "next/font/google";
+import {
+  Inter,
+  Urbanist,
+  Space_Grotesk,
+  Manrope,
+  Outfit,
+  DM_Sans,
+  Oxanium,
+} from "next/font/google";
 import type React from "react";
 
 import "./globals.css";
@@ -20,6 +28,42 @@ const urbanist = Urbanist({
   display: "swap",
   variable: "--font-urbanist",
   weight: ["600"],
+});
+
+/* ── Font preview instances ─────────────────────────────────── */
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-space-grotesk",
+  weight: ["600", "700"],
+});
+
+const manrope = Manrope({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-manrope",
+  weight: ["600", "700"],
+});
+
+const outfit = Outfit({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-outfit",
+  weight: ["600", "700"],
+});
+
+const dmSans = DM_Sans({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-dm-sans",
+  weight: ["600", "700"],
+});
+
+const oxanium = Oxanium({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-oxanium",
+  weight: ["600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -121,7 +165,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${urbanist.variable}`}
+      className={`${inter.variable} ${urbanist.variable} ${spaceGrotesk.variable} ${manrope.variable} ${outfit.variable} ${dmSans.variable} ${oxanium.variable}`}
       suppressHydrationWarning>
       <body className="bg-background text-foreground font-body antialiased">
         <ThemeProvider

@@ -167,6 +167,13 @@
   --font-heading: var(--font-urbanist);
   --font-body: var(--font-inter);
 
+  /* ── Font preview tokens ─────────────────────────────────── */
+  --font-preview-1: var(--font-space-grotesk);  /* Experience */
+  --font-preview-2: var(--font-manrope);        /* Resources  */
+  --font-preview-3: var(--font-outfit);         /* Projects   */
+  --font-preview-4: var(--font-dm-sans);        /* Contact    */
+  --font-preview-5: var(--font-oxanium);        /* Coursework */
+
   /* Added page background token */
   --color-bg-page: var(--bg-page);
 
@@ -482,3 +489,52 @@
 .readable-panel * {
   text-shadow: none !important;
 }
+
+/* ============================================================
+ * FONT PREVIEW UTILITIES
+ * Each class scopes a heading font to one section so the user
+ * can compare all 5 candidates side-by-side while scrolling.
+ *
+ * 1. Space Grotesk  → #experience  (futuristic tech feel)
+ * 2. Manrope        → #resources   (humanist, balanced)
+ * 3. Outfit         → #projects    (crisp SaaS energy)
+ * 4. DM Sans        → #contact     (rounded, friendly-bold)
+ * 5. Oxanium        → Coursework   (geometric sci-fi)
+ * ============================================================ */
+
+/* label badge shown above each section heading */
+.font-preview-label::before {
+  display: block;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  opacity: 0.45;
+  margin-bottom: 0.35rem;
+  font-family: var(--font-inter), sans-serif;
+  content: attr(data-font-label);
+}
+
+/* Scoped heading overrides – only h2 within flagged sections */
+.preview-space-grotesk h2 {
+  font-family: var(--font-space-grotesk, sans-serif) !important;
+}
+
+.preview-manrope h2 {
+  font-family: var(--font-manrope, sans-serif) !important;
+}
+
+.preview-outfit h2 {
+  font-family: var(--font-outfit, sans-serif) !important;
+}
+
+.preview-dm-sans h2 {
+  font-family: var(--font-dm-sans, sans-serif) !important;
+}
+
+/* Oxanium for the cylindrical coursework animation */
+.preview-oxanium,
+.preview-oxanium * {
+  font-family: var(--font-oxanium, sans-serif) !important;
+}
+
