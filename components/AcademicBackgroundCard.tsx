@@ -25,7 +25,7 @@ export function AcademicBackgroundCard({
   return (
     <FadeInUp className={className}>
       <FloatingElement variant="subtle">
-        <Card className="soft-card overflow-hidden">
+        <Card className="tinted-glass hover-sweep overflow-hidden">
           <CardContent className="space-y-4 py-8 px-8">
             {/* Condensed two-line layout */}
             <div className="space-y-3 text-center">
@@ -73,7 +73,7 @@ export function AcademicBackgroundCard({
               <p className="text-sm font-medium text-brand-accent flex items-center justify-center gap-2">
                 <span className="animate-bounce">↓</span>
                 <TextReveal preset="fadeUp" stagger={50} delay={700} as="span">
-                  Scroll to explore coursework in 3D
+                  Scroll and transition through my coursework to contact me!
                 </TextReveal>
                 <span className="animate-bounce">↓</span>
               </p>

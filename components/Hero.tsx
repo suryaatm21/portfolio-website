@@ -4,8 +4,8 @@ import { motion } from "framer-motion";
 import { ArrowRight, Github, Linkedin, Mail, ExternalLink } from "lucide-react";
 import Image from "next/image";
 import type React from "react";
-import { useState, useEffect } from "react";
 
+import { HeroBirdsHint } from "@/components/HeroBirdsHint";
 import { AnimatedButton } from "@/components/animations/AnimatedButton";
 import { FloatingElement } from "@/components/animations/FloatingElement";
 import { TextReveal } from "@/components/animations/TextReveal";
@@ -93,7 +93,7 @@ export function Hero(): React.ReactElement {
               </FloatingElement>
 
               <FloatingElement variant="subtle">
-                <div className="inline-block mb-8 max-w-2xl xl:max-w-none readable-panel">
+                <div className="inline-block mb-8 max-w-2xl xl:max-w-none tinted-glass-light px-4 py-3">
                   <p className="text-lg sm:text-xl text-muted-foreground leading-relaxed font-mono">
                     <TextReveal
                       mode="word"
@@ -116,7 +116,7 @@ export function Hero(): React.ReactElement {
                   <AnimatedButton
                     size="lg"
                     onClick={() => scrollToSection("contact")}
-                    className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 text-base font-medium group shadow-lg hover:shadow-xl transition-shadow">
+                    className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 text-base font-medium group shadow-lg hover:shadow-xl hover-sweep transition-shadow">
                     <span className="flex items-center">
                       {hero.cta.primary.text}
                       <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
@@ -129,7 +129,7 @@ export function Hero(): React.ReactElement {
                     variant="outline"
                     size="lg"
                     asChild
-                    className="border-border/50 text-foreground hover:bg-accent/10 px-8 py-3 text-base font-medium group">
+                    className="border-black/20 text-white bg-black/80 hover:bg-black/90 px-8 py-3 text-base font-medium group hover-sweep">
                     <a
                       href={hero.cta.secondary.href}
                       target="_blank"
@@ -190,15 +190,7 @@ export function Hero(): React.ReactElement {
                 </FloatingElement>
               </motion.div>
 
-              <motion.div
-                className="inline-block"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.8, ease: "easeOut" }}>
-                <p className="text-sm font-medium text-secondary tracking-wide m-0">
-                  Watch the clouds follow your cursor
-                </p>
-              </motion.div>
+              <HeroBirdsHint />
             </div>
           </div>
         </div>
