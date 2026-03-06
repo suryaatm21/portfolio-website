@@ -15,6 +15,23 @@ interface VantaEffect {
 
 type VantaCloudsFactory = (options: Record<string, unknown>) => VantaEffect;
 
+const SKY_PALETTE = {
+  backgroundColor: 0xf7fbff,
+  skyColor: 0x8ed8f8,
+  cloudColor: 0xf2f1ee,
+  cloudShadowColor: 0xb8cddd,
+  sunColor: 0xfff1c2,
+  sunGlareColor: 0xffdca8,
+  sunlightColor: 0xfff7d6,
+} as const;
+
+const SKY_GRADIENT = {
+  canvas:
+    "linear-gradient(180deg, rgba(158,221,247,0.92) 0%, rgba(198,234,247,0.82) 55%, rgba(255,255,255,0) 100%)",
+  overlay:
+    "linear-gradient(to bottom, rgba(134,212,244,0.95) 0%, rgba(178,228,246,0.88) var(--sky-solid-height, 320px), rgba(178,228,246,0) calc(var(--sky-solid-height, 320px) + var(--sky-fade-length, 220px)))",
+} as const;
+
 export default function AnimatedBackground({
   theme: propTheme,
 }: AnimatedBackgroundProps): JSX.Element {
@@ -102,13 +119,7 @@ export default function AnimatedBackground({
         gyroControls: false,
         minHeight: 200.0,
         minWidth: 200.0,
-        backgroundColor: 0xffffff, // White background
-        skyColor: 0x4cc5f6, // Light blue sky
-        cloudColor: 0xadc1de, // Warm gray clouds
-        cloudShadowColor: 0x183550, // Blue shadow
-        sunColor: 0xff9919, // Warm sun
-        sunGlareColor: 0xff6653, // Sun glare
-        sunlightColor: 0xff9933, // Bright sunlight
+        ...SKY_PALETTE,
         speed: prefersReducedMotion ? 0.2 : 1.0,
       };
 
@@ -291,8 +302,7 @@ export default function AnimatedBackground({
             style={{
               width: "100%",
               height: "100%",
-              background:
-                "linear-gradient(180deg, rgba(76,197,246,0.95) 0%, rgba(173,193,222,0.85) 52%, rgba(255,255,255,0) 100%)",
+              background: SKY_GRADIENT.canvas,
               pointerEvents: prefersReducedMotion ? "none" : "auto",
               display: "block",
             }}
@@ -313,9 +323,7 @@ export default function AnimatedBackground({
           width: "100vw",
           height:
             "calc(var(--sky-solid-height, calc(var(--nav-height, 4rem) + 24px)) + var(--sky-fade-length, 220px))",
-          background:
-            // Day sky gradient - light blue
-            "linear-gradient(to bottom, rgba(104,184,215,1) 0%, rgba(104,184,215,1) var(--sky-solid-height, 320px), rgba(104,184,215,0) calc(var(--sky-solid-height, 320px) + var(--sky-fade-length, 220px)))",
+          background: SKY_GRADIENT.overlay,
           zIndex: -1,
           pointerEvents: "none",
           opacity: "var(--sky-overlay-opacity, 1)",
