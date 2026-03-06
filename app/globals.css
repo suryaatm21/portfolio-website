@@ -234,12 +234,13 @@
     z-index: 20;
     transform: skewX(-30deg);
     background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.22), transparent);
-    transition: left 0.65s ease-in-out;
+    transition: none; /* no reverse sweep on mouse-leave */
     pointer-events: none;
   }
 
   .hover-sweep:hover::after {
     left: 150%;
+    transition: left 0.65s ease-in-out; /* only animate the forward sweep */
   }
 
   .soft-card {
