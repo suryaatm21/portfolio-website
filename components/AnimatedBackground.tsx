@@ -18,6 +18,7 @@ export default function AnimatedBackground({
 }: AnimatedBackgroundProps): JSX.Element {
   // Force light theme since dark mode is disabled
   const theme = propTheme || "light";
+  const enableExternalClouds = process.env.NODE_ENV === "production";
   const vantaRef = useRef<HTMLDivElement>(null);
   const vantaEffect = useRef<any>(null);
   const scriptsLoadedRef = useRef(false);
@@ -211,9 +212,11 @@ export default function AnimatedBackground({
 
   useEffect(() => {
     const healthStats = healthStatsRef.current;
-    const timeoutId = setTimeout(() => {
-      initializeVanta();
-    }, 100);
+    const timeoutId = enableExternalClouds
+      ? setTimeout(() => {
+          initializeVanta();
+        }, 100)
+      : null;
 
     window.addEventListener("resize", handleResize);
     window.addEventListener("orientationchange", handleResize);
@@ -242,8 +245,13 @@ export default function AnimatedBackground({
     // Update sky height as the user scrolls (ensures sky disappears on scroll)
     window.addEventListener("scroll", updateSkyFromScroll, { passive: true });
 
+    if (!enableExternalClouds) {
+      healthStats.vantaOK = true;
+      healthStats.threeOK = true;
+    }
+
     return () => {
-      clearTimeout(timeoutId);
+      if (timeoutId) clearTimeout(timeoutId);
       window.removeEventListener("resize", handleResize);
       window.removeEventListener("orientationchange", handleResize);
       window.removeEventListener("scroll", updateSkyFromScroll);
@@ -257,14 +265,14 @@ export default function AnimatedBackground({
       clearTimeout(t2);
       detachDPR?.();
     };
-  }, [initializeVanta, handleResize, updateSkyFromScroll]);
+  }, [enableExternalClouds, initializeVanta, handleResize, updateSkyFromScroll]);
 
   // Update theme when it changes
   useEffect(() => {
-    if (vantaEffect.current && window.VANTA) {
+    if (enableExternalClouds && vantaEffect.current && window.VANTA) {
       initializeVanta();
     }
-  }, [theme, initializeVanta]);
+  }, [enableExternalClouds, theme, initializeVanta]);
 
   // Public API methods
   const start = useCallback(() => {
@@ -317,6 +325,9 @@ export default function AnimatedBackground({
             style={{
               width: "100%",
               height: "100%",
+              background: enableExternalClouds
+                ? "transparent"
+                : "linear-gradient(180deg, rgba(76,197,246,0.95) 0%, rgba(173,193,222,0.85) 52%, rgba(255,255,255,0) 100%)",
               pointerEvents: prefersReducedMotion ? "none" : "auto",
               display: "block",
             }}

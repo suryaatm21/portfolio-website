@@ -18,12 +18,12 @@ export function FXMounts(): JSX.Element | null {
           enabled
           count={7}
           colors={["#050505", "#111111", "#1a1a1a"]}
-          size={15}
+          size={8}
           speedCap={5.2}
           forces={{
-            separation: 2.6,
+            separation: 3.1,
             alignment: 0.95,
-            cohesion: 0.35,
+            cohesion: 0.28,
             trail: 2.9,
           }}
           zIndex={0}

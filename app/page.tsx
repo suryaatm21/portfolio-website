@@ -101,8 +101,8 @@ export default function Home() {
           </div>
         </Section>
 
-        {/* Coursework cylindrical animation — Oxanium for the sci-fi scroll feel */}
-        <div className="w-full py-12 md:py-16 preview-oxanium">
+        {/* Coursework cylindrical animation */}
+        <div className="w-full py-12 md:py-16">
           <CylindricalText
             items={education.coursework}
             sectionLabel="Scroll through my coursework journey"

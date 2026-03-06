@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Manrope, Oxanium } from "next/font/google";
+import { Inter, Manrope } from "next/font/google";
 import type React from "react";
 
 import "./globals.css";
@@ -23,13 +23,6 @@ const manrope = Manrope({
   weight: ["500", "600", "700"],
 });
 
-/* Kept for coursework cylindrical section */
-const oxanium = Oxanium({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-oxanium",
-  weight: ["600", "700"],
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://surya.theuntab.com"),
@@ -136,7 +129,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${manrope.variable} ${oxanium.variable}`}
+      className={`${inter.variable} ${manrope.variable}`}
       suppressHydrationWarning>
       <body className="bg-background text-foreground font-body antialiased">
         <ThemeProvider

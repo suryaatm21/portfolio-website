@@ -87,7 +87,7 @@ export function BirdsCursor({
   enabled = false,
   count = 7,
   colors = ["#050505", "#111111", "#1a1a1a"],
-  size = 15,
+  size = 8,
   speedCap = 5.2,
   forces = DEFAULT_FORCES,
   zIndex = 0,
@@ -139,8 +139,8 @@ export function BirdsCursor({
     });
 
     for (let index = 0; index < count; index += 1) {
-      const xSpread = (Math.random() - 0.5) * window.innerWidth * 0.38;
-      const ySpread = (Math.random() - 0.5) * window.innerHeight * 0.18;
+      const xSpread = (Math.random() - 0.5) * window.innerWidth * 0.48;
+      const ySpread = (Math.random() - 0.5) * window.innerHeight * 0.22;
 
       positions[index * 2] = anchorX + xSpread;
       positions[index * 2 + 1] = anchorY + ySpread;
@@ -232,7 +232,7 @@ export function BirdsCursor({
       let cohesionY = 0;
       let neighbors = 0;
 
-      const neighborRadius = 90;
+      const neighborRadius = 108;
 
       for (let index = 0; index < count; index += 1) {
         if (index === boidIndex) continue;
