@@ -116,7 +116,7 @@ export function CylindricalText({
       {/* 3D text wrapper */}
       <ul
         ref={textWrapperRef}
-        className="absolute left-0 top-0 h-full w-full text-center text-base font-bold uppercase leading-tight tracking-wider text-black sm:text-lg md:text-xl lg:text-2xl xl:text-3xl"
+        className="absolute left-0 top-0 h-full w-full text-center font-bold uppercase leading-tight tracking-wider text-black"
         style={{
           transformStyle: "preserve-3d",
           transformOrigin: "center center",
@@ -131,7 +131,7 @@ export function CylindricalText({
             ref={(el) => {
               itemsRef.current[index] = el;
             }}
-            className="absolute left-1/2 top-1/2 w-full max-w-[90vw] px-4 text-ellipsis"
+            className="absolute left-1/2 top-1/2 w-full max-w-[88vw] px-6"
             style={{
               transformStyle: "preserve-3d",
               backfaceVisibility: "hidden",
@@ -139,6 +139,10 @@ export function CylindricalText({
               MozOsxFontSmoothing: "grayscale",
               textRendering: "optimizeLegibility",
               willChange: "transform",
+              // Dynamically scale font size: long titles get smaller
+              fontSize: item.length > 40
+                ? `clamp(0.65rem, ${Math.max(1.2, 3.5 - item.length * 0.04)}vw, 1.4rem)`
+                : `clamp(0.75rem, ${Math.max(1.8, 4.5 - item.length * 0.04)}vw, 2rem)`,
             }}>
             {item}
           </li>

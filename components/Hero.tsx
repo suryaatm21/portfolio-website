@@ -129,7 +129,7 @@ export function Hero(): React.ReactElement {
                     variant="outline"
                     size="lg"
                     asChild
-                    className="border-border/50 text-foreground hover:bg-accent/10 px-8 py-3 text-base font-medium group hover-sweep">
+                    className="border-white/30 text-white bg-white/8 hover:bg-white/15 px-8 py-3 text-base font-medium group hover-sweep">
                     <a
                       href={hero.cta.secondary.href}
                       target="_blank"
