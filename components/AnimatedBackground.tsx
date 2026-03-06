@@ -1,30 +1,34 @@
 "use client";
 
-import React, { useEffect, useRef, useCallback } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 
 interface AnimatedBackgroundProps {
   theme?: "dark" | "light";
 }
 
-declare global {
-  interface Window {
-    VANTA: any;
-    THREE: any;
-  }
+interface VantaEffect {
+  destroy?: () => void;
+  pause?: () => void;
+  play?: () => void;
+  resize?: () => void;
 }
+
+type VantaCloudsFactory = (options: Record<string, unknown>) => VantaEffect;
 
 export default function AnimatedBackground({
   theme: propTheme,
 }: AnimatedBackgroundProps): JSX.Element {
   // Force light theme since dark mode is disabled
   const theme = propTheme || "light";
-  const enableExternalClouds = process.env.NODE_ENV === "production";
   const vantaRef = useRef<HTMLDivElement>(null);
-  const vantaEffect = useRef<any>(null);
-  const scriptsLoadedRef = useRef(false);
+  const vantaEffect = useRef<VantaEffect | null>(null);
+  const vantaFactoryRef = useRef<VantaCloudsFactory | null>(null);
+  const threeRef = useRef<Record<string, unknown> | null>(null);
+  const modulesLoadedRef = useRef(false);
   const heroDocTopRef = useRef<number>(0);
   const baseClipRef = useRef<number>(320);
   const baseFadeRef = useRef<number>(220);
+  const [, setHealthVersion] = useState(0);
   const healthStatsRef = useRef({
     tailwindOK: true,
     vantaOK: false,
@@ -38,90 +42,61 @@ export default function AnimatedBackground({
       ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
       : false;
 
-  const loadScript = useCallback(
-    (src: string, key: "THREE" | "VANTA"): Promise<boolean> => {
-      if (typeof window === "undefined") return Promise.resolve(false);
-      if (window[key]) return Promise.resolve(true);
+  const refreshHealthStats = useCallback(() => {
+    setHealthVersion((current) => current + 1);
+  }, []);
 
-      return new Promise((resolve) => {
-        const existing = document.querySelector(
-          `script[data-animated-bg="${key}"]`,
-        ) as HTMLScriptElement | null;
+  const loadModules = useCallback(async (): Promise<boolean> => {
+    if (modulesLoadedRef.current) return true;
 
-        if (existing) {
-          existing.addEventListener("load", () => resolve(true), { once: true });
-          existing.addEventListener("error", () => resolve(false), {
-            once: true,
-          });
-          return;
-        }
+    try {
+      const [threeModule, cloudsModule] = await Promise.all([
+        import("three"),
+        import("vanta/dist/vanta.clouds.min"),
+      ]);
 
-        const script = document.createElement("script");
-        script.src = src;
-        script.async = true;
-        script.crossOrigin = "anonymous";
-        script.dataset.animatedBg = key;
+      const cloudsFactory = (
+        "default" in cloudsModule ? cloudsModule.default : cloudsModule
+      ) as unknown as VantaCloudsFactory;
 
-        const handleLoad = () => resolve(true);
-        const handleError = (event: Event) => {
-          event.preventDefault?.();
-          event.stopPropagation?.();
-          console.warn(`Failed to load background dependency: ${key}`);
-          resolve(false);
-        };
+      threeRef.current = threeModule as unknown as Record<string, unknown>;
+      vantaFactoryRef.current = cloudsFactory;
+      modulesLoadedRef.current = true;
+      healthStatsRef.current.threeOK = true;
+      healthStatsRef.current.vantaOK = true;
+      refreshHealthStats();
 
-        script.addEventListener("load", handleLoad, { once: true });
-        script.addEventListener("error", handleError, {
-          once: true,
-          capture: true,
-        });
-        document.head.appendChild(script);
-      });
-    },
-    [],
-  );
-
-  const loadScripts = useCallback(async (): Promise<boolean> => {
-    if (scriptsLoadedRef.current) return true;
-
-    const [threeLoaded, vantaLoaded] = await Promise.all([
-      loadScript(
-        "https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js",
-        "THREE",
-      ),
-      loadScript(
-        "https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.clouds.min.js",
-        "VANTA",
-      ),
-    ]);
-
-    scriptsLoadedRef.current = true;
-    healthStatsRef.current.threeOK = !!window.THREE;
-    healthStatsRef.current.vantaOK = !!window.VANTA;
-
-    return threeLoaded && vantaLoaded && !!window.THREE && !!window.VANTA;
-  }, [loadScript]);
+      return true;
+    } catch (error) {
+      console.error("Failed to load Vanta modules:", error);
+      healthStatsRef.current.threeOK = false;
+      healthStatsRef.current.vantaOK = false;
+      healthStatsRef.current.cloudsActive = false;
+      refreshHealthStats();
+      return false;
+    }
+  }, [refreshHealthStats]);
 
   const initializeVanta = useCallback(async () => {
     if (!vantaRef.current) return;
 
     try {
-      const scriptsReady = await loadScripts();
+      const modulesReady = await loadModules();
 
-      if (!scriptsReady || !window.VANTA || !window.THREE) {
+      if (!modulesReady || !threeRef.current || !vantaFactoryRef.current) {
         console.warn("Vanta.js or Three.js not loaded properly");
         return;
       }
 
       // Clean up existing effect
       if (vantaEffect.current) {
-        vantaEffect.current.destroy();
+        vantaEffect.current.destroy?.();
       }
 
       // Configure Vanta clouds for light theme only
       const vantaConfig = {
         el: vantaRef.current,
-        THREE: window.THREE,
+        THREE: threeRef.current,
         mouseControls: !prefersReducedMotion,
         touchControls: !prefersReducedMotion,
         gyroControls: false,
@@ -137,20 +112,18 @@ export default function AnimatedBackground({
         speed: prefersReducedMotion ? 0.2 : 1.0,
       };
 
-      if (window.VANTA && window.VANTA.CLOUDS) {
-        vantaEffect.current = window.VANTA.CLOUDS(vantaConfig);
-      } else {
-        console.warn("VANTA.CLOUDS not available on window");
-        return;
-      }
+      vantaEffect.current = vantaFactoryRef.current(vantaConfig);
       healthStatsRef.current.cloudsActive = true;
+      refreshHealthStats();
 
       console.log("Vanta.js clouds initialized successfully");
     } catch (error) {
       console.error("Failed to initialize Vanta.js:", error);
       healthStatsRef.current.vantaOK = false;
+      healthStatsRef.current.cloudsActive = false;
+      refreshHealthStats();
     }
-  }, [prefersReducedMotion, loadScripts]);
+  }, [loadModules, prefersReducedMotion, refreshHealthStats]);
 
   // Update the CSS variables for sky based on current scroll position
   const updateSkyFromScroll = useCallback(() => {
@@ -211,12 +184,9 @@ export default function AnimatedBackground({
   }, [updateSkyFromScroll]);
 
   useEffect(() => {
-    const healthStats = healthStatsRef.current;
-    const timeoutId = enableExternalClouds
-      ? setTimeout(() => {
-          initializeVanta();
-        }, 100)
-      : null;
+    const timeoutId = setTimeout(() => {
+      initializeVanta();
+    }, 100);
 
     window.addEventListener("resize", handleResize);
     window.addEventListener("orientationchange", handleResize);
@@ -245,34 +215,30 @@ export default function AnimatedBackground({
     // Update sky height as the user scrolls (ensures sky disappears on scroll)
     window.addEventListener("scroll", updateSkyFromScroll, { passive: true });
 
-    if (!enableExternalClouds) {
-      healthStats.vantaOK = true;
-      healthStats.threeOK = true;
-    }
-
     return () => {
-      if (timeoutId) clearTimeout(timeoutId);
+      clearTimeout(timeoutId);
       window.removeEventListener("resize", handleResize);
       window.removeEventListener("orientationchange", handleResize);
       window.removeEventListener("scroll", updateSkyFromScroll);
 
       if (vantaEffect.current) {
-        vantaEffect.current.destroy();
+        vantaEffect.current.destroy?.();
         vantaEffect.current = null;
       }
-      healthStats.cloudsActive = false;
+      healthStatsRef.current.cloudsActive = false;
+      refreshHealthStats();
       clearTimeout(t1);
       clearTimeout(t2);
       detachDPR?.();
     };
-  }, [enableExternalClouds, initializeVanta, handleResize, updateSkyFromScroll]);
+  }, [initializeVanta, handleResize, refreshHealthStats, updateSkyFromScroll]);
 
   // Update theme when it changes
   useEffect(() => {
-    if (enableExternalClouds && vantaEffect.current && window.VANTA) {
+    if (vantaEffect.current && vantaFactoryRef.current) {
       initializeVanta();
     }
-  }, [enableExternalClouds, theme, initializeVanta]);
+  }, [theme, initializeVanta]);
 
   // Public API methods
   const start = useCallback(() => {
@@ -325,9 +291,8 @@ export default function AnimatedBackground({
             style={{
               width: "100%",
               height: "100%",
-              background: enableExternalClouds
-                ? "transparent"
-                : "linear-gradient(180deg, rgba(76,197,246,0.95) 0%, rgba(173,193,222,0.85) 52%, rgba(255,255,255,0) 100%)",
+              background:
+                "linear-gradient(180deg, rgba(76,197,246,0.95) 0%, rgba(173,193,222,0.85) 52%, rgba(255,255,255,0) 100%)",
               pointerEvents: prefersReducedMotion ? "none" : "auto",
               display: "block",
             }}
