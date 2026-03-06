@@ -5,10 +5,10 @@ import { ArrowRight, Github, Linkedin, Mail, ExternalLink } from "lucide-react";
 import Image from "next/image";
 import type React from "react";
 
+import { HeroBirdsHint } from "@/components/HeroBirdsHint";
 import { AnimatedButton } from "@/components/animations/AnimatedButton";
 import { FloatingElement } from "@/components/animations/FloatingElement";
 import { TextReveal } from "@/components/animations/TextReveal";
-import { HeroBirdsHint } from "@/components/HeroBirdsHint";
 import { Button } from "@/components/ui/button";
 import { hero } from "@/content/site";
 

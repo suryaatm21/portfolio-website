@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { ExternalLink, CheckCircle2 } from 'lucide-react';
+import { ExternalLink, CheckCircle2 } from "lucide-react";
 
-import { AnimatedButton } from '@/components/animations/AnimatedButton';
-import { FadeInUp } from '@/components/animations/FadeInUp';
-import { FloatingElement } from '@/components/animations/FloatingElement';
-import { TextReveal } from '@/components/animations/TextReveal';
-import { sections, resources } from '@/content/site';
+import { AnimatedButton } from "@/components/animations/AnimatedButton";
+import { FadeInUp } from "@/components/animations/FadeInUp";
+import { FloatingElement } from "@/components/animations/FloatingElement";
+import { TextReveal } from "@/components/animations/TextReveal";
+import { sections, resources } from "@/content/site";
 
 export function ResourcesList() {
   return (
@@ -20,7 +20,8 @@ export function ResourcesList() {
                   mode="word"
                   preset="scale"
                   stagger={80}
-                  threshold={0.2}>
+                  threshold={0.2}
+                >
                   {sections.resources.title}
                 </TextReveal>
               </h2>
@@ -32,7 +33,8 @@ export function ResourcesList() {
                   preset="fadeUp"
                   stagger={40}
                   delay={400}
-                  threshold={0.2}>
+                  threshold={0.2}
+                >
                   {sections.resources.description}
                 </TextReveal>
               </p>
@@ -54,7 +56,8 @@ export function ResourcesList() {
                           href={item.href}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-white hover:text-brand-accent transition-colors font-medium flex items-center gap-2 group mb-1">
+                          className="text-white hover:text-brand-accent transition-colors font-medium flex items-center gap-2 group mb-1"
+                        >
                           {item.title}
                           <ExternalLink className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
                         </a>
@@ -81,11 +84,13 @@ export function ResourcesList() {
                   asChild
                   variant="cta"
                   size="lg"
-                  className="shadow-lg">
+                  className="shadow-lg"
+                >
                   <a
                     href={sections.resources.buttonHref}
                     target="_blank"
-                    rel="noopener noreferrer">
+                    rel="noopener noreferrer"
+                  >
                     {sections.resources.buttonText}
                   </a>
                 </AnimatedButton>

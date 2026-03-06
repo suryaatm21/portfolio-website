@@ -1,8 +1,8 @@
-import { ExternalLink } from 'lucide-react';
-import React from 'react';
+import { ExternalLink } from "lucide-react";
+import React from "react";
 
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface ResourceCardProps {
   title: string;
@@ -13,7 +13,7 @@ export function ResourceCard({
   title,
   href,
 }: ResourceCardProps): React.ReactElement {
-  const isComingSoon = href === '#';
+  const isComingSoon = href === "#";
 
   return (
     <Card className="tinted-glass-light hover-sweep group">
@@ -34,7 +34,8 @@ export function ResourceCard({
           <Button
             asChild
             variant="outline"
-            className="w-full hover:bg-brand-accent hover:text-white border-brand-accent/20 bg-transparent">
+            className="w-full hover:bg-brand-accent hover:text-white border-brand-accent/20 bg-transparent"
+          >
             <a href={href} target="_blank" rel="noopener noreferrer">
               Access Resource
             </a>

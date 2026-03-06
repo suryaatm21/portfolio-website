@@ -251,6 +251,7 @@ export default function AnimatedBackground({
   }, [updateSkyFromScroll]);
 
   useEffect(() => {
+    const healthStats = healthStatsRef.current;
     const timeoutId = setTimeout(() => {
       initializeVanta();
     }, 100);
@@ -292,7 +293,7 @@ export default function AnimatedBackground({
         vantaEffect.current.destroy?.();
         vantaEffect.current = null;
       }
-      healthStatsRef.current.cloudsActive = false;
+      healthStats.cloudsActive = false;
       refreshHealthStats();
       clearTimeout(t1);
       clearTimeout(t2);

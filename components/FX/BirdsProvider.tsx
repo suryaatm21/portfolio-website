@@ -35,7 +35,7 @@ export function isEditableTarget(target: EventTarget | null): boolean {
 
   return (
     target.isContentEditable ||
-    target.closest('[contenteditable="true"]') instanceof HTMLElement
+    target.closest("[contenteditable=\"true\"]") instanceof HTMLElement
   );
 }
 

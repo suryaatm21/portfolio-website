@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+
 import { useBirdsFx } from "@/components/FX/BirdsProvider";
 
 const BirdsCursor = dynamic(
