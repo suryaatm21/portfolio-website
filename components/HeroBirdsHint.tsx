@@ -24,7 +24,7 @@ export function HeroBirdsHint(): JSX.Element | null {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: 0.8, ease: "easeOut" }}>
-      <p className="inline-flex flex-wrap items-center justify-center gap-2 px-1 py-1 text-sm font-medium tracking-wide text-slate-100/90 xl:justify-start">
+      <p className="inline-flex flex-wrap items-center justify-center gap-2 px-1 py-1 text-sm font-medium tracking-wide text-black/80 xl:justify-start">
         <span>{hint.before.trimEnd()}</span>
         <kbd className="kbd-pill" aria-label="Press keyboard key B">
           B

@@ -15,22 +15,78 @@ interface VantaEffect {
 
 type VantaCloudsFactory = (options: Record<string, unknown>) => VantaEffect;
 
-const SKY_PALETTE = {
-  backgroundColor: 0xf7fbff,
-  skyColor: 0x8ed8f8,
-  cloudColor: 0xf2f1ee,
-  cloudShadowColor: 0xb8cddd,
-  sunColor: 0xfff1c2,
-  sunGlareColor: 0xffdca8,
-  sunlightColor: 0xfff7d6,
-} as const;
+interface SkyPreset {
+  gradients: {
+    canvas: string;
+    overlay: string;
+  };
+  vanta: {
+    backgroundColor: number;
+    skyColor: number;
+    cloudColor: number;
+    cloudShadowColor: number;
+    sunColor: number;
+    sunGlareColor: number;
+    sunlightColor: number;
+  };
+}
 
-const SKY_GRADIENT = {
-  canvas:
-    "linear-gradient(180deg, rgba(158,221,247,0.92) 0%, rgba(198,234,247,0.82) 55%, rgba(255,255,255,0) 100%)",
-  overlay:
-    "linear-gradient(to bottom, rgba(134,212,244,0.95) 0%, rgba(178,228,246,0.88) var(--sky-solid-height, 320px), rgba(178,228,246,0) calc(var(--sky-solid-height, 320px) + var(--sky-fade-length, 220px)))",
-} as const;
+const SKY_PRESETS = {
+  previousSkyBlue: {
+    gradients: {
+      canvas:
+        "linear-gradient(180deg, rgba(76,197,246,0.95) 0%, rgba(173,193,222,0.85) 52%, rgba(255,255,255,0) 100%)",
+      overlay:
+        "linear-gradient(to bottom, rgba(104,184,215,1) 0%, rgba(104,184,215,1) var(--sky-solid-height, 320px), rgba(104,184,215,0) calc(var(--sky-solid-height, 320px) + var(--sky-fade-length, 220px)))",
+    },
+    vanta: {
+      backgroundColor: 0xffffff,
+      skyColor: 0x4cc5f6,
+      cloudColor: 0xadc1de,
+      cloudShadowColor: 0x183550,
+      sunColor: 0xff9919,
+      sunGlareColor: 0xff6653,
+      sunlightColor: 0xff9933,
+    },
+  },
+  softDaylight: {
+    gradients: {
+      canvas:
+        "linear-gradient(180deg, rgba(124,205,238,0.88) 0%, rgba(188,220,233,0.72) 55%, rgba(255,255,255,0) 100%)",
+      overlay:
+        "linear-gradient(to bottom, rgba(122,205,240,0.9) 0%, rgba(171,220,239,0.8) var(--sky-solid-height, 320px), rgba(171,220,239,0) calc(var(--sky-solid-height, 320px) + var(--sky-fade-length, 220px)))",
+    },
+    vanta: {
+      backgroundColor: 0xf8fbfd,
+      skyColor: 0x82d0f1,
+      cloudColor: 0xd3dbe2,
+      cloudShadowColor: 0x88a5bb,
+      sunColor: 0xffe1ab,
+      sunGlareColor: 0xffcd93,
+      sunlightColor: 0xffefc8,
+    },
+  },
+  goldenHour: {
+    gradients: {
+      canvas:
+        "linear-gradient(180deg, rgba(244,186,145,0.9) 0%, rgba(232,190,188,0.7) 40%, rgba(184,205,222,0.45) 72%, rgba(255,255,255,0) 100%)",
+      overlay:
+        "linear-gradient(to bottom, rgba(239,171,120,0.92) 0%, rgba(232,185,145,0.82) var(--sky-solid-height, 320px), rgba(232,185,145,0) calc(var(--sky-solid-height, 320px) + var(--sky-fade-length, 220px)))",
+    },
+    vanta: {
+      backgroundColor: 0xfff6eb,
+      skyColor: 0xf0b07c,
+      cloudColor: 0xd8c0b7,
+      cloudShadowColor: 0x7c6674,
+      sunColor: 0xffc56e,
+      sunGlareColor: 0xffa86e,
+      sunlightColor: 0xffddb0,
+    },
+  },
+} as const satisfies Record<string, SkyPreset>;
+
+const ACTIVE_SKY_PRESET = "softDaylight";
+const ACTIVE_SKY = SKY_PRESETS[ACTIVE_SKY_PRESET];
 
 export default function AnimatedBackground({
   theme: propTheme,
@@ -119,7 +175,7 @@ export default function AnimatedBackground({
         gyroControls: false,
         minHeight: 200.0,
         minWidth: 200.0,
-        ...SKY_PALETTE,
+        ...ACTIVE_SKY.vanta,
         speed: prefersReducedMotion ? 0.2 : 1.0,
       };
 
@@ -302,7 +358,7 @@ export default function AnimatedBackground({
             style={{
               width: "100%",
               height: "100%",
-              background: SKY_GRADIENT.canvas,
+              background: ACTIVE_SKY.gradients.canvas,
               pointerEvents: prefersReducedMotion ? "none" : "auto",
               display: "block",
             }}
@@ -323,7 +379,7 @@ export default function AnimatedBackground({
           width: "100vw",
           height:
             "calc(var(--sky-solid-height, calc(var(--nav-height, 4rem) + 24px)) + var(--sky-fade-length, 220px))",
-          background: SKY_GRADIENT.overlay,
+          background: ACTIVE_SKY.gradients.overlay,
           zIndex: -1,
           pointerEvents: "none",
           opacity: "var(--sky-overlay-opacity, 1)",
@@ -337,6 +393,7 @@ export default function AnimatedBackground({
           <div>Three.js: {healthStatsRef.current.threeOK ? "✓" : "✗"}</div>
           <div>Vanta: {healthStatsRef.current.vantaOK ? "✓" : "✗"}</div>
           <div>Clouds: {healthStatsRef.current.cloudsActive ? "✓" : "✗"}</div>
+          <div>Preset: {ACTIVE_SKY_PRESET}</div>
           <div>
             Colors: {healthStatsRef.current.customColors ? "Custom" : "Default"}
           </div>
