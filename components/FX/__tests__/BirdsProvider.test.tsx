@@ -101,7 +101,7 @@ describe("BirdsProvider", () => {
     });
   });
 
-  it("toggles when pressing B", async () => {
+  it("toggles when pressing F", async () => {
     render(
       <BirdsProvider>
         <BirdsConsumer />
@@ -112,7 +112,7 @@ describe("BirdsProvider", () => {
       expect(screen.getByTestId("enabled")).toHaveTextContent("true");
     });
 
-    fireEvent.keyDown(window, { code: "KeyB" });
+    fireEvent.keyDown(window, { code: "KeyF" });
 
     expect(screen.getByTestId("enabled")).toHaveTextContent("false");
     expect(window.localStorage.getItem(BIRDS_STORAGE_KEY)).toBe("false");
@@ -132,7 +132,7 @@ describe("BirdsProvider", () => {
       expect(screen.getByTestId("enabled")).toHaveTextContent("true");
     });
 
-    fireEvent.keyDown(input, { code: "KeyB" });
+    fireEvent.keyDown(input, { code: "KeyF" });
 
     expect(screen.getByTestId("enabled")).toHaveTextContent("true");
   });

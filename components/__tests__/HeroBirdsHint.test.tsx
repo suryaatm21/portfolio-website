@@ -59,7 +59,7 @@ describe("HeroBirdsHint", () => {
 
     await waitFor(() => {
       expect(
-        screen.getByText(/Birds track your cursor/i),
+        screen.getByText(/Watch the clouds/i),
       ).toBeInTheDocument();
     });
 
