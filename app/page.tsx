@@ -75,6 +75,7 @@ export default function Home() {
           <div className="max-w-4xl mx-auto">
             <header className="text-center mb-12">
               <FloatingElement variant="subtle">
+                {/* Education uses the existing Urbanist heading — no preview override */}
                 <h2 className="text-3xl sm:text-4xl font-heading font-semibold text-black mb-4 drop-shadow-sm">
                   <TextReveal
                     mode="word"
@@ -100,7 +101,7 @@ export default function Home() {
           </div>
         </Section>
 
-        {/* Coursework Cylindrical Animation - Reduced spacing for better flow */}
+        {/* Coursework cylindrical animation */}
         <div className="w-full py-12 md:py-16">
           <CylindricalText
             items={education.coursework}

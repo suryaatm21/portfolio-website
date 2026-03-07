@@ -1,9 +1,10 @@
-import type { Metadata } from "next";
-import { Inter, Urbanist } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Inter, Manrope } from "next/font/google";
 import type React from "react";
 
 import "./globals.css";
 import AnimatedBackground from "@/components/AnimatedBackground";
+import { BirdsProvider } from "@/components/FX/BirdsProvider";
 import { FXMounts } from "@/components/FX/FXMounts";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
@@ -15,14 +16,16 @@ const inter = Inter({
   weight: ["400"],
 });
 
-const urbanist = Urbanist({
+const manrope = Manrope({
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-urbanist",
-  weight: ["600"],
+  variable: "--font-manrope",
+  weight: ["500", "600", "700"],
 });
 
+
 export const metadata: Metadata = {
+  metadataBase: new URL("https://surya.theuntab.com"),
   title: "Surya's Portfolio Website",
   description:
     "Surya Atmuri - full stack developer specializing in modern web technologies, cloud/data driven systems, and scalable applications. Building the future of browser productivity.",
@@ -69,19 +72,13 @@ export const metadata: Metadata = {
   generator: "Next.js",
   applicationName: "Surya's Portfolio",
   referrer: "origin-when-cross-origin",
-  colorScheme: "light dark",
-  viewport: "width=device-width, initial-scale=1",
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#2D3748" },
-    { media: "(prefers-color-scheme: dark)", color: "#E2E8F0" },
-  ],
   openGraph: {
     type: "website",
     locale: "en_US",
     url: "https://surya.theuntab.com",
     title: "Surya - Full Stack Developer | Modern Web Solutions",
     description:
-      " surya atmuri - full stack developer specializing in scalable web technologies, cloud computing, and applied AI.",
+      "Surya Atmuri - full stack developer specializing in scalable web technologies, cloud computing, and applied AI.",
     siteName: "Surya's Portfolio",
     images: [
       {
@@ -98,7 +95,7 @@ export const metadata: Metadata = {
     description:
       "Personal portfolio of Surya Atmuri - Full Stack Developer specializing in modern web technologies.",
     images: ["/og.png"],
-    creator: "@yourusername",
+    creator: "@suryaatm21",
   },
   robots: {
     index: true,
@@ -113,6 +110,17 @@ export const metadata: Metadata = {
   },
 };
 
+/* Moved from metadata export – required by Next.js 15+ */
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  colorScheme: "dark",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#2D3748" },
+    { media: "(prefers-color-scheme: dark)", color: "#E2E8F0" },
+  ],
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -121,7 +129,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${urbanist.variable}`}
+      className={`${inter.variable} ${manrope.variable}`}
       suppressHydrationWarning>
       <body className="bg-background text-foreground font-body antialiased">
         <ThemeProvider
@@ -129,10 +137,14 @@ export default function RootLayout({
           defaultTheme="dark"
           enableSystem={false}
           disableTransitionOnChange>
-          <AnimatedBackground />
-          <FXMounts />
-          {children}
-          <Toaster />
+          <BirdsProvider>
+            <AnimatedBackground />
+            <FXMounts />
+            <div className="relative z-10">
+              {children}
+              <Toaster />
+            </div>
+          </BirdsProvider>
         </ThemeProvider>
       </body>
     </html>

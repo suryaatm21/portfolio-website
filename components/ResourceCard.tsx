@@ -16,7 +16,7 @@ export function ResourceCard({
   const isComingSoon = href === "#";
 
   return (
-    <Card className="soft-card group">
+    <Card className="tinted-glass-light hover-sweep group">
       <CardHeader className="pb-3">
         <CardTitle className="text-lg font-heading text-black flex items-center justify-between">
           {title}
@@ -34,7 +34,8 @@ export function ResourceCard({
           <Button
             asChild
             variant="outline"
-            className="w-full hover:bg-brand-accent hover:text-white border-brand-accent/20 bg-transparent">
+            className="w-full hover:bg-brand-accent hover:text-white border-brand-accent/20 bg-transparent"
+          >
             <a href={href} target="_blank" rel="noopener noreferrer">
               Access Resource
             </a>

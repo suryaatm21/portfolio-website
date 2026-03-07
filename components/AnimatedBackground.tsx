@@ -1,17 +1,92 @@
 "use client";
 
-import React, { useEffect, useRef, useCallback } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 
 interface AnimatedBackgroundProps {
   theme?: "dark" | "light";
 }
 
-declare global {
-  interface Window {
-    VANTA: any;
-    THREE: any;
-  }
+interface VantaEffect {
+  destroy?: () => void;
+  pause?: () => void;
+  play?: () => void;
+  resize?: () => void;
 }
+
+type VantaCloudsFactory = (options: Record<string, unknown>) => VantaEffect;
+
+interface SkyPreset {
+  gradients: {
+    canvas: string;
+    overlay: string;
+  };
+  vanta: {
+    backgroundColor: number;
+    skyColor: number;
+    cloudColor: number;
+    cloudShadowColor: number;
+    sunColor: number;
+    sunGlareColor: number;
+    sunlightColor: number;
+  };
+}
+
+const SKY_PRESETS = {
+  previousSkyBlue: {
+    gradients: {
+      canvas:
+        "linear-gradient(180deg, rgba(76,197,246,0.95) 0%, rgba(173,193,222,0.85) 52%, rgba(255,255,255,0) 100%)",
+      overlay:
+        "linear-gradient(to bottom, rgba(104,184,215,1) 0%, rgba(104,184,215,1) var(--sky-solid-height, 320px), rgba(104,184,215,0) calc(var(--sky-solid-height, 320px) + var(--sky-fade-length, 220px)))",
+    },
+    vanta: {
+      backgroundColor: 0xffffff,
+      skyColor: 0x4cc5f6,
+      cloudColor: 0xadc1de,
+      cloudShadowColor: 0x183550,
+      sunColor: 0xff9919,
+      sunGlareColor: 0xff6653,
+      sunlightColor: 0xff9933,
+    },
+  },
+  softDaylight: {
+    gradients: {
+      canvas:
+        "linear-gradient(180deg, rgba(124,205,238,0.88) 0%, rgba(188,220,233,0.72) 55%, rgba(255,255,255,0) 100%)",
+      overlay:
+        "linear-gradient(to bottom, rgba(122,205,240,0.9) 0%, rgba(171,220,239,0.8) var(--sky-solid-height, 320px), rgba(171,220,239,0) calc(var(--sky-solid-height, 320px) + var(--sky-fade-length, 220px)))",
+    },
+    vanta: {
+      backgroundColor: 0xf8fbfd,
+      skyColor: 0x82d0f1,
+      cloudColor: 0xd3dbe2,
+      cloudShadowColor: 0x88a5bb,
+      sunColor: 0xffe1ab,
+      sunGlareColor: 0xffcd93,
+      sunlightColor: 0xffefc8,
+    },
+  },
+  goldenHour: {
+    gradients: {
+      canvas:
+        "linear-gradient(180deg, rgba(244,186,145,0.9) 0%, rgba(232,190,188,0.7) 40%, rgba(184,205,222,0.45) 72%, rgba(255,255,255,0) 100%)",
+      overlay:
+        "linear-gradient(to bottom, rgba(239,171,120,0.92) 0%, rgba(232,185,145,0.82) var(--sky-solid-height, 320px), rgba(232,185,145,0) calc(var(--sky-solid-height, 320px) + var(--sky-fade-length, 220px)))",
+    },
+    vanta: {
+      backgroundColor: 0xfff6eb,
+      skyColor: 0xf0b07c,
+      cloudColor: 0xd8c0b7,
+      cloudShadowColor: 0x7c6674,
+      sunColor: 0xffc56e,
+      sunGlareColor: 0xffa86e,
+      sunlightColor: 0xffddb0,
+    },
+  },
+} as const satisfies Record<string, SkyPreset>;
+
+const ACTIVE_SKY_PRESET = "softDaylight";
+const ACTIVE_SKY = SKY_PRESETS[ACTIVE_SKY_PRESET];
 
 export default function AnimatedBackground({
   theme: propTheme,
@@ -19,11 +94,14 @@ export default function AnimatedBackground({
   // Force light theme since dark mode is disabled
   const theme = propTheme || "light";
   const vantaRef = useRef<HTMLDivElement>(null);
-  const vantaEffect = useRef<any>(null);
-  const scriptsLoadedRef = useRef(false);
+  const vantaEffect = useRef<VantaEffect | null>(null);
+  const vantaFactoryRef = useRef<VantaCloudsFactory | null>(null);
+  const threeRef = useRef<Record<string, unknown> | null>(null);
+  const modulesLoadedRef = useRef(false);
   const heroDocTopRef = useRef<number>(0);
   const baseClipRef = useRef<number>(320);
   const baseFadeRef = useRef<number>(220);
+  const [, setHealthVersion] = useState(0);
   const healthStatsRef = useRef({
     tailwindOK: true,
     vantaOK: false,
@@ -37,96 +115,82 @@ export default function AnimatedBackground({
       ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
       : false;
 
-  const loadScripts = useCallback(async (): Promise<boolean> => {
-    if (scriptsLoadedRef.current) return true;
-
-    return new Promise((resolve) => {
-      let scriptsToLoad = 2;
-      let scriptsLoaded = 0;
-
-      const checkComplete = () => {
-        scriptsLoaded++;
-        if (scriptsLoaded === scriptsToLoad) {
-          scriptsLoadedRef.current = true;
-          healthStatsRef.current.threeOK = !!window.THREE;
-          healthStatsRef.current.vantaOK = !!window.VANTA;
-          resolve(true);
-        }
-      };
-
-      // Load Three.js
-      const threeScript = document.createElement("script");
-      threeScript.src =
-        "https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js";
-      threeScript.onload = checkComplete;
-      threeScript.onerror = () => {
-        console.warn("Failed to load Three.js");
-        checkComplete();
-      };
-      document.head.appendChild(threeScript);
-
-      // Load Vanta Clouds
-      const vantaScript = document.createElement("script");
-      vantaScript.src =
-        "https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.clouds.min.js";
-      vantaScript.onload = checkComplete;
-      vantaScript.onerror = () => {
-        console.warn("Failed to load Vanta.js clouds");
-        checkComplete();
-      };
-      document.head.appendChild(vantaScript);
-    });
+  const refreshHealthStats = useCallback(() => {
+    setHealthVersion((current) => current + 1);
   }, []);
+
+  const loadModules = useCallback(async (): Promise<boolean> => {
+    if (modulesLoadedRef.current) return true;
+
+    try {
+      const [threeModule, cloudsModule] = await Promise.all([
+        import("three"),
+        import("vanta/dist/vanta.clouds.min"),
+      ]);
+
+      const cloudsFactory = (
+        "default" in cloudsModule ? cloudsModule.default : cloudsModule
+      ) as unknown as VantaCloudsFactory;
+
+      threeRef.current = threeModule as unknown as Record<string, unknown>;
+      vantaFactoryRef.current = cloudsFactory;
+      modulesLoadedRef.current = true;
+      healthStatsRef.current.threeOK = true;
+      healthStatsRef.current.vantaOK = true;
+      refreshHealthStats();
+
+      return true;
+    } catch (error) {
+      console.error("Failed to load Vanta modules:", error);
+      healthStatsRef.current.threeOK = false;
+      healthStatsRef.current.vantaOK = false;
+      healthStatsRef.current.cloudsActive = false;
+      refreshHealthStats();
+      return false;
+    }
+  }, [refreshHealthStats]);
 
   const initializeVanta = useCallback(async () => {
     if (!vantaRef.current) return;
 
     try {
-      await loadScripts();
+      const modulesReady = await loadModules();
 
-      if (!window.VANTA || !window.THREE) {
+      if (!modulesReady || !threeRef.current || !vantaFactoryRef.current) {
         console.warn("Vanta.js or Three.js not loaded properly");
         return;
       }
 
       // Clean up existing effect
       if (vantaEffect.current) {
-        vantaEffect.current.destroy();
+        vantaEffect.current.destroy?.();
       }
 
       // Configure Vanta clouds for light theme only
       const vantaConfig = {
         el: vantaRef.current,
-        THREE: window.THREE,
+        THREE: threeRef.current,
         mouseControls: !prefersReducedMotion,
         touchControls: !prefersReducedMotion,
         gyroControls: false,
         minHeight: 200.0,
         minWidth: 200.0,
-        backgroundColor: 0xffffff, // White background
-        skyColor: 0x68b8d7, // Light blue sky
-        cloudColor: 0xadc1de, // Warm gray clouds
-        cloudShadowColor: 0x183550, // Blue shadow
-        sunColor: 0xff9919, // Warm sun
-        sunGlareColor: 0xff6653, // Sun glare
-        sunlightColor: 0xff9933, // Bright sunlight
+        ...ACTIVE_SKY.vanta,
         speed: prefersReducedMotion ? 0.2 : 1.0,
       };
 
-      if (window.VANTA && window.VANTA.CLOUDS) {
-        vantaEffect.current = window.VANTA.CLOUDS(vantaConfig);
-      } else {
-        console.warn("VANTA.CLOUDS not available on window");
-        return;
-      }
+      vantaEffect.current = vantaFactoryRef.current(vantaConfig);
       healthStatsRef.current.cloudsActive = true;
+      refreshHealthStats();
 
       console.log("Vanta.js clouds initialized successfully");
     } catch (error) {
       console.error("Failed to initialize Vanta.js:", error);
       healthStatsRef.current.vantaOK = false;
+      healthStatsRef.current.cloudsActive = false;
+      refreshHealthStats();
     }
-  }, [prefersReducedMotion, loadScripts]);
+  }, [loadModules, prefersReducedMotion, refreshHealthStats]);
 
   // Update the CSS variables for sky based on current scroll position
   const updateSkyFromScroll = useCallback(() => {
@@ -226,19 +290,20 @@ export default function AnimatedBackground({
       window.removeEventListener("scroll", updateSkyFromScroll);
 
       if (vantaEffect.current) {
-        vantaEffect.current.destroy();
+        vantaEffect.current.destroy?.();
         vantaEffect.current = null;
       }
       healthStats.cloudsActive = false;
+      refreshHealthStats();
       clearTimeout(t1);
       clearTimeout(t2);
       detachDPR?.();
     };
-  }, [initializeVanta, handleResize, updateSkyFromScroll]);
+  }, [initializeVanta, handleResize, refreshHealthStats, updateSkyFromScroll]);
 
   // Update theme when it changes
   useEffect(() => {
-    if (vantaEffect.current && window.VANTA) {
+    if (vantaEffect.current && vantaFactoryRef.current) {
       initializeVanta();
     }
   }, [theme, initializeVanta]);
@@ -294,6 +359,7 @@ export default function AnimatedBackground({
             style={{
               width: "100%",
               height: "100%",
+              background: ACTIVE_SKY.gradients.canvas,
               pointerEvents: prefersReducedMotion ? "none" : "auto",
               display: "block",
             }}
@@ -314,9 +380,7 @@ export default function AnimatedBackground({
           width: "100vw",
           height:
             "calc(var(--sky-solid-height, calc(var(--nav-height, 4rem) + 24px)) + var(--sky-fade-length, 220px))",
-          background:
-            // Day sky gradient - light blue
-            "linear-gradient(to bottom, rgba(104,184,215,1) 0%, rgba(104,184,215,1) var(--sky-solid-height, 320px), rgba(104,184,215,0) calc(var(--sky-solid-height, 320px) + var(--sky-fade-length, 220px)))",
+          background: ACTIVE_SKY.gradients.overlay,
           zIndex: -1,
           pointerEvents: "none",
           opacity: "var(--sky-overlay-opacity, 1)",
@@ -330,6 +394,7 @@ export default function AnimatedBackground({
           <div>Three.js: {healthStatsRef.current.threeOK ? "✓" : "✗"}</div>
           <div>Vanta: {healthStatsRef.current.vantaOK ? "✓" : "✗"}</div>
           <div>Clouds: {healthStatsRef.current.cloudsActive ? "✓" : "✗"}</div>
+          <div>Preset: {ACTIVE_SKY_PRESET}</div>
           <div>
             Colors: {healthStatsRef.current.customColors ? "Custom" : "Default"}
           </div>
