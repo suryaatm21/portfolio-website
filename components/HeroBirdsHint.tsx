@@ -6,9 +6,17 @@ import React from "react";
 import { useBirdsFx } from "@/components/FX/BirdsProvider";
 import { hero } from "@/content/site";
 
-function getHintParts(copy: string): { before: string; after: string } {
-  const [before = copy, after = ""] = copy.split("{key}");
-  return { before, after };
+interface HintSegments {
+  beforeToggle: string;
+  between: string;
+  afterAdd: string;
+}
+
+function getHintSegments(copy: string): HintSegments {
+  const [beforeToggle = copy, afterToggle = ""] = copy.split("{toggleKey}");
+  const [between = "", afterAdd = ""] = afterToggle.split("{addKey}");
+
+  return { beforeToggle, between, afterAdd };
 }
 
 export function HeroBirdsHint(): JSX.Element | null {
@@ -16,7 +24,7 @@ export function HeroBirdsHint(): JSX.Element | null {
 
   if (!supported) return null;
 
-  const hint = getHintParts(hero.interactionHint);
+  const hint = getHintSegments(hero.interactionHint);
 
   return (
     <motion.div
@@ -25,11 +33,15 @@ export function HeroBirdsHint(): JSX.Element | null {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: 0.8, ease: "easeOut" }}>
       <p className="inline-flex flex-wrap items-center justify-center gap-2 px-1 py-1 text-sm font-medium tracking-wide text-black/80 xl:justify-start">
-        <span>{hint.before.trimEnd()}</span>
+        <span>{hint.beforeToggle.trimEnd()}</span>
+        <kbd className="kbd-pill" aria-label="Press keyboard key F">
+          F
+        </kbd>
+        <span>{hint.between.trim()}</span>
         <kbd className="kbd-pill" aria-label="Press keyboard key B">
           B
         </kbd>
-        <span>{hint.after.trimStart()}</span>
+        <span>{hint.afterAdd.trimStart()}</span>
       </p>
     </motion.div>
   );

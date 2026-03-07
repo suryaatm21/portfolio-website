@@ -1,4 +1,5 @@
 export const navigation = [
+  { label: "Me", href: "#home" },
   { label: "Resources", href: "#resources" },
   { label: "Experience", href: "#experience" },
   { label: "Projects", href: "#projects" },
@@ -11,7 +12,7 @@ export const hero = {
   tagline:
     "Junior in cs @ georgia tech building solutions to real problems. Bootstrapping Untab and sharing recruitment resources on LinkedIn 😁",
   interactionHint:
-    "Watch the clouds and birds follow your cursor - press {key} to toggle the flock",
+    "Press {toggleKey} to toggle the flock, and {addKey} to add a bird",
   profileImage: "https://i.imgur.com/0QUH8nY.jpg",
   profileImageAlt: "Profile picture",
   cta: {
@@ -56,12 +57,12 @@ export const hobbies = [
     emoji: "💪🏽",
   },
   {
-    name: "Anime: The Disastrous Life of Saiki K.",
+    name: "Anime: Food Wars",
     emoji: "🎥",
     color: "from-pink-500 to-purple-500",
   },
   {
-    name: "Reading: \"Demian\"",
+    name: "Reading: \"When Things Fall Apart\"",
     emoji: "📚",
     color: "from-blue-500 to-green-500",
   },
@@ -95,7 +96,7 @@ export const resources = [
     status: "available",
   },
   {
-    title: "Telegram Job Tracker",
+    title: "Job Tracker Bot (Telegram alerts)",
     href: "https://t.me/summer2026swe",
     description:
       "Always be the first to know about the latest openings in tech.",
@@ -162,60 +163,40 @@ export const timelineText = {
 };
 
 export const timeline = [
-  /*
   {
-    id: 'glossgenius',
-    title: 'Software Engineering Intern',
-    company: 'GlossGenius',
-    location: 'New York, NY',
-    period: 'Sep 2026 -- Dec 2026',
-    date: '2026-09-01',
-    type: 'internship',
-    bullets: [
-      'Incoming Fall 2026 AI Agents Team: Working on AI agentic product features facing 100,000+ client businesses',
-    ],
-    technologies: ['AI Agents'],
-  },
-  {
-    id: 'microsoft',
-    title: 'Software Engineering Intern',
-    company: 'Microsoft',
-    location: 'Redmond, WA',
-    period: 'May 2026 -- Aug 2026',
-    date: '2026-05-01',
-    type: 'internship',
-    bullets: [
-      'Incoming Summer 2026: Core AI Platforms Team',
-    ],
-    technologies: [],
-  },
-  */
-  {
-    id: "gtri",
+    id: "vip-research",
     title: "Undergraduate Researcher",
     company: "Georgia Tech Research Institute (GTRI)",
+    team: "LLM Inference Optimization Team",
     location: "Atlanta, GA",
     period: "Jan 2025 -- Present",
     date: "2025-01-01",
     type: "research",
     bullets: [
-      "Designing a RAG pipeline on LLM-guided evolutionary PyTorch architecture search on CIFAR-10, using 2 FAISS vector indices with a cross-encoder reranker to retrieve prior experiments and documentation for faster NAS convergence",
-      "Migrated the Python inference server to utilize vLLM’s continuous batching and PagedAttention, accelerating throughput by 3.6x and achieving >95% KV cache utilization to serve Llama-3.3-70B models within 80GB VRAM limits",
-      "Engineered a distributed fitness inheritance system with self-correcting LLM infrastructure on a SLURM cluster to reuse CNN checkpoints and autonomously resolve runtime errors, cutting 48+ redundant GPU evaluations per run",
+      "Developing Retrieval-Augmented Generation (RAG) system for LLM guided evolutionary neural architecture search with domain-specific corpus, improving context for CNN mutations with target 15-25% performance baseline improvement",
+      "Engineered distributed fitness inheritance system with checkpoint aware seeding, eliminating 16+ redundant GPU evaluations per run and reducing generation time by 35% across 12 generation cycles on CIFAR-10 data",
+      "Implemented server-side request batching with retry logic and load balancing with least connections algorithm, reliably achieving sub-250s average end-to-end latency across 52 evaluations per SLURM run with Deepseek-R1",
     ],
-    technologies: ["Python", "PyTorch", "vLLM", "SLURM", "FAISS"],
+    technologies: [
+      "Python",
+      "PyTorch",
+      "SLURM",
+      "Deepseek-R1",
+      "Convolutional Neural Networks",
+    ],
   },
   {
     id: "todd-agriscience",
     title: "Software Engineering Intern",
     company: "Todd Agriscience",
+    team: "Identity Access Management (IAM) & Localization Platform Team",
     location: "Los Angeles, CA",
     period: "Jun 2025 -- Sep 2025",
     date: "2025-06-01",
     type: "internship",
     bullets: [
-      "Formulated a role-based authentication system with NextAuth.js middleware and an AWS DynamoDB session store, centralizing user identity and securing admin routes with sub-10ms latency for 20 client dashboards",
-      "Integrated internationalization (i18n) into a Next.js 15/React 18 SaaS platform with middleware chaining to propagate locale context across authenticated redirects, resolving 4 production blockers to stabilize application routing",
+      "Engineered a role-based authentication system with NextAuth.js, middleware, and an AWS DynamoDB session store, securing all admin routes against unauthorized access while sustaining sub-10ms latency for 20 client dashboards",
+      "Resolved 4 critical production blockers in a Next.js 15/React 18 SaaS platform, fixing build errors, dependency conflicts, and context propagation failures in route redirects, supporting full internationalization (i18n) and updated test harnesses",
     ],
     technologies: [
       "Next.js",
@@ -229,21 +210,37 @@ export const timeline = [
     id: "acrotech-biopharma",
     title: "Software Engineering Intern",
     company: "Acrotech Biopharma Inc.",
+    team: "Commercial Operations Team",
     location: "East Windsor, NJ",
     period: "Jun 2024 -- Aug 2024",
     date: "2024-06-01",
     type: "internship",
     bullets: [
-      "Built a SharePoint intranet platform with SPFx, TypeScript, Webpack, and Gulp to centralize department resources behind role based permissions, driving 1,100+ cumulative employee visits within 3 months",
-      "Developed JavaScript Power Automate workflow schedules that use CRUD operations to synchronize Excel and SharePoint databases, enforcing eventual consistency and reliable record updates across 9 departments",
+      "Built a SharePoint based intranet platform leveraging SPFx, TypeScript, Webpack, and Gulp driving employee engagement with upwards of 1,100 total visits and 217 visits in the final 30 days of term",
+      "Configured CRUD workflows using Power Automate and JavaScript, improving backend synchronization efficiency and reducing manual input errors, contributing to a seamless experience for 17 unique users over 2 months",
+      "Analyzed data queries using SQL in PowerBI's SQL Server and Excel's command line to model commercial patterns of 400+ health care professionals and compare tele-sales call activity to determine sales impact in weekly reports",
     ],
-    technologies: ["SharePoint", "SPFx", "TypeScript", "Power Automate"],
+    technologies: ["SharePoint", "SPFx", "TypeScript", "Power Automate", "SQL"],
+  },
+  {
+    id: "sb-dental",
+    title: "Data Analyst Intern",
+    company: "SB Dental Studio",
+    location: "Plainsboro, NJ",
+    period: "Jun 2023 -- Jul 2023",
+    date: "2023-06-01",
+    type: "internship",
+    bullets: [
+      "Restructured patient data with Dentrix software, automating follow-ups and minimizing scheduling conflicts by 60%",
+      "Streamlined payment processing system, validating insurance policies for 140+ claim forms to ensure compliance",
+    ],
+    technologies: ["Dentrix", "Data Management", "Process Automation"],
   },
 ];
 
 export const projects = [
   {
-    title: "Telegram Job Tracker",
+    title: "Job Tracker Bot",
     summary:
       "Be the first to apply to any new entry-level job opening in tech. Join the Telegram channel below.",
     repo: "https://github.com/suryaatm21/job-tracker",
@@ -291,11 +288,12 @@ export const projects = [
 
 export const contact = {
   form: {
-    title: "Slide a DM",
+    title: "Slide in DMs",
     subjectLabel: "Subject",
-    subjectPlaceholder: "Exercise free will here",
+    subjectPlaceholder: "What would you like to discuss?",
     messageLabel: "Message",
-    messagePlaceholder: "Tell me about your team, question, or endeavors!",
+    messagePlaceholder:
+      "Tell me about your team, question, or endeavors! Or give me a book, song, or anime rec",
     submitText: "Send Message",
     disclaimer:
       "This will open your default email client with a prefilled message. Your email address will not be stored or shared.",
@@ -345,38 +343,17 @@ export const education = {
 };
 
 export const professionalExperience = [
-  /*
   {
-    id: 'glossgenius',
-    title: 'Software Engineering Intern',
-    company: 'GlossGenius',
-    location: 'New York, NY',
-    period: 'Sep 2026 -- Dec 2026',
-    bullets: [
-      'Incoming Fall 2026 AI Agents Team: Working on AI agentic product features facing 100,000+ client businesses',
-    ],
-  },
-  {
-    id: 'microsoft',
-    title: 'Software Engineering Intern',
-    company: 'Microsoft',
-    location: 'Redmond, WA',
-    period: 'May 2026 -- Aug 2026',
-    bullets: [
-      'Incoming Summer 2026: Core AI Platforms Team',
-    ],
-  },
-  */
-  {
-    id: "gtri",
+    id: "vip-research",
     title: "Undergraduate Researcher",
-    company: "Georgia Tech Research Institute (GTRI)",
+    company:
+      "Automated Algorithm Design - Vertically Integrated Projects (VIP)",
     location: "Atlanta, GA",
     period: "Jan 2025 -- Present",
     bullets: [
-      "Designing a RAG pipeline on LLM-guided evolutionary PyTorch architecture search on CIFAR-10, using 2 FAISS vector indices with a cross-encoder reranker to retrieve prior experiments and documentation for faster NAS convergence",
-      "Migrated the Python inference server to utilize vLLM’s continuous batching and PagedAttention, accelerating throughput by 3.6x and achieving >95% KV cache utilization to serve Llama-3.3-70B models within 80GB VRAM limits",
-      "Engineered a distributed fitness inheritance system with self-correcting LLM infrastructure on a SLURM cluster to reuse CNN checkpoints and autonomously resolve runtime errors, cutting 48+ redundant GPU evaluations per run",
+      "Developed an LLM-guided AutoML pipeline with Mixtral-8x7B to evolve PyTorch architectures for 3D point cloud classification, running 10 generations and benchmarking 100+ model variants per run with SLURM on PACE ICE",
+      "Advanced PointNet++ performance by evolving a variant that raised test accuracy from 62.7% to 67.1% (+7%), while reducing model complexity metrics to achieve a Pareto-optimal balance of accuracy and efficiency",
+      "Doubled request throughput with asynchronous batching using asyncio, cutting inference latency by 50%",
     ],
   },
   {
@@ -386,8 +363,8 @@ export const professionalExperience = [
     location: "Los Angeles, CA",
     period: "Jun 2025 -- Sep 2025",
     bullets: [
-      "Formulated a role-based authentication system with NextAuth.js middleware and an AWS DynamoDB session store, centralizing user identity and securing admin routes with sub-10ms latency for 20 client dashboards",
-      "Integrated internationalization (i18n) into a Next.js 15/React 18 SaaS platform with middleware chaining to propagate locale context across authenticated redirects, resolving 4 production blockers to stabilize application routing",
+      "Engineered a role-based authentication system with NextAuth.js, middleware, and an AWS DynamoDB session store, securing all admin routes against unauthorized access while sustaining sub-10ms latency for 20 client dashboards",
+      "Resolved 4 critical production blockers in a Next.js 15/React 18 SaaS platform, fixing build errors, dependency conflicts, and context propagation failures in route redirects, supporting full internationalization (i18n) and updated test harnesses",
     ],
   },
   {
@@ -397,8 +374,9 @@ export const professionalExperience = [
     location: "East Windsor, NJ",
     period: "Jun 2024 -- Aug 2024",
     bullets: [
-      "Built a SharePoint intranet platform with SPFx, TypeScript, Webpack, and Gulp to centralize department resources behind role based permissions, driving 1,100+ cumulative employee visits within 3 months",
-      "Developed JavaScript Power Automate workflow schedules that use CRUD operations to synchronize Excel and SharePoint databases, enforcing eventual consistency and reliable record updates across 9 departments",
+      "Built a SharePoint based intranet platform leveraging SPFx, TypeScript, Webpack, and Gulp driving employee engagement with upwards of 1,100 total visits and 217 visits in the final 30 days of term",
+      "Configured CRUD workflows using Power Automate and JavaScript, improving backend synchronization efficiency and reducing manual input errors, contributing to a seamless experience for 17 unique users over 2 months",
+      "Analyzed data queries using SQL in PowerBI's SQL Server and Excel's command line to model commercial patterns of 400+ health care professionals and compare tele-sales call activity to determine sales impact in weekly reports",
     ],
   },
 ];

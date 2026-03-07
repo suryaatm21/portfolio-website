@@ -1,18 +1,19 @@
-import path from "node:path";
-import { fileURLToPath } from "node:url";
-
 import { defineConfig } from "vitest/config";
 import tsconfigPaths from "vite-tsconfig-paths";
 
-const projectRoot = path.dirname(fileURLToPath(import.meta.url));
-
+/**
+ * Vitest configuration for local testing
+ * - Uses jsdom for DOM simulation
+ * - Resolves path aliases from tsconfig.json
+ * - Sets up testing environment for React components
+ */
 export default defineConfig({
-  root: projectRoot,
   plugins: [tsconfigPaths()],
   test: {
     environment: "jsdom",
-    setupFiles: [path.join(projectRoot, "tests/setup/vitest.setup.ts")],
+    setupFiles: ["./tests/setup/vitest.setup.ts"],
     include: ["**/*.test.{ts,tsx}", "**/__tests__/**/*.{ts,tsx}"],
+    exclude: ["glass-worktree/**", "node_modules/**", "**/node_modules/**"],
     globals: true,
     coverage: {
       enabled: process.env.VITEST_COVERAGE === "1",

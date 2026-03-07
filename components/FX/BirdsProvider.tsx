@@ -10,11 +10,14 @@ import React, {
 } from "react";
 
 export const BIRDS_STORAGE_KEY = "portfolio:birds-enabled";
+export const DEFAULT_BIRD_COUNT = 7;
 
 interface BirdsFxContextValue {
+  count: number;
   enabled: boolean;
   supported: boolean;
   visible: boolean;
+  addBird: () => void;
   toggle: () => void;
   setEnabled: (next: boolean) => void;
 }
@@ -44,6 +47,7 @@ export function BirdsProvider({
 }: {
   children: React.ReactNode;
 }): JSX.Element {
+  const [count, setCount] = useState(DEFAULT_BIRD_COUNT);
   const [enabled, setEnabledState] = useState(true);
   const [supported, setSupported] = useState(false);
   const [ready, setReady] = useState(false);
@@ -53,7 +57,12 @@ export function BirdsProvider({
   }, []);
 
   const toggle = useCallback(() => {
+    setCount(DEFAULT_BIRD_COUNT);
     setEnabledState((current) => !current);
+  }, []);
+
+  const addBird = useCallback(() => {
+    setCount((current) => current + 1);
   }, []);
 
   useEffect(() => {
@@ -103,7 +112,6 @@ export function BirdsProvider({
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (
-        event.code !== "KeyB" ||
         event.altKey ||
         event.ctrlKey ||
         event.metaKey ||
@@ -114,7 +122,15 @@ export function BirdsProvider({
         return;
       }
 
-      setEnabledState((current) => !current);
+      if (event.code === "KeyF") {
+        setCount(DEFAULT_BIRD_COUNT);
+        setEnabledState((current) => !current);
+        return;
+      }
+
+      if (event.code === "KeyB") {
+        setCount((current) => current + 1);
+      }
     };
 
     window.addEventListener("keydown", handleKeyDown);
@@ -126,13 +142,15 @@ export function BirdsProvider({
 
   const value = useMemo<BirdsFxContextValue>(
     () => ({
+      count,
       enabled,
       supported,
       visible: ready && supported && enabled,
+      addBird,
       toggle,
       setEnabled,
     }),
-    [enabled, ready, setEnabled, supported, toggle],
+    [addBird, count, enabled, ready, setEnabled, supported, toggle],
   );
 
   return (

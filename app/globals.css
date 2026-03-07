@@ -163,8 +163,8 @@
   --color-brand-cta: var(--brand-cta);
   --color-brand-cta-hover: var(--brand-cta-hover);
 
-  /* Font family mappings — Manrope used for all headings */
-  --font-heading: var(--font-manrope);
+  /* Updated font family mappings */
+  --font-heading: var(--font-urbanist);
   --font-body: var(--font-inter);
 
   /* Added page background token */
@@ -214,187 +214,9 @@
       0 16px 40px rgba(0, 0, 0, 0.18) !important;
   }
 
-  /* ============================================================
-   * HOVER SWEEP – light gleam on interaction
-   * Uses ::after so it doesn't collide with ::before grain overlays
-   * on .tinted-glass / .soft-card / .tinted-glass-light
-   * ============================================================ */
-  .hover-sweep {
-    position: relative;
-    overflow: hidden;
-  }
-
-  .hover-sweep::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -150%;
-    width: 150%;
-    height: 100%;
-    z-index: 20;
-    transform: skewX(-30deg);
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 255, 255, 0.22),
-      transparent
-    );
-    transition: none; /* no reverse sweep on mouse-leave */
-    pointer-events: none;
-  }
-
-  .hover-sweep:hover::after {
-    left: 150%;
-    transition: left 0.65s ease-in-out; /* only animate the forward sweep */
-  }
-
+  /* Custom utility classes */
   .soft-card {
-    @apply rounded-2xl border border-white/10 transition-all duration-200 hover:shadow-xl hover:-translate-y-1;
-    /* Enhanced glassmorphism effect */
-    /* Darker, more subtle background */
-    background: rgba(255, 255, 255, 0.04);
-    /* Stronger blur for glass effect */
-    backdrop-filter: blur(24px) saturate(80%);
-    -webkit-backdrop-filter: blur(24px) saturate(80%);
-    /* Enhanced shadows with depth */
-    box-shadow:
-      0 8px 32px 0 rgba(0, 0, 0, 0.37),
-      inset 0 1px 0 0 rgba(255, 255, 255, 0.08),
-      inset 0 -1px 0 0 rgba(0, 0, 0, 0.05);
-    /* Noise texture overlay */
-    position: relative;
-  }
-
-  .soft-card::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='turbulence' baseFrequency='0.6' numOctaves='3' seed='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-    opacity: 0.045;
-    pointer-events: none;
-    mix-blend-mode: overlay;
-  }
-
-  .soft-card:hover {
-    background: rgba(255, 255, 255, 0.06);
-    border-color: rgba(255, 255, 255, 0.15);
-    box-shadow:
-      0 12px 40px 0 rgba(0, 0, 0, 0.45),
-      inset 0 1px 0 0 rgba(255, 255, 255, 0.12),
-      inset 0 -1px 0 0 rgba(0, 0, 0, 0.08);
-  }
-
-  .kbd-pill {
-    @apply inline-flex min-w-7 items-center justify-center rounded-md border border-black/20 bg-black/80 px-2 py-1 text-xs font-semibold text-white;
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.08),
-      0 4px 12px rgba(0, 0, 0, 0.3);
-  }
-
-  /* Text contrast helpers for glassmorphism */
-  .soft-card h1,
-  .soft-card h2,
-  .soft-card h3,
-  .soft-card h4,
-  .soft-card h5,
-  .soft-card h6 {
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-  }
-
-  .soft-card p,
-  .soft-card li,
-  .soft-card span {
-    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
-  }
-
-  /* Optional: Darker content area within glass cards for better text contrast */
-  .glass-content {
-    background: rgba(0, 0, 0, 0.15);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border-radius: 0.75rem;
-    padding: 1rem;
-  }
-
-  /* Frosted black glass variant - tinted glassmorphism */
-  .tinted-glass {
-    background: rgba(0, 0, 0, 0.75) !important;
-    backdrop-filter: blur(12px) saturate(120%) !important;
-    -webkit-backdrop-filter: blur(12px) saturate(120%) !important;
-    border: 1px solid rgba(255, 255, 255, 0.12) !important;
-    box-shadow:
-      0 8px 32px 0 rgba(0, 0, 0, 0.5),
-      inset 0 1px 0 0 rgba(255, 255, 255, 0.1),
-      inset 0 -1px 0 0 rgba(0, 0, 0, 0.3) !important;
-    border-radius: 0.75rem;
-    /* Note: no padding or position set here — consuming components handle spacing */
-  }
-
-  .tinted-glass::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='turbulence' baseFrequency='0.55' numOctaves='3' seed='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-    opacity: 0.04;
-    pointer-events: none;
-    mix-blend-mode: soft-light;
-    z-index: 1;
-  }
-
-  .tinted-glass > * {
-    position: relative;
-    z-index: 2;
-  }
-
-  .tinted-glass:hover {
-    border-color: rgba(255, 255, 255, 0.18) !important;
-    box-shadow:
-      0 12px 40px 0 rgba(0, 0, 0, 0.6),
-      inset 0 1px 0 0 rgba(255, 255, 255, 0.15),
-      inset 0 -1px 0 0 rgba(0, 0, 0, 0.4) !important;
-  }
-
-  /* Lighter variant for Hero and other elements.
-   * Background aligned with .tinted-glass for visual consistency. */
-  .tinted-glass-light {
-    background: rgba(0, 0, 0, 0.72) !important;
-    backdrop-filter: blur(24px) saturate(120%) !important;
-    -webkit-backdrop-filter: blur(24px) saturate(120%) !important;
-    border: 1px solid rgba(255, 255, 255, 0.12) !important;
-    box-shadow:
-      0 8px 32px 0 rgba(0, 0, 0, 0.5),
-      inset 0 1px 0 0 rgba(255, 255, 255, 0.1),
-      inset 0 -1px 0 0 rgba(0, 0, 0, 0.3) !important;
-    border-radius: 0.75rem;
-    /* Note: no padding or position set here — consuming components handle spacing */
-  }
-
-  .tinted-glass-light::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='turbulence' baseFrequency='0.55' numOctaves='3' seed='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-    background-size: 100% 100%;
-    opacity: 0.035;
-    pointer-events: none;
-    mix-blend-mode: overlay;
-    z-index: 1;
-  }
-
-  .tinted-glass-light > * {
-    position: relative;
-    z-index: 2;
-  }
-
-  .tinted-glass-light:hover {
-    border-color: rgba(255, 255, 255, 0.18) !important;
-    box-shadow:
-      0 12px 40px 0 rgba(0, 0, 0, 0.6),
-      inset 0 1px 0 0 rgba(255, 255, 255, 0.15),
-      inset 0 -1px 0 0 rgba(0, 0, 0, 0.4) !important;
+    @apply rounded-2xl border border-border/50 bg-card/50 backdrop-blur-sm shadow-sm transition-all duration-200 hover:shadow-md hover:-translate-y-1;
   }
 
   .section-wrap {
@@ -461,84 +283,231 @@
   }
 }
 
-/* Translucent readable panel utility for body text areas with glassmorphism */
-.readable-panel {
-  /* Darker, more subtle background for glass effect */
-  background: rgba(255, 255, 255, 0.04);
-  /* Enhanced blur for stronger glass effect */
-  backdrop-filter: blur(20px) saturate(80%);
-  -webkit-backdrop-filter: blur(20px) saturate(80%);
-  /* Simple border without gradient */
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 0.75rem; /* rounded-xl */
-  padding: 0.75rem 1rem; /* p-3 px-4 */
-  /* Subtle shadows for depth */
-  box-shadow:
-    0 4px 16px 0 rgba(0, 0, 0, 0.2),
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
-  position: relative;
-}
+@layer components {
+  /* ============================================================
+   * HOVER SWEEP – light gleam on interaction
+   * Uses ::after so it doesn't collide with ::before grain overlays
+   * on .tinted-glass / .soft-card / .tinted-glass-light
+   * ============================================================ */
+  .hover-sweep {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate; /* create stacking context so ::after is above children */
+  }
 
-.readable-panel::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='turbulence' baseFrequency='0.9' numOctaves='3' seed='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-  opacity: 0.035;
-  pointer-events: none;
-  mix-blend-mode: overlay;
-}
+  .hover-sweep::after {
+    content: "";
+    position: absolute;
+    inset-block: 0;
+    left: -150%;
+    width: 150%;
+    z-index: 100;
+    transform: skewX(-30deg);
+    background: linear-gradient(
+      90deg,
+      transparent 10%,
+      rgba(255, 255, 255, 0.25) 50%,
+      transparent 90%
+    );
+    filter: blur(4px);
+    transition: none;
+    pointer-events: none;
+  }
 
-.readable-panel,
-.readable-panel * {
-  text-shadow: none !important;
-}
+  .hover-sweep:hover::after {
+    left: 150%;
+    transition: left 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
 
-/* ============================================================
- * FONT PREVIEW UTILITIES
- * Each class scopes a heading font to one section so the user
- * can compare all 5 candidates side-by-side while scrolling.
- *
- * 1. Space Grotesk  → #experience  (futuristic tech feel)
- * 2. Manrope        → #resources   (humanist, balanced)
- * 3. Outfit         → #projects    (crisp SaaS energy)
- * 4. DM Sans        → #contact     (rounded, friendly-bold)
- * 5. Oxanium        → Coursework   (geometric sci-fi)
- * ============================================================ */
+  /* ============================================================
+   * RADIAL BLOOM – light pulse radiating from button center
+   * A small circle in the center expands outward and fades away
+   * ============================================================ */
+  @keyframes radial-bloom-white {
+    0% {
+      transform: translate(-50%, -50%) scale(0.05);
+      opacity: 0.95;
+    }
+    100% {
+      transform: translate(-50%, -50%) scale(4);
+      opacity: 0;
+    }
+  }
 
-/* label badge shown above each section heading */
-.font-preview-label::before {
-  display: block;
-  font-size: 0.6rem;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  opacity: 0.45;
-  margin-bottom: 0.35rem;
-  font-family: var(--font-inter), sans-serif;
-  content: attr(data-font-label);
-}
+  @keyframes radial-bloom-brand {
+    0% {
+      transform: translate(-50%, -50%) scale(0.05);
+      opacity: 0.95;
+    }
+    100% {
+      transform: translate(-50%, -50%) scale(4);
+      opacity: 0;
+    }
+  }
 
-/* Scoped heading overrides – only h2 within flagged sections */
-.preview-space-grotesk h2 {
-  font-family: var(--font-space-grotesk, sans-serif) !important;
-}
+  .radial-glow {
+    position: relative;
+    overflow: hidden;
+  }
 
-.preview-manrope h2 {
-  font-family: var(--font-manrope, sans-serif) !important;
-}
+  .radial-glow::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 50%;
+    padding-top: 50%; /* makes it a square, becomes circle with border-radius */
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.95);
+    filter: blur(20px);
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 1;
+  }
 
-.preview-outfit h2 {
-  font-family: var(--font-outfit, sans-serif) !important;
-}
+  .radial-glow:hover::before {
+    animation: radial-bloom-white 2.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
 
-.preview-dm-sans h2 {
-  font-family: var(--font-dm-sans, sans-serif) !important;
-}
+  .radial-glow-brand {
+    position: relative;
+    overflow: hidden;
+  }
 
-/* Oxanium for the cylindrical coursework animation */
-.preview-oxanium,
-.preview-oxanium * {
-  font-family: var(--font-oxanium, sans-serif) !important;
+  .radial-glow-brand::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 50%;
+    padding-top: 50%;
+    border-radius: 50%;
+    background: rgba(79, 209, 199, 0.95);
+    filter: blur(20px);
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .radial-glow-brand:hover::before {
+    animation: radial-bloom-brand 2.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  /* Frosted black glass variant - tinted glassmorphism */
+  .tinted-glass {
+    background: rgba(0, 0, 0, 0.75) !important;
+    backdrop-filter: blur(12px) saturate(120%) !important;
+    -webkit-backdrop-filter: blur(12px) saturate(120%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    box-shadow:
+      0 8px 32px 0 rgba(0, 0, 0, 0.5),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.1),
+      inset 0 -1px 0 0 rgba(0, 0, 0, 0.3) !important;
+    border-radius: 0.75rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tinted-glass::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='turbulence' baseFrequency='0.55' numOctaves='3' seed='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    opacity: 0.04;
+    pointer-events: none;
+    mix-blend-mode: soft-light;
+    z-index: 1;
+  }
+
+  .tinted-glass > * {
+    position: relative;
+    z-index: 2;
+  }
+
+  .tinted-glass:hover {
+    border-color: rgba(255, 255, 255, 0.18) !important;
+    box-shadow:
+      0 12px 40px 0 rgba(0, 0, 0, 0.6),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.15),
+      inset 0 -1px 0 0 rgba(0, 0, 0, 0.4) !important;
+  }
+
+  /* Lighter variant for Hero and other elements.
+   * Background aligned with .tinted-glass for visual consistency. */
+  .tinted-glass-light {
+    background: rgba(0, 0, 0, 0.72) !important;
+    backdrop-filter: blur(24px) saturate(120%) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(120%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    box-shadow:
+      0 8px 32px 0 rgba(0, 0, 0, 0.5),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.1),
+      inset 0 -1px 0 0 rgba(0, 0, 0, 0.3) !important;
+    border-radius: 0.75rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tinted-glass-light::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='turbulence' baseFrequency='0.55' numOctaves='3' seed='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    background-size: 100% 100%;
+    opacity: 0.035;
+    pointer-events: none;
+    mix-blend-mode: overlay;
+    z-index: 1;
+  }
+
+  .tinted-glass-light > * {
+    position: relative;
+    z-index: 2;
+  }
+
+  .tinted-glass-light:hover {
+    border-color: rgba(255, 255, 255, 0.18) !important;
+    box-shadow:
+      0 12px 40px 0 rgba(0, 0, 0, 0.6),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.15),
+      inset 0 -1px 0 0 rgba(0, 0, 0, 0.4) !important;
+  }
+
+  /* Translucent readable panel utility for body text areas with glassmorphism */
+  .readable-panel {
+    /* Darker, more subtle background for glass effect */
+    background: rgba(255, 255, 255, 0.04);
+    /* Enhanced blur for stronger glass effect */
+    backdrop-filter: blur(20px) saturate(80%);
+    -webkit-backdrop-filter: blur(20px) saturate(80%);
+    /* Simple border without gradient */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.75rem; /* rounded-xl */
+    padding: 0.75rem 1rem; /* p-3 px-4 */
+    /* Subtle shadows for depth */
+    box-shadow:
+      0 4px 16px 0 rgba(0, 0, 0, 0.2),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+    position: relative;
+  }
+
+  .readable-panel::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='turbulence' baseFrequency='0.9' numOctaves='3' seed='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    opacity: 0.035;
+    pointer-events: none;
+    mix-blend-mode: overlay;
+  }
+
+  .readable-panel,
+  .readable-panel * {
+    text-shadow: none !important;
+  }
 }

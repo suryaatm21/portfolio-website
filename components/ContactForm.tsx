@@ -61,7 +61,7 @@ export function ContactForm(): React.ReactElement {
           {/* Availability Section - Row 1 */}
           <FadeInUp delay={0.2}>
             <FloatingElement variant="subtle">
-              <Card className="tinted-glass hover-sweep">
+              <Card className="soft-card">
                 <CardContent className="p-6">
                   <h4 className="text-lg font-heading font-medium text-brand-accent mb-3">
                     <TextReveal preset="scale" stagger={80}>
@@ -85,7 +85,7 @@ export function ContactForm(): React.ReactElement {
         {/* Contact Form - Takes 2 rows */}
         <FadeInUp className="lg:row-span-2">
           <FloatingElement variant="subtle">
-            <Card className="tinted-glass hover-sweep h-full">
+            <Card className="soft-card h-full">
               <CardHeader>
                 <CardTitle className="text-2xl font-heading text-brand-primary flex items-center gap-2">
                   <Mail className="h-6 w-6 text-brand-accent" />
@@ -142,7 +142,7 @@ export function ContactForm(): React.ReactElement {
                     transition={{ delay: 0.3, duration: 0.3 }}>
                     <AnimatedButton
                       type="submit"
-                      className="w-full bg-brand-cta hover:bg-brand-cta-hover text-white group shadow-lg hover-sweep">
+                      className="w-full bg-brand-cta hover:bg-brand-cta-hover text-white group shadow-lg radial-glow-brand">
                       <Send className="mr-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                       {contact.form.submitText}
                     </AnimatedButton>
