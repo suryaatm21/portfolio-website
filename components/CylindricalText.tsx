@@ -131,7 +131,7 @@ export function CylindricalText({
             ref={(el) => {
               itemsRef.current[index] = el;
             }}
-            className="absolute left-1/2 top-1/2 w-full max-w-[88vw] px-6"
+            className="absolute left-1/2 top-1/2 w-full max-w-[min(92vw,34rem)] px-5 text-balance sm:max-w-[min(80vw,38rem)] lg:max-w-[min(68vw,42rem)]"
             style={{
               transformStyle: "preserve-3d",
               backfaceVisibility: "hidden",
@@ -139,10 +139,12 @@ export function CylindricalText({
               MozOsxFontSmoothing: "grayscale",
               textRendering: "optimizeLegibility",
               willChange: "transform",
-              // Dynamically scale font size: long titles get smaller
-              fontSize: item.length > 40
-                ? `clamp(0.65rem, ${Math.max(1.2, 3.5 - item.length * 0.04)}vw, 1.4rem)`
-                : `clamp(0.75rem, ${Math.max(1.8, 4.5 - item.length * 0.04)}vw, 2rem)`,
+              whiteSpace: "normal",
+              lineHeight: item.length > 40 ? 1.15 : 1.05,
+              fontSize:
+                item.length > 40
+                  ? `clamp(0.8rem, ${Math.max(0.95, 2.5 - item.length * 0.025)}vw, 1.2rem)`
+                  : `clamp(0.9rem, ${Math.max(1.2, 3.2 - item.length * 0.03)}vw, 1.65rem)`,
             }}>
             {item}
           </li>

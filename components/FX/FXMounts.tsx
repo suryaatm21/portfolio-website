@@ -1,32 +1,30 @@
 "use client";
 
-import dynamic from "next/dynamic";
-
+import { BirdsCursor } from "@/components/FX/BirdsCursor";
 import { useBirdsFx } from "@/components/FX/BirdsProvider";
 
-const BirdsCursor = dynamic(
-  () => import("@/components/FX/BirdsCursor").then((module) => module.BirdsCursor),
-  { ssr: false },
-);
+const BIRD_COLORS = ["#050505", "#111111", "#1a1a1a"];
+
+const BIRD_FORCES = {
+  separation: 3.1,
+  alignment: 0.95,
+  cohesion: 0.28,
+  trail: 2.9,
+};
 
 export function FXMounts(): JSX.Element | null {
-  const { visible } = useBirdsFx();
+  const { count, visible } = useBirdsFx();
 
   return (
     <>
       {visible && (
         <BirdsCursor
           enabled
-          count={7}
-          colors={["#050505", "#111111", "#1a1a1a"]}
+          count={count}
+          colors={BIRD_COLORS}
           size={8}
           speedCap={5.2}
-          forces={{
-            separation: 3.1,
-            alignment: 0.95,
-            cohesion: 0.28,
-            trail: 2.9,
-          }}
+          forces={BIRD_FORCES}
           zIndex={0}
         />
       )}

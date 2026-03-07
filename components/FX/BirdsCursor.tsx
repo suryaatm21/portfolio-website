@@ -99,6 +99,8 @@ export function BirdsCursor({
   const positionsRef = useRef<Float32Array>(new Float32Array(count * 2));
   const velocitiesRef = useRef<Float32Array>(new Float32Array(count * 2));
   const phasesRef = useRef<Float32Array>(new Float32Array(count));
+  const activeCountRef = useRef(count);
+  const desiredCountRef = useRef(count);
   const palettesRef = useRef<BirdPalette[]>([]);
   const cursorTrailRef = useRef<CursorPoint[]>([]);
   const lastFrameTimeRef = useRef(0);
@@ -114,41 +116,133 @@ export function BirdsCursor({
     coarsePointerRef.current = window.matchMedia("(pointer: coarse)").matches;
   }, []);
 
-  const resetBuffers = useCallback(() => {
-    positionsRef.current = new Float32Array(count * 2);
-    velocitiesRef.current = new Float32Array(count * 2);
-    phasesRef.current = new Float32Array(count);
-    palettesRef.current = [];
+  useEffect(() => {
+    desiredCountRef.current = count;
   }, [count]);
 
-  const seedBoids = useCallback(() => {
-    const positions = positionsRef.current;
-    const velocities = velocitiesRef.current;
-    const phases = phasesRef.current;
-    const anchorX = window.innerWidth * 0.5;
-    const anchorY = window.innerHeight * 0.18;
-
-    lastTargetRef.current = { x: anchorX, y: anchorY };
-    palettesRef.current = Array.from({ length: count }, (_, index) => {
+  const createPalette = useCallback(
+    (index: number): BirdPalette => {
       const base = getPaletteColor(colors, index);
+
       return {
         body: mixHexColors(base, "#ffffff", 0.03),
         wing: mixHexColors(base, "#ffffff", 0.12),
         tail: mixHexColors(base, "#000000", 0.08),
       };
-    });
+    },
+    [colors],
+  );
 
-    for (let index = 0; index < count; index += 1) {
-      const xSpread = (Math.random() - 0.5) * window.innerWidth * 0.48;
-      const ySpread = (Math.random() - 0.5) * window.innerHeight * 0.22;
+  const getAnchorPosition = useCallback(() => {
+    return (
+      lastTargetRef.current ?? {
+        x: window.innerWidth * 0.5,
+        y: window.innerHeight * 0.18,
+      }
+    );
+  }, []);
 
-      positions[index * 2] = anchorX + xSpread;
-      positions[index * 2 + 1] = anchorY + ySpread;
-      velocities[index * 2] = 2.8 + Math.random() * 1.8;
-      velocities[index * 2 + 1] = (Math.random() - 0.5) * 2;
+  const setBoidState = useCallback(
+    (index: number, spawnMode: "seed" | "offscreen") => {
+      const positions = positionsRef.current;
+      const velocities = velocitiesRef.current;
+      const phases = phasesRef.current;
+      const palettes = palettesRef.current;
+      const baseIndex = index * 2;
+      const anchor = getAnchorPosition();
+
+      palettes[index] = createPalette(index);
       phases[index] = Math.random() * Math.PI * 2;
-    }
-  }, [colors, count]);
+
+      if (spawnMode === "seed") {
+        const xSpread = (Math.random() - 0.5) * window.innerWidth * 0.48;
+        const ySpread = (Math.random() - 0.5) * window.innerHeight * 0.22;
+
+        positions[baseIndex] = anchor.x + xSpread;
+        positions[baseIndex + 1] = anchor.y + ySpread;
+        velocities[baseIndex] = 2.8 + Math.random() * 1.8;
+        velocities[baseIndex + 1] = (Math.random() - 0.5) * 2;
+        return;
+      }
+
+      const spawnMargin = 96;
+      const fromLeft = Math.random() > 0.5;
+      const startX = fromLeft ? -spawnMargin : window.innerWidth + spawnMargin;
+      const startY = clamp(
+        anchor.y + (Math.random() - 0.5) * window.innerHeight * 0.2,
+        window.innerHeight * 0.08,
+        window.innerHeight * 0.72,
+      );
+      const directionX = anchor.x - startX;
+      const directionY = anchor.y - startY;
+      const directionLength = Math.hypot(directionX, directionY) || 1;
+      const entrySpeed = 3.4 + Math.random() * 1.6;
+
+      positions[baseIndex] = startX;
+      positions[baseIndex + 1] = startY;
+      velocities[baseIndex] =
+        (directionX / directionLength) * entrySpeed + (Math.random() - 0.5) * 0.35;
+      velocities[baseIndex + 1] =
+        (directionY / directionLength) * entrySpeed + (Math.random() - 0.5) * 0.35;
+    },
+    [createPalette, getAnchorPosition],
+  );
+
+  const initializeBoids = useCallback(
+    (nextCount: number) => {
+      const anchor = {
+        x: window.innerWidth * 0.5,
+        y: window.innerHeight * 0.18,
+      };
+
+      positionsRef.current = new Float32Array(nextCount * 2);
+      velocitiesRef.current = new Float32Array(nextCount * 2);
+      phasesRef.current = new Float32Array(nextCount);
+      palettesRef.current = [];
+      activeCountRef.current = nextCount;
+      lastTargetRef.current = anchor;
+
+      for (let index = 0; index < nextCount; index += 1) {
+        setBoidState(index, "seed");
+      }
+    },
+    [setBoidState],
+  );
+
+  const syncBoidCount = useCallback(
+    (nextCount: number) => {
+      const currentCount = activeCountRef.current;
+
+      if (nextCount === currentCount) return;
+
+      const nextPositions = new Float32Array(nextCount * 2);
+      const nextVelocities = new Float32Array(nextCount * 2);
+      const nextPhases = new Float32Array(nextCount);
+      nextPositions.set(
+        positionsRef.current.subarray(0, Math.min(positionsRef.current.length, nextPositions.length)),
+      );
+      nextVelocities.set(
+        velocitiesRef.current.subarray(
+          0,
+          Math.min(velocitiesRef.current.length, nextVelocities.length),
+        ),
+      );
+      nextPhases.set(
+        phasesRef.current.subarray(0, Math.min(phasesRef.current.length, nextPhases.length)),
+      );
+
+      positionsRef.current = nextPositions;
+      velocitiesRef.current = nextVelocities;
+      phasesRef.current = nextPhases;
+      palettesRef.current = palettesRef.current.slice(0, nextCount);
+      activeCountRef.current = nextCount;
+
+      for (let index = currentCount; index < nextCount; index += 1) {
+        setBoidState(index, "offscreen");
+      }
+    },
+    [setBoidState],
+  );
 
   const updateCursorTrail = useCallback((event: MouseEvent) => {
     const now = performance.now();
@@ -232,9 +326,10 @@ export function BirdsCursor({
       let cohesionY = 0;
       let neighbors = 0;
 
+      const flockCount = activeCountRef.current;
       const neighborRadius = 108;
 
-      for (let index = 0; index < count; index += 1) {
+      for (let index = 0; index < flockCount; index += 1) {
         if (index === boidIndex) continue;
 
         const otherIndex = index * 2;
@@ -294,7 +389,7 @@ export function BirdsCursor({
       velocities[baseIndex] = velocityX;
       velocities[baseIndex + 1] = velocityY;
     },
-    [count, forces, speedCap],
+    [forces, speedCap],
   );
 
   const updateBoidPositions = useCallback(
@@ -302,7 +397,9 @@ export function BirdsCursor({
       const positions = positionsRef.current;
       const velocities = velocitiesRef.current;
 
-      for (let index = 0; index < count; index += 1) {
+      const flockCount = activeCountRef.current;
+
+      for (let index = 0; index < flockCount; index += 1) {
         const baseIndex = index * 2;
         let x =
           (positions[baseIndex] ?? 0) +
@@ -321,7 +418,7 @@ export function BirdsCursor({
         positions[baseIndex + 1] = y;
       }
     },
-    [count],
+    [],
   );
 
   const drawBird = useCallback(
@@ -399,7 +496,9 @@ export function BirdsCursor({
       const palettes = palettesRef.current;
       const phases = phasesRef.current;
 
-      for (let index = 0; index < count; index += 1) {
+      const flockCount = activeCountRef.current;
+
+      for (let index = 0; index < flockCount; index += 1) {
         const baseIndex = index * 2;
         const velocityX = velocities[baseIndex] ?? 0;
         const velocityY = velocities[baseIndex + 1] ?? 0;
@@ -421,7 +520,7 @@ export function BirdsCursor({
         );
       }
     },
-    [count, drawBird],
+    [drawBird],
   );
 
   const animate = useCallback(
@@ -440,7 +539,9 @@ export function BirdsCursor({
 
       const target = getTargetPosition(time);
 
-      for (let index = 0; index < count; index += 1) {
+      const flockCount = activeCountRef.current;
+
+      for (let index = 0; index < flockCount; index += 1) {
         applyBoidForces(index, target);
       }
 
@@ -448,7 +549,7 @@ export function BirdsCursor({
       drawBoids(time);
       rafRef.current = requestAnimationFrame(animate);
     },
-    [applyBoidForces, count, drawBoids, enabled, getTargetPosition, updateBoidPositions],
+    [applyBoidForces, drawBoids, enabled, getTargetPosition, updateBoidPositions],
   );
 
   const setupCanvas = useCallback(() => {
@@ -476,11 +577,10 @@ export function BirdsCursor({
 
   const startAnimation = useCallback(() => {
     stopAnimation();
-    resetBuffers();
-    seedBoids();
+    initializeBoids(desiredCountRef.current);
     lastFrameTimeRef.current = performance.now();
     rafRef.current = requestAnimationFrame(animate);
-  }, [animate, resetBuffers, seedBoids, stopAnimation]);
+  }, [animate, initializeBoids, stopAnimation]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -537,7 +637,7 @@ export function BirdsCursor({
 
     const handleResize = () => {
       setupCanvas();
-      seedBoids();
+      initializeBoids(activeCountRef.current);
     };
 
     window.addEventListener("mousemove", throttledCursorUpdate, {
@@ -550,7 +650,20 @@ export function BirdsCursor({
       window.removeEventListener("mousemove", throttledCursorUpdate);
       window.removeEventListener("resize", handleResize);
     };
-  }, [enabled, seedBoids, setupCanvas, startAnimation, stopAnimation, updateCursorTrail]);
+  }, [enabled, initializeBoids, setupCanvas, startAnimation, stopAnimation, updateCursorTrail]);
+
+  useEffect(() => {
+    if (
+      typeof window === "undefined" ||
+      !enabled ||
+      reducedMotionRef.current ||
+      coarsePointerRef.current
+    ) {
+      return;
+    }
+
+    syncBoidCount(count);
+  }, [count, enabled, syncBoidCount]);
 
   if (!enabled || reducedMotionRef.current || coarsePointerRef.current) {
     return null;

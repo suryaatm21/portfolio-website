@@ -4,8 +4,8 @@ import { motion } from "framer-motion";
 import { ArrowRight, Github, Linkedin, Mail, ExternalLink } from "lucide-react";
 import Image from "next/image";
 import type React from "react";
-import { useState, useEffect } from "react";
 
+import { HeroBirdsHint } from "@/components/HeroBirdsHint";
 import { AnimatedButton } from "@/components/animations/AnimatedButton";
 import { FloatingElement } from "@/components/animations/FloatingElement";
 import { TextReveal } from "@/components/animations/TextReveal";
@@ -129,7 +129,7 @@ export function Hero(): React.ReactElement {
                     variant="outline"
                     size="lg"
                     asChild
-                    className="radial-glow border-border/50 text-foreground hover:bg-accent/10 px-8 py-3 text-base font-medium group">
+                    className="radial-glow border-black/20 text-white bg-black/80 hover:bg-black/90 px-8 py-3 text-base font-medium group">
                     <a
                       href={hero.cta.secondary.href}
                       target="_blank"
@@ -190,15 +190,7 @@ export function Hero(): React.ReactElement {
                 </FloatingElement>
               </motion.div>
 
-              <motion.div
-                className="inline-block"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.8, ease: "easeOut" }}>
-                <p className="text-sm font-medium text-secondary tracking-wide m-0">
-                  Watch the clouds follow your cursor
-                </p>
-              </motion.div>
+              <HeroBirdsHint />
             </div>
           </div>
         </div>

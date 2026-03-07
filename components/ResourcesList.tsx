@@ -20,7 +20,8 @@ export function ResourcesList() {
                   mode="word"
                   preset="scale"
                   stagger={80}
-                  threshold={0.2}>
+                  threshold={0.2}
+                >
                   {sections.resources.title}
                 </TextReveal>
               </h2>
@@ -32,7 +33,8 @@ export function ResourcesList() {
                   preset="fadeUp"
                   stagger={40}
                   delay={400}
-                  threshold={0.2}>
+                  threshold={0.2}
+                >
                   {sections.resources.description}
                 </TextReveal>
               </p>
@@ -46,7 +48,7 @@ export function ResourcesList() {
               {resources.map((item, index) => (
                 <FadeInUp key={item.title} delay={0.15 + index * 0.05}>
                   <FloatingElement variant="subtle">
-                    <li className="flex items-start gap-3 p-4 rounded-lg bg-card/30 border border-border/30 hover:border-brand-accent/30 transition-colors hover-sweep">
+                    <li className="flex items-start gap-3 p-4 rounded-lg bg-card/30 border border-border/30 hover:border-brand-accent/30 transition-colors">
                       {/* Status indicator */}
                       <CheckCircle2 className="h-5 w-5 text-brand-accent flex-shrink-0 mt-0.5" />
                       <div className="flex-1">
@@ -54,7 +56,8 @@ export function ResourcesList() {
                           href={item.href}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-white hover:text-brand-accent transition-colors font-medium flex items-center gap-2 group mb-1">
+                          className="text-white hover:text-brand-accent transition-colors font-medium flex items-center gap-2 group mb-1"
+                        >
                           {item.title}
                           <ExternalLink className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
                         </a>
@@ -81,11 +84,13 @@ export function ResourcesList() {
                   asChild
                   variant="cta"
                   size="lg"
-                  className="shadow-lg radial-glow-brand">
+                  className="shadow-lg radial-glow-brand"
+                >
                   <a
                     href={sections.resources.buttonHref}
                     target="_blank"
-                    rel="noopener noreferrer">
+                    rel="noopener noreferrer"
+                  >
                     {sections.resources.buttonText}
                   </a>
                 </AnimatedButton>
