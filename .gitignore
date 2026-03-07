@@ -31,4 +31,5 @@ next-env.d.ts
 references/
 
 # documentation (internal notes and planning)
-docs/
+docs/main-preview/
+glass-worktree/
