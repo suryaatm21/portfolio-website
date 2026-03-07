@@ -203,7 +203,7 @@ export function ProjectCarousel({
         <Button
           variant="ghost"
           size="icon"
-          className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-background/80 backdrop-blur-sm border border-border hover:bg-brand-accent/10 hover:border-brand-accent hover:scale-110 transition-all duration-200 shadow-lg"
+          className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-background/80 backdrop-blur-sm border border-border hover:bg-brand-accent/10 hover:border-brand-accent hover:scale-110 transition-all duration-200 shadow-lg radial-glow"
           onClick={goToPrevious}
           aria-label="Previous project">
           <ChevronLeft className="w-6 h-6" />
@@ -213,7 +213,7 @@ export function ProjectCarousel({
         <Button
           variant="ghost"
           size="icon"
-          className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-background/80 backdrop-blur-sm border border-border hover:bg-brand-accent/10 hover:border-brand-accent hover:scale-110 transition-all duration-200 shadow-lg"
+          className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-background/80 backdrop-blur-sm border border-border hover:bg-brand-accent/10 hover:border-brand-accent hover:scale-110 transition-all duration-200 shadow-lg radial-glow"
           onClick={goToNext}
           aria-label="Next project">
           <ChevronRight className="w-6 h-6" />
@@ -304,7 +304,7 @@ export function ProjectCarousel({
                         {project.demo && project.demo !== "Coming Soon" && (
                           <Button
                             size="sm"
-                            className="flex-1 bg-brand-primary hover:bg-brand-primary/90"
+                            className="flex-1 bg-brand-primary hover:bg-brand-primary/90 radial-glow-brand"
                             asChild>
                             <a
                               href={project.demo}
@@ -335,7 +335,7 @@ export function ProjectCarousel({
                           <Button
                             size="sm"
                             variant="outline"
-                            className="flex-1"
+                            className="flex-1 radial-glow"
                             asChild>
                             <a
                               href={project.repo}

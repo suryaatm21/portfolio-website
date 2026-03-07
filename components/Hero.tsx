@@ -93,7 +93,7 @@ export function Hero(): React.ReactElement {
               </FloatingElement>
 
               <FloatingElement variant="subtle">
-                <div className="inline-block mb-8 max-w-2xl xl:max-w-none readable-panel">
+                <div className="inline-block mb-8 max-w-2xl xl:max-w-none tinted-glass-light hover-sweep px-4 py-3">
                   <p className="text-lg sm:text-xl text-muted-foreground leading-relaxed font-mono">
                     <TextReveal
                       mode="word"
@@ -116,7 +116,7 @@ export function Hero(): React.ReactElement {
                   <AnimatedButton
                     size="lg"
                     onClick={() => scrollToSection("contact")}
-                    className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 text-base font-medium group shadow-lg hover:shadow-xl transition-shadow">
+                    className="radial-glow-brand bg-green-600 hover:bg-green-700 text-white px-8 py-3 text-base font-medium group shadow-lg hover:shadow-xl transition-shadow">
                     <span className="flex items-center">
                       {hero.cta.primary.text}
                       <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
@@ -129,7 +129,7 @@ export function Hero(): React.ReactElement {
                     variant="outline"
                     size="lg"
                     asChild
-                    className="border-border/50 text-foreground hover:bg-accent/10 px-8 py-3 text-base font-medium group">
+                    className="radial-glow border-border/50 text-foreground hover:bg-accent/10 px-8 py-3 text-base font-medium group">
                     <a
                       href={hero.cta.secondary.href}
                       target="_blank"

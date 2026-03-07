@@ -142,7 +142,7 @@ export function ContactForm(): React.ReactElement {
                     transition={{ delay: 0.3, duration: 0.3 }}>
                     <AnimatedButton
                       type="submit"
-                      className="w-full bg-brand-cta hover:bg-brand-cta-hover text-white group shadow-lg">
+                      className="w-full bg-brand-cta hover:bg-brand-cta-hover text-white group shadow-lg radial-glow-brand">
                       <Send className="mr-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                       {contact.form.submitText}
                     </AnimatedButton>

@@ -11,9 +11,7 @@ import { sections, resources } from "@/content/site";
 export function ResourcesList() {
   return (
     <div className="max-w-6xl mx-auto">
-      <div
-        className="soft-card text-card-foreground p-8 sm:p-12"
-        style={{ backgroundColor: "oklch(var(--card-opacity) 0 0)" }}>
+      <div className="tinted-glass hover-sweep text-card-foreground p-8 sm:p-12">
         <FadeInUp>
           <header className="text-center mb-12">
             <FloatingElement variant="subtle">
@@ -48,7 +46,7 @@ export function ResourcesList() {
               {resources.map((item, index) => (
                 <FadeInUp key={item.title} delay={0.15 + index * 0.05}>
                   <FloatingElement variant="subtle">
-                    <li className="flex items-start gap-3 p-4 rounded-lg bg-card/30 border border-border/30 hover:border-brand-accent/30 transition-colors">
+                    <li className="flex items-start gap-3 p-4 rounded-lg bg-card/30 border border-border/30 hover:border-brand-accent/30 transition-colors hover-sweep">
                       {/* Status indicator */}
                       <CheckCircle2 className="h-5 w-5 text-brand-accent flex-shrink-0 mt-0.5" />
                       <div className="flex-1">
@@ -83,7 +81,7 @@ export function ResourcesList() {
                   asChild
                   variant="cta"
                   size="lg"
-                  className="shadow-lg">
+                  className="shadow-lg radial-glow-brand">
                   <a
                     href={sections.resources.buttonHref}
                     target="_blank"

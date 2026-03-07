@@ -280,7 +280,7 @@ export function HorizontalTimeline({
                   <motion.button
                     onClick={() => goToEntry(index)}
                     className={cn(
-                      "relative z-10 w-16 h-16 rounded-full border-4 transition-all duration-300 flex items-center justify-center",
+                      "relative z-10 w-16 h-16 rounded-full border-4 transition-all duration-300 flex items-center justify-center radial-glow-brand",
                       index === activeIndex
                         ? `${getTypeColor(entry.type)} scale-110 shadow-lg`
                         : index < activeIndex
