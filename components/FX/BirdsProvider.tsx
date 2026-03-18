@@ -9,7 +9,7 @@ import React, {
   useState,
 } from "react";
 
-export const BIRDS_STORAGE_KEY = "portfolio:birds-enabled";
+export const BIRDS_STORAGE_KEY = "portfolio:birds-enabled-v2";
 export const DEFAULT_BIRD_COUNT = 7;
 
 interface BirdsFxContextValue {
