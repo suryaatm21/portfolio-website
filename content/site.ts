@@ -61,7 +61,7 @@ export const hobbies = [
     color: "from-pink-500 to-purple-500",
   },
   {
-    name: "Reading: \"Demian\"",
+    name: 'Reading: "Demian"',
     emoji: "📚",
     color: "from-blue-500 to-green-500",
   },
@@ -332,7 +332,7 @@ export const education = {
     "DeepLearning.AI: Advanced Learning Algorithms",
     "DeepLearning.AI: Unsupervised Learning",
   ],
-  note: "Considering a prospective BS/MS (admission pending); open to both 2027 full-time and summer 2027 internship roles.",
+  note: "Considering a prospective BS/MS (admission pending), expected May 2028 grad.",
 };
 
 export const professionalExperience = [
