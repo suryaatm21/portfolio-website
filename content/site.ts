@@ -221,6 +221,20 @@ export const timeline = [
     ],
     technologies: ["Next.js", "DynamoDB", "S3", "AWS Lambda", "scikit-learn"],
   },
+  {
+    id: "acrotech-biopharma",
+    title: "Software Engineering Intern",
+    company: "Acrotech Biopharma Inc.",
+    location: "East Windsor, NJ",
+    period: "Jun 2024 -- Aug 2024",
+    date: "2024-06-01",
+    type: "internship",
+    bullets: [
+      "Built a SharePoint intranet platform with SPFx, TypeScript, Webpack, and Gulp to centralize department resources behind role based permissions, driving 1,100+ cumulative employee visits within 3 months",
+      "Developed JavaScript Power Automate workflow schedules that use CRUD operations to synchronize Excel and SharePoint databases, enforcing eventual consistency and reliable record updates across 9 departments",
+    ],
+    technologies: ["SharePoint", "SPFx", "TypeScript", "Power Automate"],
+  },
 ];
 
 export const projects = [
@@ -240,6 +254,30 @@ export const projects = [
     demo: "https://t.me/summer2026swe",
     tech: ["Python", "GitHub Actions", "GitHub Contents API", "Telegram API"],
   },
+  {
+    title: "Spotify Playlist Optimizer",
+    summary:
+      "Organize your Spotify music library with intent and machine learning.",
+    repo: "https://github.com/suryaatm21/spotify-optimizer",
+    demo: "https://www.youtube.com/watch?v=oDh19udD8h0",
+    tech: ["REST APIs", "FastAPI", "PostgreSQL", "scikit-learn"],
+  },
+  {
+    title: "This Portfolio Website",
+    summary:
+      "Stop stalking and go build your own, just reference this source code when you do.",
+    repo: "https://github.com/suryaatm21/portfolio-website",
+    demo: "https://surya.theuntab.com",
+    tech: ["Next.js", "TypeScript", "Framer Motion", "GSAP", "Tailwind CSS"],
+  },
+  {
+    title: "Spoiler Alert - Web Development GT",
+    summary:
+      "Track your fridge ingredients, generate recipes, and manage shopping lists for your groceries. And share your fridges with family members, roommates, or colleagues.",
+    repo: "https://github.com/suryaatm21/spoiler_alert",
+    demo: "https://www.youtube.com/watch?v=YOLyiLElo8w",
+    tech: ["JavaScript", "Flask", "React", "SQLite"],
+  },
 ];
 
 export const contact = {
@@ -248,15 +286,14 @@ export const contact = {
     subjectLabel: "Subject",
     subjectPlaceholder: "Exercise free will here",
     messageLabel: "Message",
-    messagePlaceholder: "Tell me about your team, question, or endeavors!",
+    messagePlaceholder: "Tell me about your team, question, or endeavors",
     submitText: "Send Message",
     disclaimer:
       "This will open your default email client with a prefilled message. Your email address will not be stored or shared.",
   },
   availability: {
     title: "Currently Seeking: To Be a Better Engineer",
-    content:
-      "Open to summer/fall 2026 internships in software engineering, cloud computing, and applied AI",
+    content: "Open to summer 2027 internships and new grad opportunities",
   },
   social: {
     title: "Find me elsewhere",
@@ -281,11 +318,21 @@ export const education = {
   gpa: "3.8/4.0 (Faculty Honors)",
   graduationDate: "Expected May 2027",
   coursework: [
-    "Design & Analysis of Algorithms",
-    "Computer Architecture",
-    "Database Systems",
-    "Perception & Robotics",
+    "CS 1331: Object Oriented Programming (OOP)",
+    "CS 1332: Data Structures",
+    "MATH 1554: Linear Algebra",
+    "CS 2050: Discrete Math",
+    "CS 2110: Computer Organization & Programming",
+    "CS 2340: Objects & Design",
+    "CS 3510: Design & Analysis of Algorithms",
+    "ISYE 3770: Statistics & Applications",
+    "CS 4400: Database Systems",
+    "CS 4641: Machine Learning",
+    "DeepLearning.AI: Supervised Machine Learning",
+    "DeepLearning.AI: Advanced Learning Algorithms",
+    "DeepLearning.AI: Unsupervised Learning",
   ],
+  note: "Considering a prospective BS/MS (admission pending); open to both 2027 full-time and summer 2027 internship roles.",
 };
 
 export const professionalExperience = [
@@ -333,6 +380,17 @@ export const professionalExperience = [
     bullets: [
       "Built a locale-aware auth layer in Next.js edge middleware by chaining i18n and stateless session checks, resolving Google OAuth and email sign-ins against a DynamoDB store to stamp tenant/role claims, securing 20 client dashboards",
       "Designed an S3-triggered ML pipeline that ingests raw soil uploads, orchestrates Lambda-hosted scikit-learn scoring in Step Functions with idempotent execution, and returns reviewed recommendations",
+    ],
+  },
+  {
+    id: "acrotech-biopharma",
+    title: "Software Engineering Intern",
+    company: "Acrotech Biopharma Inc.",
+    location: "East Windsor, NJ",
+    period: "Jun 2024 -- Aug 2024",
+    bullets: [
+      "Built a SharePoint intranet platform with SPFx, TypeScript, Webpack, and Gulp to centralize department resources behind role based permissions, driving 1,100+ cumulative employee visits within 3 months",
+      "Developed JavaScript Power Automate workflow schedules that use CRUD operations to synchronize Excel and SharePoint databases, enforcing eventual consistency and reliable record updates across 9 departments",
     ],
   },
 ];
