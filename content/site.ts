@@ -61,7 +61,7 @@ export const hobbies = [
     color: "from-pink-500 to-purple-500",
   },
   {
-    name: "Reading: \"Demian\"",
+    name: 'Reading: "Demian"',
     emoji: "📚",
     color: "from-blue-500 to-green-500",
   },
