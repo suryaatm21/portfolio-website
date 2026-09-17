@@ -86,11 +86,12 @@
 %----------HEADING----------
 \begin{center}
     \textbf{\Huge \bfseries Surya Atmuri} \\ \vspace{1pt}
-    \small Princeton, NJ $|$ (732)-735-0687 $|$ 
-    \href{mailto:suryaatmuri57@gmail.com}{suryaatmuri57@gmail.com} $|$ 
-    \href{https://www.linkedin.com/in/surya-atmuri/}{linkedin.com/in/surya-atmuri} $|$ 
-    \href{https://github.com/suryaatm21}{github.com/suryaatm21} $|$ 
-    US Citizen 
+    \small New York, NY $|$ (732)-735-0687 $|$
+    \href{mailto:suryaatmuri57@gmail.com}{suryaatmuri57@gmail.com} $|$
+    \href{https://surya.theuntab.com}{surya.theuntab.com} $|$
+    \href{https://www.linkedin.com/in/surya-atmuri/}{linkedin.com/in/surya-atmuri} $|$
+    \href{https://github.com/suryaatm21}{github.com/suryaatm21} $|$
+    US Citizen
 \end{center}
 
 %-----------EDUCATION-----------
@@ -98,10 +99,10 @@
 \resumeSubHeadingListStart
 \resumeEdu
   {Georgia Institute of Technology - College of Computing}{Atlanta, GA}
-  {B.S. in Computer Science, GPA: 3.9/4.0 (Faculty Honors)}{Expected May 2027}
+  {Bachelor's of Science in Computer Science (Faculty Honors), GPA: 3.8/4.0}{May 2027}
 
     \resumeItemListStart
-        \resumeItem{Coursework: Object Oriented Programming (OOP), Data Structures, Discrete Math, Design \& Analysis of Algorithms, Computer Organization \& Programming, Objects \& Design, Database Systems, Artificial Intelligence, Machine Learning}
+        \resumeItem{Coursework: Design \& Analysis of Algorithms, Computer Architecture, Database Systems, Perception \& Robotics}
     \resumeItemListEnd
 \resumeSubHeadingListEnd
 
@@ -110,41 +111,38 @@
 \resumeSubHeadingListStart
 
 \resumeSubheading
-  {Automated Algorithm Design - Vertically Integrated Projects (VIP)}{Jan 2025 -- Present}
+  {Microsoft -- Core AI: Microsoft Foundry Team}{Sep 2026 -- Present}
+  {Applied AI/ML Engineer Intern}{Redmond, WA}
+  \resumeItemListStart
+    \resumeItem{Supporting Core AI: Microsoft Foundry Team, enterprise platform for model serving and agent development on Azure}
+    \resumeItem{First project: an Nx remote cache keying build artifacts by content hash, cutting org-wide recompute cost and latency}
+  \resumeItemListEnd
+
+\resumeSubheading
+  {NVIDIA}{May 2026 -- Aug 2026}
+  {Security Software Engineer Intern}{Santa Clara, CA}
+  \resumeItemListStart
+    \resumeItem{Deployed an agent with NeMo Agent Toolkit and LangGraph whose supervisor routes specialists over docs, threads, and APIs, then a synthesizer reconciles that evidence into cited resolutions for a 3,775-member support channel}
+    \resumeItem{Supported the FAQ specialist with a pipeline that rebuilds the corpus on doc drift and publishes each version as an API-pinned JFrog digest, retrieving with a 2:1 Nemotron-to-BM25 hybrid at 0.81 relevance set satisfaction@5}
+    \resumeItem{Served the copilot API with a shared append-only Postgres event log behind queued Slack ingestion, using partial unique claim indexes, bounded retries, and a dead-letter path to scale to concurrent workers}
+  \resumeItemListEnd
+
+\resumeSubheading
+  {Georgia Tech Research Institute}{Jan 2025 -- May 2026}
   {Undergraduate Researcher}{Atlanta, GA}
   \resumeItemListStart
-    \resumeItem{Developed an LLM-guided AutoML pipeline with Mixtral-8x7B to evolve PyTorch architectures for 3D point cloud classification, running 10 generations and benchmarking 100+ model variants per run with SLURM on PACE ICE}
-    \resumeItem{Advanced PointNet++ performance by evolving a variant that raised test accuracy from 62.7\% to 67.1\% (+7\%), while reducing model complexity metrics to achieve a Pareto-optimal balance of accuracy and efficiency}
-    \resumeItem{Doubled request throughput with asynchronous batching using asyncio, cutting inference latency by 50\%}
+    \resumeItem{Extended LLM-Guided Evolution, a genetic programming architecture search that segments a reference PyTorch network into independently mutable blocks, then evolves variants over generations of LLM-driven crossover and mutation scored on accuracy against parameter count, discovering Pareto-optimal solutions for point cloud classification}
+    \resumeItem{Ablated combinations of 4 retrieval backends (FAISS vector, PageIndex hierarchical, BM25 knowledge graph, run history) behind a shared interface, replaying a curated dataset of historical mutation prompts on a SLURM driver so paired tests identify the configuration best trading goodput and Pareto hypervolume against context cost}
+    \resumeItem{Traced stalled throughput to static batching and KV cache fragmentation, both sizing work to the longest sequence in a batch, moving serving to vLLM for 3.6x throughput at above 95\% cache use, then cutting generation from 700s to under 300s with speculative decoding against a 1B draft model, constrained to a JSON schema to keep mutations parseable}
   \resumeItemListEnd
 
 \resumeSubheading
   {Todd Agriscience}{Jun 2025 -- Sep 2025}
-  {Software Engineering Intern}{Los Angeles, CA}
+  {Software Engineer Intern}{Los Angeles, CA}
   \resumeItemListStart
-    \resumeItem{Engineered a role-based authentication system with NextAuth.js, middleware, and an AWS DynamoDB session store, securing all admin routes against unauthorized access while sustaining sub-10ms latency for 20 client dashboards}
-
-    % \resumeItem{Engineered a role-based authentication system with NextAuth.js and middleware, eliminating unauthorized access to sensitive admin routes and reducing security risk exposure by 100\% through dynamic session validation}
-    % \resumeItem{Architected an AWS DynamoDB session store with sub-10ms latency, powering dashboards for 20 enterprise clients}
-    \resumeItem{Resolved 4 critical production blockers in a Next.js 15/React 18 SaaS platform, fixing build errors, dependency conflicts, and context propagation failures in route redirects, supporting full internationalization (i18n) and updated test harnesses}
+    \resumeItem{Built a locale-aware auth layer in Next.js edge middleware by chaining i18n and stateless session checks, resolving Google OAuth and email sign-ins against a DynamoDB store to stamp tenant/role claims, securing 20 client dashboards}
+    \resumeItem{Designed an S3-triggered ML pipeline that ingests raw soil uploads, orchestrates Lambda-hosted scikit-learn scoring in Step Functions with idempotent execution, and returns reviewed recommendations}
   \resumeItemListEnd
-
-\resumeSubheading
-  {Acrotech Biopharma Inc.}{Jun 2024 -- Aug 2024}
-  {Software Engineering Intern}{East Windsor, NJ}{\vspace{0 pt}}
-  \resumeItemListStart
-    \resumeItem{Built a SharePoint based intranet platform leveraging SPFx, TypeScript, Webpack, and Gulp driving employee engagement with upwards of 1,100 total visits and 217 visits in the final 30 days of term}
-    \resumeItem{Configured CRUD workflows using Power Automate and JavaScript, improving backend synchronization efficiency and reducing manual input errors, contributing to a seamless experience for 17 unique users over 2 months}
-    \resumeItem{Analyzed data queries using SQL in PowerBI's SQL Server and Excel's command line to model commercial patterns of 400+ health care professionals and compare tele-sales call activity to determine sales impact in weekly reports}
-  \resumeItemListEnd
-
-% \resumeSubheading
-%   {SB Dental Studio}{Jun 2023 -- Jun 2024}
-%   {Data Analyst Intern}{Plainsboro, NJ}{\vspace{0 pt}}
-%   \resumeItemListStart
-%     \resumeItem{Restructured patient data with Dentrix software, automating follow-ups and minimizing scheduling conflicts by 60\%}
-%     \resumeItem{Streamlined payment processing system, validating insurance policies for 140+ claim forms to ensure compliance}
-%   \resumeItemListEnd
 \resumeSubHeadingListEnd
 
 %-----------PROJECTS-----------
@@ -152,39 +150,16 @@
 \resumeSubHeadingListStart
 
 \resumeProjectHeading
-  {\textbf{\href{https://github.com/suryaatm21/job-tracker}{Telegram Job Tracker}} $|$ \emph{Python, GitHub Actions, Telegram API}}{Aug 2025 -- Present}
+  {\textbf{CloudScribe AI} $|$ \emph{TypeScript, Next.js, Google Cloud Platform, Docker}}{Sep 2025 -- Present}
   \resumeItemListStart
-    \resumeItem{Shipped a GitHub Actions pipeline with TTL caching to monitor internship repos, actively delivering alerts to 1,300+ contacts and 60+ active users, scaling reliably on three CI pipelines with sub-15s runtimes and under 1\% job failure rate.}
-    % \resumeItem{Optimized workflows with TTL caching, batching, and fallback logic, cutting job failure rate to less than 1\%}
-  \resumeItemListEnd
-  
-
-\resumeProjectHeading
-  {\textbf{CloudScribe AI} $|$ \emph{TypeScript, Next.js, Google Cloud, Docker, Firebase}}{Jan 2025 -- Present}
-  \resumeItemListStart
-    \resumeItem{Deploying a serverless pipeline using GCP's Cloud Storage, Pub/Sub, and Firebase Functions to transcribe and summarize multi modal media inputs (e.g., .mp3, .mp4) with sub-30s latency and under 2s trigger response}
-    \resumeItem{Containerized video processing with Docker and deployed to Cloud Run, integrating OpenAI APIs for semantic summarization with over 90\% similarity to human-written notes using cosine and ROUGE metrics across 150+ tests}
-  \resumeItemListEnd    
-
-% \resumeProjectHeading
-%     {\textbf{NASA Predictive Maintenance} $|$ \emph{Python, Pandas, NumPy, Matplotlib, Streamlit}}{Mar 2025 -- Apr 2025}
-%     \resumeItemListStart
-%     \resumeItem{Trained models on NASA C-MAPSS time-series data to predict aircraft engine Remaining Useful Life (RUL), using feature data engineering, scaling and time-window aggregation, achieving an 89\% F1-score.}
-%     \resumeItem{Built a Streamlit dashboard to visualize degradation curves and predictions for insights across 200+ engine trajectories.}
-%     \resumeItemListEnd
-
-
-\resumeProjectHeading
-  {\textbf{\href{https://github.com/suryaatm21/spotify-optimizer}{Spotify Playlist Optimizer}} $|$ \emph{REST APIs, FastAPI, PostgreSQL, scikit-learn}}{Oct 2024 -- Aug 2025}
-  \resumeItemListStart
-    \resumeItem{Designed a FastAPI backend with PostgreSQL and Spotify OAuth, batch processing tracks with average latency under 200ms, and integrated ReccoBeats API to fetch 95\%+ of audio features with data imputation fallback}
-    \resumeItem{Applied K-Means and DBSCAN clustering with PCA visualizations on audio features to reveal playlist-level patterns, enabling organization and filtering via CRUD operations through the Spotify Web API}
+    \resumeItem{Deployed an event-driven GCP pipeline that turns lecture recordings into timestamped transcripts, using Pub/Sub-triggered Cloud Run FFmpeg workers, async Speech-to-Text, and transactional Firestore job state for retry-safe execution}
+    \resumeItem{Designed a time-aligned study layer joining transcripts with OCR and Gemini descriptions of on-screen visuals to generate notes, index them for semantic search, and answer questions with timestamp citations}
   \resumeItemListEnd
 
 \resumeProjectHeading
-  {\textbf{\href{https://github.com/suryaatm21/spoiler_alert}{Spoiler Alert - Web Development GT}} $|$ \emph{JavaScript, Flask, React, SQLite}}{Sep 2024 -- Dec 2024}
+  {\textbf{\href{https://github.com/suryaatm21/job-tracker}{Telegram Job Tracker}} $|$ \emph{Python, GitHub Actions, GitHub Contents API, Telegram API}}{Aug 2025 -- Sep 2025}
   \resumeItemListStart
-    \resumeItem{Led frontend scrum development of the Fridge dashboard using React, Flask, and Gemini API to automate expiry and category inputs, reducing manual entry steps by 40\% and cutting input time from 30s to under 10s per item}
+    \resumeItem{Shipped a job tracking notification service that monitors multiple listing sources, dedupes roles across them with TTL caching, and batches Telegram alerts to 350+ users with under 1\% failure and sub-15s latency}
   \resumeItemListEnd
 
 \resumeSubHeadingListEnd
@@ -193,10 +168,9 @@
 \section{\MakeUppercase{Technical Skills}}
  \begin{itemize}[leftmargin=0.15in, label={}]
     \small{\item{
-     \textbf{Languages}{: Python, Java, JavaScript, TypeScript, SQL, HTML, CSS, LaTeX, C, C++, Swift} \\
-     \textbf{Frameworks}{: React, Angular, Next.js, Node.js, GraphQL, FastAPI, TailwindCSS, Flask, Django, Scrum, Agile, RAG} \\
-     \textbf{Developer Tools}{: Git, GitHub, NPM, AWS, GCP, Azure, Postman, Storybook, MongoDB, CI/CD, Jira, Figma, VSCode} \\
-     \textbf{Libraries}{: Pandas, NumPy, Seaborn, scikit-learn, Matplotlib, TensorFlow, PyTorch, Axios, LangChain, Transformers}
+     \textbf{Languages}{: Python, C, C++, Java, Bash, SQL} \\
+     \textbf{AI/ML}{: PyTorch, TensorFlow, Sklearn, LLMs, RAG, Fine tuning (LoRA, QLoRA), Quantization, Distillation} \\
+     \textbf{Systems \& Infra}{: Distributed systems, concurrency, cloud (GCP, AWS), Docker, Kubernetes, CI/CD, Linux, Datadog}
     }}
  \end{itemize}
 
