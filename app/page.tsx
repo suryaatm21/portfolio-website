@@ -96,6 +96,7 @@ export default function Home() {
                 degree={education.degree}
                 graduationDate={education.graduationDate}
                 gpa={education.gpa}
+                note={education.note}
               />
             </div>
           </div>

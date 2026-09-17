@@ -11,6 +11,7 @@ interface AcademicBackgroundCardProps {
   graduationDate: string;
   gpa: string;
   location?: string;
+  note?: string;
   className?: string;
 }
 
@@ -20,6 +21,7 @@ export function AcademicBackgroundCard({
   graduationDate,
   gpa,
   location,
+  note,
   className = "",
 }: AcademicBackgroundCardProps): React.ReactElement {
   return (
@@ -66,6 +68,14 @@ export function AcademicBackgroundCard({
                   {graduationDate}
                 </TextReveal>
               </div>
+
+              {note && (
+                <p className="text-sm text-muted-foreground">
+                  <TextReveal preset="fadeUp" stagger={30} delay={650} as="span">
+                    {note}
+                  </TextReveal>
+                </p>
+              )}
             </div>
 
             {/* Centered CTA with emphasis */}
