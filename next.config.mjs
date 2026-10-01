@@ -7,6 +7,8 @@ const workspaceRoot = path.dirname(fileURLToPath(import.meta.url));
 const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
+    // Next's defaults plus content/, which `next lint` otherwise skips.
+    dirs: ["pages", "app", "components", "lib", "src", "content"],
   },
   typescript: {
     ignoreBuildErrors: true,
