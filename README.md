@@ -213,7 +213,7 @@ No environment variables required for basic functionality. The site is fully sta
 - ✅ IntersectionObserver for efficient scroll-triggered animations
 - ✅ Reduced motion support for accessibility
 - ✅ Code splitting with Next.js App Router
-- ✅ Optimized images with Next.js Image component
+- ✅ Locally served, pre-sized images (`public/avatar-512.webp`, `public/og.png`); `images.unoptimized` is on, so Next does not resize them
 
 ## Browser Support
 
