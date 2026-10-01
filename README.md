@@ -139,7 +139,8 @@ A mesmerizing GSAP-powered effect that displays coursework items in a 3D rotatin
 - Smooth rotation with mouse/touch drag
 - Responsive sizing and positioning
 - Automatic item distribution on cylinder
-- Performance-optimized rendering
+- Performance-optimized rendering (loaded lazily, so GSAP stays out of the initial bundle)
+- Under `prefers-reduced-motion`, shows a plain static list instead of the pinned 3D scroll rotation
 
 See `components/CylindricalText.tsx` for implementation details.
 
