@@ -325,7 +325,16 @@ export default function AnimatedBackground({
     // Update sky height as the user scrolls (ensures sky disappears on scroll)
     window.addEventListener("scroll", updateSkyFromScroll, { passive: true });
 
+    // The canvas element can keep reporting its old size for a while after the
+    // window resize event, so redraw the held frame once its box really changes.
+    const sizeObserver =
+      typeof ResizeObserver !== "undefined" && vantaRef.current
+        ? new ResizeObserver(renderStaticFrame)
+        : null;
+    if (vantaRef.current) sizeObserver?.observe(vantaRef.current);
+
     return () => {
+      sizeObserver?.disconnect();
       clearTimeout(timeoutId);
       window.removeEventListener("resize", handleResize);
       window.removeEventListener("orientationchange", handleResize);
@@ -342,7 +351,13 @@ export default function AnimatedBackground({
       clearTimeout(t2);
       detachDPR?.();
     };
-  }, [initializeVanta, handleResize, refreshHealthStats, updateSkyFromScroll]);
+  }, [
+    initializeVanta,
+    handleResize,
+    refreshHealthStats,
+    renderStaticFrame,
+    updateSkyFromScroll,
+  ]);
 
   // Update theme when it changes
   useEffect(() => {
