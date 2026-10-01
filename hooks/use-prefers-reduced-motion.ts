@@ -13,9 +13,9 @@ function readPrefersReducedMotion(): boolean {
  *
  * By default it starts as `false` so the first client render matches the
  * server-rendered HTML, then updates after mount and whenever the setting
- * changes. Components that never server-render (for example ones loaded with
- * `next/dynamic` and `ssr: false`) can pass `clientOnly: true` to read the
- * setting on their first render instead.
+ * changes. Pass `clientOnly: true` to read the setting on the first client
+ * render instead; only do that where the rendered markup does not depend on
+ * the value, or where a server/client difference is already accepted.
  */
 export function usePrefersReducedMotion({
   clientOnly = false,

@@ -2,6 +2,8 @@
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
 
+import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
+
 interface AnimatedBackgroundProps {
   theme?: "dark" | "light";
 }
@@ -115,10 +117,9 @@ export default function AnimatedBackground({
     customColors: true,
   });
 
-  const prefersReducedMotion =
-    typeof window !== "undefined"
-      ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
-      : false;
+  // Read on the first client render, as before, and kept in sync with later changes:
+  // a change re-creates initializeVanta, so the effect below rebuilds the clouds in the new mode.
+  const prefersReducedMotion = usePrefersReducedMotion({ clientOnly: true });
 
   // Vanta has no pause API: under reduced motion we cancel its render loop
   // after the first frames and redraw once whenever a resize clears the canvas.
