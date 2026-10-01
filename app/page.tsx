@@ -1,10 +1,10 @@
 "use client";
 
 import { ArrowUp } from "lucide-react";
+import dynamic from "next/dynamic";
 
 import { AcademicBackgroundCard } from "@/components/AcademicBackgroundCard";
 import { ContactForm } from "@/components/ContactForm";
-import { CylindricalText } from "@/components/CylindricalText";
 import { Hero } from "@/components/Hero";
 import { HorizontalTimeline } from "@/components/HorizontalTimeline";
 import type { TimelineEntry } from "@/components/HorizontalTimeline";
@@ -24,6 +24,17 @@ import {
   footer,
   education,
 } from "@/content/site";
+
+// Loaded client-side after hydration so gsap stays out of the initial JS bundle.
+// The placeholder matches the section's 100svh box so nothing shifts when it loads.
+const CylindricalText = dynamic(
+  () =>
+    import("@/components/CylindricalText").then((mod) => mod.CylindricalText),
+  {
+    ssr: false,
+    loading: () => <div className="relative h-[100svh] w-full" />,
+  },
+);
 
 export default function Home() {
   const scrollToTop = () => {

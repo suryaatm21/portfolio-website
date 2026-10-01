@@ -7,6 +7,7 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 - `content/site.ts` mixes live and dead content: `education`, `timeline`, `projects` are imported and rendered by `app/page.tsx`; `personal`, `professionalExperience`, `technicalSkills` are unused exports mirroring resume data (kept in sync manually, not rendered anywhere). Check actual imports in `app/page.tsx` before assuming an export is user-visible.
 - `content/resume.tex` is a standalone LaTeX resume source, not wired into any build step or served asset — update it manually alongside `content/site.ts` when resume content changes.
 - The "See resume" CTA (`hero.cta.secondary.href` in `content/site.ts`) is an external Google Drive link, not a locally served PDF. The repo-root `Surya_Atmuri_resume (*).pdf` file is tracked in git but not referenced by any route or component.
+- `public/og.png` (link-preview image referenced by `app/layout.tsx`) is a static 1200x630 render of `hero` name + tagline from `content/site.ts`, and `public/avatar-512.webp` is a hand-resized copy of the profile photo; regenerate either by hand when that content changes (`images.unoptimized` is on, so Next does not resize images).
 - Deployment is Netlify, auto-deploying from `main` on merge (see `README.md#Deployment`); no GitHub Actions workflows exist in this repo.
 
 ## Maintaining this file

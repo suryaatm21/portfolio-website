@@ -4,6 +4,19 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import React, { useLayoutEffect, useRef } from "react";
 
+import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
+
+// Shared by the 3D cylinder and the static reduced-motion list so both keep the same type scale
+function itemTextStyle(item: string): React.CSSProperties {
+  return {
+    lineHeight: item.length > 40 ? 1.15 : 1.05,
+    fontSize:
+      item.length > 40
+        ? `clamp(0.8rem, ${Math.max(0.95, 2.5 - item.length * 0.025)}vw, 1.2rem)`
+        : `clamp(0.9rem, ${Math.max(1.2, 3.2 - item.length * 0.03)}vw, 1.65rem)`,
+  };
+}
+
 interface CylindricalTextProps {
   items: string[];
   className?: string;
@@ -19,8 +32,15 @@ export function CylindricalText({
   const textWrapperRef = useRef<HTMLUListElement>(null);
   const titleRef = useRef<HTMLParagraphElement>(null);
   const itemsRef = useRef<(HTMLLIElement | null)[]>([]);
+  // Loaded client-only (see app/page.tsx), so the setting can be read on first render
+  // and the pinned scroll animation is never created for reduced-motion users.
+  const prefersReducedMotion = usePrefersReducedMotion({ clientOnly: true });
 
   useLayoutEffect(() => {
+    if (prefersReducedMotion) {
+      return;
+    }
+
     const wrapper = wrapperRef.current;
     const textWrapper = textWrapperRef.current;
     const title = titleRef.current;
@@ -91,10 +111,28 @@ export function CylindricalText({
       window.removeEventListener("resize", handleResize);
       scrollTrigger.kill();
     };
-  }, [items]);
+  }, [items, prefersReducedMotion]);
 
   if (items.length === 0) {
     return null;
+  }
+
+  if (prefersReducedMotion) {
+    return (
+      <div
+        className={`relative flex min-h-[100svh] w-full items-center justify-center ${className}`}>
+        <ul className="flex flex-col items-center gap-6 py-12 text-center font-bold uppercase leading-tight tracking-wider text-black">
+          {items.map((item, index) => (
+            <li
+              key={`${item}-${index}`}
+              className="w-full max-w-[min(92vw,34rem)] px-5 text-balance sm:max-w-[min(80vw,38rem)] lg:max-w-[min(68vw,42rem)]"
+              style={itemTextStyle(item)}>
+              {item}
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
   }
 
   return (
@@ -140,11 +178,7 @@ export function CylindricalText({
               textRendering: "optimizeLegibility",
               willChange: "transform",
               whiteSpace: "normal",
-              lineHeight: item.length > 40 ? 1.15 : 1.05,
-              fontSize:
-                item.length > 40
-                  ? `clamp(0.8rem, ${Math.max(0.95, 2.5 - item.length * 0.025)}vw, 1.2rem)`
-                  : `clamp(0.9rem, ${Math.max(1.2, 3.2 - item.length * 0.03)}vw, 1.65rem)`,
+              ...itemTextStyle(item),
             }}>
             {item}
           </li>

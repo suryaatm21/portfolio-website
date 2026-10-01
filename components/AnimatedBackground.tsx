@@ -11,6 +11,11 @@ interface VantaEffect {
   pause?: () => void;
   play?: () => void;
   resize?: () => void;
+  // Vanta internals used to hold a static frame under reduced motion
+  req?: number;
+  renderer?: { render: (scene: unknown, camera: unknown) => void } | null;
+  scene?: unknown;
+  camera?: unknown;
 }
 
 type VantaCloudsFactory = (options: Record<string, unknown>) => VantaEffect;
@@ -115,6 +120,36 @@ export default function AnimatedBackground({
       ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
       : false;
 
+  // Vanta has no pause API: under reduced motion we cancel its render loop
+  // after the first frames and redraw once whenever a resize clears the canvas.
+  const staticFrameRef = useRef(false);
+
+  const renderStaticFrame = useCallback(() => {
+    if (!staticFrameRef.current) return;
+    window.requestAnimationFrame(() => {
+      const effect = vantaEffect.current;
+      if (!staticFrameRef.current || !effect?.renderer) return;
+      // Re-measure here too: during the resize event the element can still report
+      // its old width, and with the loop stopped nothing would correct it later.
+      effect.resize?.();
+      effect.renderer.render(effect.scene, effect.camera);
+    });
+  }, []);
+
+  const holdStaticFrame = useCallback((effect: VantaEffect) => {
+    // Wait two frames so Vanta's own post-init resize has run and a frame is drawn
+    window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => {
+        if (vantaEffect.current !== effect) return;
+        if (effect.req !== undefined) {
+          window.cancelAnimationFrame(effect.req);
+        }
+        effect.renderer?.render(effect.scene, effect.camera);
+        staticFrameRef.current = true;
+      });
+    });
+  }, []);
+
   const refreshHealthStats = useCallback(() => {
     setHealthVersion((current) => current + 1);
   }, []);
@@ -162,6 +197,7 @@ export default function AnimatedBackground({
       }
 
       // Clean up existing effect
+      staticFrameRef.current = false;
       if (vantaEffect.current) {
         vantaEffect.current.destroy?.();
       }
@@ -180,6 +216,9 @@ export default function AnimatedBackground({
       };
 
       vantaEffect.current = vantaFactoryRef.current(vantaConfig);
+      if (prefersReducedMotion) {
+        holdStaticFrame(vantaEffect.current);
+      }
       healthStatsRef.current.cloudsActive = true;
       refreshHealthStats();
 
@@ -190,7 +229,7 @@ export default function AnimatedBackground({
       healthStatsRef.current.cloudsActive = false;
       refreshHealthStats();
     }
-  }, [loadModules, prefersReducedMotion, refreshHealthStats]);
+  }, [holdStaticFrame, loadModules, prefersReducedMotion, refreshHealthStats]);
 
   // Update the CSS variables for sky based on current scroll position
   const updateSkyFromScroll = useCallback(() => {
@@ -217,6 +256,8 @@ export default function AnimatedBackground({
     if (vantaEffect.current && vantaEffect.current.resize) {
       vantaEffect.current.resize();
     }
+    // Resizing clears the WebGL canvas; redraw the held frame if the loop is stopped
+    renderStaticFrame();
 
     // Recalculate where the sky should end (just above the Hero container)
     try {
@@ -248,7 +289,7 @@ export default function AnimatedBackground({
         updateSkyFromScroll();
       }
     } catch {}
-  }, [updateSkyFromScroll]);
+  }, [renderStaticFrame, updateSkyFromScroll]);
 
   useEffect(() => {
     const healthStats = healthStatsRef.current;
@@ -289,6 +330,7 @@ export default function AnimatedBackground({
       window.removeEventListener("orientationchange", handleResize);
       window.removeEventListener("scroll", updateSkyFromScroll);
 
+      staticFrameRef.current = false;
       if (vantaEffect.current) {
         vantaEffect.current.destroy?.();
         vantaEffect.current = null;
