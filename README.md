@@ -213,7 +213,7 @@ No environment variables required for basic functionality. The site is fully sta
 - ✅ IntersectionObserver for efficient scroll-triggered animations
 - ✅ Reduced motion support for accessibility
 - ✅ Code splitting with Next.js App Router
-- ✅ Locally served, pre-sized images (`public/avatar-512.webp`, `public/og.png`); `images.unoptimized` is on, so Next does not resize them
+- ✅ Locally served, pre-sized images (`public/avatar-512.webp`, `public/og.png`); `images.unoptimized` is on, so Next does not resize them. `og.png` is a static 1200x630 render of the `hero` name and tagline from `content/site.ts`, and `avatar-512.webp` is a hand-resized copy of the profile photo; regenerate either by hand when that content changes
 
 ## Browser Support
 
