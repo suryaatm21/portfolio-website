@@ -1,8 +1,19 @@
 "use client";
 
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import React, { useLayoutEffect, useRef } from "react";
+
+import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
+
+// Shared by the 3D cylinder and the static reduced-motion list so both keep the same type scale
+function itemTextStyle(item: string): React.CSSProperties {
+  return {
+    lineHeight: item.length > 40 ? 1.15 : 1.05,
+    fontSize:
+      item.length > 40
+        ? `clamp(0.8rem, ${Math.max(0.95, 2.5 - item.length * 0.025)}vw, 1.2rem)`
+        : `clamp(0.9rem, ${Math.max(1.2, 3.2 - item.length * 0.03)}vw, 1.65rem)`,
+  };
+}
 
 interface CylindricalTextProps {
   items: string[];
@@ -19,8 +30,15 @@ export function CylindricalText({
   const textWrapperRef = useRef<HTMLUListElement>(null);
   const titleRef = useRef<HTMLParagraphElement>(null);
   const itemsRef = useRef<(HTMLLIElement | null)[]>([]);
+  // Only the effect reads this (the markup switches layouts in CSS), so it is safe to
+  // read on the first client render and skip loading gsap for reduced-motion users.
+  const prefersReducedMotion = usePrefersReducedMotion({ clientOnly: true });
 
   useLayoutEffect(() => {
+    if (prefersReducedMotion) {
+      return;
+    }
+
     const wrapper = wrapperRef.current;
     const textWrapper = textWrapperRef.current;
     const title = titleRef.current;
@@ -28,8 +46,6 @@ export function CylindricalText({
     if (!wrapper || !textWrapper || !title || items.length === 0) {
       return;
     }
-
-    gsap.registerPlugin(ScrollTrigger);
 
     // Ensure refs array matches items length
     itemsRef.current = itemsRef.current.slice(0, items.length);
@@ -66,20 +82,6 @@ export function CylindricalText({
     // Initialize positions first
     calculatePositions();
 
-    // Create ScrollTrigger animation - match reference exactly
-    const scrollTrigger = ScrollTrigger.create({
-      trigger: title,
-      start: "center center",
-      end: "+=2000svh",
-      pin: wrapper,
-      scrub: 2,
-      animation: gsap.fromTo(
-        textWrapper,
-        { rotateX: -80 },
-        { rotateX: 270, ease: "none" },
-      ),
-    });
-
     // Handle resize
     const handleResize = () => {
       calculatePositions();
@@ -87,69 +89,111 @@ export function CylindricalText({
 
     window.addEventListener("resize", handleResize);
 
+    // gsap is imported here rather than at the top of the file so it stays out of
+    // the initial JS bundle; the section sits near the bottom of the page.
+    let cancelled = false;
+    let scrollTrigger: { kill: () => void } | undefined;
+
+    void Promise.all([import("gsap"), import("gsap/ScrollTrigger")]).then(
+      ([{ gsap }, { ScrollTrigger }]) => {
+        if (cancelled) return;
+
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Create ScrollTrigger animation - match reference exactly
+        scrollTrigger = ScrollTrigger.create({
+          trigger: title,
+          start: "center center",
+          end: "+=2000svh",
+          pin: wrapper,
+          scrub: 2,
+          animation: gsap.fromTo(
+            textWrapper,
+            { rotateX: -80 },
+            { rotateX: 270, ease: "none" },
+          ),
+        });
+      },
+    );
+
     return () => {
+      cancelled = true;
       window.removeEventListener("resize", handleResize);
-      scrollTrigger.kill();
+      scrollTrigger?.kill();
     };
-  }, [items]);
+  }, [items, prefersReducedMotion]);
 
   if (items.length === 0) {
     return null;
   }
 
+  // Both layouts are server-rendered and CSS picks one, so the course titles are in the
+  // initial HTML and the right layout shows from first paint in either motion mode.
   return (
-    <div
-      ref={wrapperRef}
-      className={`relative h-[100svh] w-full overflow-hidden ${className}`}
-      style={{
-        // Perspective will be set dynamically in calculatePositions
-        perspective: "900px", // Initial fallback, overridden by JS
-      }}>
-      {/* Scroll prompt - hidden but still serves as trigger element */}
-      <p
-        ref={titleRef}
-        className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 opacity-0 pointer-events-none"
-        aria-hidden="true">
-        {sectionLabel}
-      </p>
+    <>
+      <div
+        className={`relative hidden min-h-[100svh] w-full items-center justify-center motion-reduce:flex ${className}`}>
+        <ul className="flex flex-col items-center gap-6 py-12 text-center font-bold uppercase leading-tight tracking-wider text-black">
+          {items.map((item, index) => (
+            <li
+              key={`${item}-${index}`}
+              className="w-full max-w-[min(92vw,34rem)] px-5 text-balance sm:max-w-[min(80vw,38rem)] lg:max-w-[min(68vw,42rem)]"
+              style={itemTextStyle(item)}>
+              {item}
+            </li>
+          ))}
+        </ul>
+      </div>
 
-      {/* 3D text wrapper */}
-      <ul
-        ref={textWrapperRef}
-        className="absolute left-0 top-0 h-full w-full text-center font-bold uppercase leading-tight tracking-wider text-black"
+      <div
+        ref={wrapperRef}
+        className={`relative h-[100svh] w-full overflow-hidden motion-reduce:hidden ${className}`}
         style={{
-          transformStyle: "preserve-3d",
-          transformOrigin: "center center",
-          WebkitFontSmoothing: "antialiased",
-          MozOsxFontSmoothing: "grayscale",
-          willChange: "transform",
-          transform: "translateZ(0)",
+          // Perspective will be set dynamically in calculatePositions
+          perspective: "900px", // Initial fallback, overridden by JS
         }}>
-        {items.map((item, index) => (
-          <li
-            key={`${item}-${index}`}
-            ref={(el) => {
-              itemsRef.current[index] = el;
-            }}
-            className="absolute left-1/2 top-1/2 w-full max-w-[min(92vw,34rem)] px-5 text-balance sm:max-w-[min(80vw,38rem)] lg:max-w-[min(68vw,42rem)]"
-            style={{
-              transformStyle: "preserve-3d",
-              backfaceVisibility: "hidden",
-              WebkitFontSmoothing: "antialiased",
-              MozOsxFontSmoothing: "grayscale",
-              textRendering: "optimizeLegibility",
-              willChange: "transform",
-              whiteSpace: "normal",
-              lineHeight: item.length > 40 ? 1.15 : 1.05,
-              fontSize:
-                item.length > 40
-                  ? `clamp(0.8rem, ${Math.max(0.95, 2.5 - item.length * 0.025)}vw, 1.2rem)`
-                  : `clamp(0.9rem, ${Math.max(1.2, 3.2 - item.length * 0.03)}vw, 1.65rem)`,
-            }}>
-            {item}
-          </li>
-        ))}
-      </ul>
-    </div>
+        {/* Scroll prompt - hidden but still serves as trigger element */}
+        <p
+          ref={titleRef}
+          className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 opacity-0 pointer-events-none"
+          aria-hidden="true">
+          {sectionLabel}
+        </p>
+
+        {/* 3D text wrapper */}
+        <ul
+          ref={textWrapperRef}
+          className="absolute left-0 top-0 h-full w-full text-center font-bold uppercase leading-tight tracking-wider text-black"
+          style={{
+            transformStyle: "preserve-3d",
+            transformOrigin: "center center",
+            WebkitFontSmoothing: "antialiased",
+            MozOsxFontSmoothing: "grayscale",
+            willChange: "transform",
+            transform: "translateZ(0)",
+          }}>
+          {items.map((item, index) => (
+            <li
+              key={`${item}-${index}`}
+              ref={(el) => {
+                itemsRef.current[index] = el;
+              }}
+              className="absolute left-1/2 top-1/2 w-full max-w-[min(92vw,34rem)] px-5 text-balance sm:max-w-[min(80vw,38rem)] lg:max-w-[min(68vw,42rem)]"
+              style={{
+                transformStyle: "preserve-3d",
+                backfaceVisibility: "hidden",
+                WebkitFontSmoothing: "antialiased",
+                MozOsxFontSmoothing: "grayscale",
+                textRendering: "optimizeLegibility",
+                willChange: "transform",
+                whiteSpace: "normal",
+                ...itemTextStyle(item),
+              }}>
+              {item}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </>
   );
 }

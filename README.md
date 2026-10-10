@@ -139,7 +139,8 @@ A mesmerizing GSAP-powered effect that displays coursework items in a 3D rotatin
 - Smooth rotation with mouse/touch drag
 - Responsive sizing and positioning
 - Automatic item distribution on cylinder
-- Performance-optimized rendering
+- Performance-optimized rendering (loaded lazily, so GSAP stays out of the initial bundle)
+- Under `prefers-reduced-motion`, shows a plain static list instead of the pinned 3D scroll rotation
 
 See `components/CylindricalText.tsx` for implementation details.
 
@@ -212,7 +213,7 @@ No environment variables required for basic functionality. The site is fully sta
 - ✅ IntersectionObserver for efficient scroll-triggered animations
 - ✅ Reduced motion support for accessibility
 - ✅ Code splitting with Next.js App Router
-- ✅ Optimized images with Next.js Image component
+- ✅ Locally served, pre-sized images (`public/avatar-512.webp`, `public/og.png`); `images.unoptimized` is on, so Next does not resize them
 
 ## Browser Support
 

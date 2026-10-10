@@ -11,8 +11,11 @@ import { FloatingElement } from "@/components/animations/FloatingElement";
 import { TextReveal } from "@/components/animations/TextReveal";
 import { Button } from "@/components/ui/button";
 import { hero } from "@/content/site";
+import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
 
 export function Hero(): React.ReactElement {
+  const prefersReducedMotion = usePrefersReducedMotion();
+
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
@@ -23,30 +26,47 @@ export function Hero(): React.ReactElement {
   return (
     <div className="min-h-[80vh] md:min-h-[85vh] flex items-center justify-center relative overflow-visible">
       <div className="absolute inset-0 -z-10">
+        {/* Under reduced motion, hold both blobs at their first keyframe instead of looping */}
         <motion.div
           className="absolute top-1/4 left-1/4 w-72 h-72 bg-accent/5 rounded-full blur-3xl"
-          animate={{
-            scale: [1, 1.1, 1],
-            opacity: [0.3, 0.5, 0.3],
-          }}
-          transition={{
-            duration: 8,
-            repeat: Number.POSITIVE_INFINITY,
-            ease: "easeInOut",
-          }}
+          animate={
+            prefersReducedMotion
+              ? { scale: 1, opacity: 0.3 }
+              : {
+                  scale: [1, 1.1, 1],
+                  opacity: [0.3, 0.5, 0.3],
+                }
+          }
+          transition={
+            prefersReducedMotion
+              ? { duration: 0 }
+              : {
+                  duration: 8,
+                  repeat: Number.POSITIVE_INFINITY,
+                  ease: "easeInOut",
+                }
+          }
         />
         <motion.div
           className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary/5 rounded-full blur-3xl"
-          animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.2, 0.4, 0.2],
-          }}
-          transition={{
-            duration: 10,
-            repeat: Number.POSITIVE_INFINITY,
-            ease: "easeInOut",
-            delay: 2,
-          }}
+          animate={
+            prefersReducedMotion
+              ? { scale: 1, opacity: 0.2 }
+              : {
+                  scale: [1, 1.2, 1],
+                  opacity: [0.2, 0.4, 0.2],
+                }
+          }
+          transition={
+            prefersReducedMotion
+              ? { duration: 0 }
+              : {
+                  duration: 10,
+                  repeat: Number.POSITIVE_INFINITY,
+                  ease: "easeInOut",
+                  delay: 2,
+                }
+          }
         />
       </div>
 
