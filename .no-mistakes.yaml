@@ -1,0 +1,15 @@
+# Per-repo no-mistakes gate configuration.
+# Schema: https://kunchenguid.github.io/no-mistakes/reference/repo-config/
+#
+# commands.* is read only from the default-branch copy of this file, so these
+# pins take effect for validation runs after this lands on main.
+
+commands:
+  # Run worktrees start with tracked files only, so dependencies must be
+  # materialized before any pinned command can run. pnpm is the project's
+  # package manager (README.md#Deployment). HUSKY=0 keeps the package.json
+  # "prepare" script from installing git hooks on the daemon host.
+  prepare: "HUSKY=0 pnpm install --frozen-lockfile"
+  # The schema has no typecheck key, so the lint step runs both static checks.
+  lint: "npm run lint && npm run typecheck"
+  test: "npm run test"
