@@ -79,7 +79,7 @@ export function Hero(): React.ReactElement {
             <div className="flex-1 text-center xl:text-left">
               <FloatingElement variant="subtle">
                 <h1 className="text-5xl sm:text-6xl xl:text-7xl font-sans font-bold mb-6 leading-tight">
-                  <span className="bg-gradient-to-r from-accent to-secondary bg-clip-text text-slate-100 font-mono hero-name">
+                  <span className="text-slate-100 font-mono hero-name">
                     <TextReveal
                       mode="word"
                       preset="scale"
