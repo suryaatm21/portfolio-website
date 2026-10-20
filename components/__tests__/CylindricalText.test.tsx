@@ -81,6 +81,24 @@ describe("CylindricalText", () => {
     expect(gsapLoaded).toHaveBeenCalledTimes(1);
   });
 
+  it("hands the reserved scroll distance to the pin spacer and restores it on cleanup", async () => {
+    mockEnvironment();
+    const { container, unmount } = render(
+      <CylindricalText items={["Algorithms", "Systems"]} />,
+    );
+    const reserve = container.querySelector<HTMLElement>(
+      ".motion-reduce\\:hidden",
+    );
+    expect(reserve?.style.paddingBottom).toBe("2000px");
+
+    observerCallback?.([{ isIntersecting: true }]);
+    await waitFor(() => expect(scrollTriggerCreate).toHaveBeenCalledTimes(1));
+    expect(reserve?.style.paddingBottom).toBe("0px");
+
+    unmount();
+    expect(reserve?.style.paddingBottom).toBe("2000px");
+  });
+
   it("never loads gsap for reduced-motion visitors", async () => {
     mockEnvironment({ reducedMotion: true });
     render(<CylindricalText items={["Algorithms", "Systems"]} />);
