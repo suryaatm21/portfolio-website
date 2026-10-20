@@ -4,6 +4,8 @@ import React, { useLayoutEffect, useRef } from "react";
 
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
 
+const SCROLL_DISTANCE_PX = 2000;
+
 // Shared by the 3D cylinder and the static reduced-motion list so both keep the same type scale
 function itemTextStyle(item: string): React.CSSProperties {
   return {
@@ -109,7 +111,7 @@ export function CylindricalText({
           scrollTrigger = ScrollTrigger.create({
             trigger: title,
             start: "center center",
-            end: "+=2000svh",
+            end: `+=${SCROLL_DISTANCE_PX}`,
             pin: wrapper,
             scrub: 2,
             animation: gsap.fromTo(
@@ -146,7 +148,7 @@ export function CylindricalText({
       observer?.disconnect();
       window.removeEventListener("resize", handleResize);
       scrollTrigger?.kill();
-      reserve.style.paddingBottom = "";
+      reserve.style.paddingBottom = `${SCROLL_DISTANCE_PX}px`;
     };
   }, [items, prefersReducedMotion]);
 
@@ -173,11 +175,12 @@ export function CylindricalText({
       </div>
 
       {/* Until gsap pins the cylinder, this padding holds the scroll distance the pin
-          spacer will add (gsap reads the "+=2000svh" end above as 2000px), so the page
+          spacer will add (the ScrollTrigger end above), so the page
           below, e.g. #contact, does not jump when gsap loads. */}
       <div
         ref={reserveRef}
-        className="pb-[2000px] motion-reduce:hidden motion-reduce:pb-0">
+        className="motion-reduce:hidden"
+        style={{ paddingBottom: `${SCROLL_DISTANCE_PX}px` }}>
         <div
           ref={wrapperRef}
           className={`relative h-[100svh] w-full overflow-hidden ${className}`}
