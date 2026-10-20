@@ -97,7 +97,7 @@ export function CylindricalText({
     // the initial JS bundle, and only once the section is within a viewport of the
     // screen so visitors who never scroll this far never download it.
     let cancelled = false;
-    let scrollTrigger: { kill: () => void } | undefined;
+    let scrollTrigger: { kill: (revert?: boolean) => void } | undefined;
     let observer: IntersectionObserver | undefined;
 
     const loadAnimation = () => {
@@ -147,7 +147,7 @@ export function CylindricalText({
       cancelled = true;
       observer?.disconnect();
       window.removeEventListener("resize", handleResize);
-      scrollTrigger?.kill();
+      scrollTrigger?.kill(true);
       reserve.style.paddingBottom = `${SCROLL_DISTANCE_PX}px`;
     };
   }, [items, prefersReducedMotion]);
