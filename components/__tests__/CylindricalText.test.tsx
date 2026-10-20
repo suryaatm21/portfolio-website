@@ -23,8 +23,19 @@ vi.mock("gsap/ScrollTrigger", () => ({
 
 type ObserverCallback = (entries: { isIntersecting: boolean }[]) => void;
 
-let observerCallback: ObserverCallback | undefined;
-let observerOptions: IntersectionObserverInit | undefined;
+interface ObserverRecord {
+  callback: ObserverCallback;
+  options: IntersectionObserverInit | undefined;
+  disconnect: ReturnType<typeof vi.fn>;
+}
+
+let observers: ObserverRecord[] = [];
+
+function latestObserver(): ObserverRecord {
+  const observer = observers.at(-1);
+  if (!observer) throw new Error("no IntersectionObserver was created");
+  return observer;
+}
 
 function mockEnvironment({ reducedMotion = false } = {}) {
   Object.defineProperty(window, "matchMedia", {
@@ -38,23 +49,23 @@ function mockEnvironment({ reducedMotion = false } = {}) {
   });
 
   class MockIntersectionObserver {
+    observe = vi.fn();
+    disconnect = vi.fn();
+
     constructor(
       callback: ObserverCallback,
       options?: IntersectionObserverInit,
     ) {
-      observerCallback = callback;
-      observerOptions = options;
+      observers.push({ callback, options, disconnect: this.disconnect });
     }
-    observe = vi.fn();
-    disconnect = vi.fn();
   }
   vi.stubGlobal("IntersectionObserver", MockIntersectionObserver);
 }
 
 describe("CylindricalText", () => {
   beforeEach(() => {
-    observerCallback = undefined;
-    observerOptions = undefined;
+    observers = [];
+    window.innerHeight = 900;
     vi.resetModules();
     gsapLoaded.mockClear();
     scrollTriggerCreate.mockClear();
@@ -68,15 +79,14 @@ describe("CylindricalText", () => {
     mockEnvironment();
     render(<CylindricalText items={["Algorithms", "Systems"]} />);
 
-    expect(observerOptions?.rootMargin).toBe("100% 0px");
     await Promise.resolve();
     expect(gsapLoaded).not.toHaveBeenCalled();
 
-    observerCallback?.([{ isIntersecting: false }]);
+    latestObserver().callback([{ isIntersecting: false }]);
     await Promise.resolve();
     expect(gsapLoaded).not.toHaveBeenCalled();
 
-    observerCallback?.([{ isIntersecting: true }]);
+    latestObserver().callback([{ isIntersecting: true }]);
     await waitFor(() => expect(scrollTriggerCreate).toHaveBeenCalledTimes(1));
     expect(gsapLoaded).toHaveBeenCalledTimes(1);
   });
@@ -91,19 +101,46 @@ describe("CylindricalText", () => {
     );
     expect(reserve?.style.paddingBottom).toBe("2000px");
 
-    observerCallback?.([{ isIntersecting: true }]);
+    const kill = vi.fn();
+    scrollTriggerCreate.mockReturnValueOnce({ kill });
+
+    latestObserver().callback([{ isIntersecting: true }]);
     await waitFor(() => expect(scrollTriggerCreate).toHaveBeenCalledTimes(1));
     expect(reserve?.style.paddingBottom).toBe("0px");
 
     unmount();
+    expect(kill).toHaveBeenCalledWith(true);
     expect(reserve?.style.paddingBottom).toBe("2000px");
+  });
+
+  it("looks ahead one viewport height in pixels and follows height changes", () => {
+    mockEnvironment();
+    const { unmount } = render(
+      <CylindricalText items={["Algorithms", "Systems"]} />,
+    );
+
+    expect(observers).toHaveLength(1);
+    expect(latestObserver().options?.rootMargin).toBe("900px 0px");
+
+    window.innerHeight = 900;
+    window.dispatchEvent(new Event("resize"));
+    expect(observers).toHaveLength(1);
+
+    window.innerHeight = 600;
+    window.dispatchEvent(new Event("resize"));
+    expect(observers).toHaveLength(2);
+    expect(observers[0]?.disconnect).toHaveBeenCalled();
+    expect(latestObserver().options?.rootMargin).toBe("600px 0px");
+
+    unmount();
+    expect(latestObserver().disconnect).toHaveBeenCalled();
   });
 
   it("never loads gsap for reduced-motion visitors", async () => {
     mockEnvironment({ reducedMotion: true });
     render(<CylindricalText items={["Algorithms", "Systems"]} />);
 
-    expect(observerCallback).toBeUndefined();
+    expect(observers).toHaveLength(0);
     await Promise.resolve();
     expect(gsapLoaded).not.toHaveBeenCalled();
   });

@@ -86,9 +86,35 @@ export function CylindricalText({
     // Initialize positions first
     calculatePositions();
 
+    let cancelled = false;
+    let scrollTrigger: { kill: (revert?: boolean) => void } | undefined;
+    let observer: IntersectionObserver | undefined;
+    let observedHeight = 0;
+
+    // Percentage rootMargins resolve against the viewport width, so the look-ahead
+    // is given in pixels and the observer is rebuilt when the viewport height changes.
+    const observeSection = () => {
+      observer?.disconnect();
+      observedHeight = window.innerHeight;
+      observer = new IntersectionObserver(
+        (entries) => {
+          if (!entries.some((entry) => entry.isIntersecting)) return;
+          observer?.disconnect();
+          observer = undefined;
+          loadAnimation();
+        },
+        // Start the download a full viewport height before the section scrolls into view
+        { rootMargin: `${observedHeight}px 0px` },
+      );
+      observer.observe(reserve);
+    };
+
     // Handle resize
     const handleResize = () => {
       calculatePositions();
+      if (observer && window.innerHeight !== observedHeight) {
+        observeSection();
+      }
     };
 
     window.addEventListener("resize", handleResize);
@@ -96,10 +122,6 @@ export function CylindricalText({
     // gsap is imported here rather than at the top of the file so it stays out of
     // the initial JS bundle, and only once the section is within a viewport of the
     // screen so visitors who never scroll this far never download it.
-    let cancelled = false;
-    let scrollTrigger: { kill: (revert?: boolean) => void } | undefined;
-    let observer: IntersectionObserver | undefined;
-
     const loadAnimation = () => {
       void Promise.all([import("gsap"), import("gsap/ScrollTrigger")]).then(
         ([{ gsap }, { ScrollTrigger }]) => {
@@ -131,16 +153,7 @@ export function CylindricalText({
     if (typeof IntersectionObserver === "undefined") {
       loadAnimation();
     } else {
-      observer = new IntersectionObserver(
-        (entries) => {
-          if (!entries.some((entry) => entry.isIntersecting)) return;
-          observer?.disconnect();
-          loadAnimation();
-        },
-        // Start the download a full viewport before the section scrolls into view
-        { rootMargin: "100% 0px" },
-      );
-      observer.observe(reserve);
+      observeSection();
     }
 
     return () => {
