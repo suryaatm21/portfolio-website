@@ -304,7 +304,6 @@ export const contact = {
 export const personal = {
   name: "Surya Atmuri",
   location: "New York, NY",
-  phone: "(732)-735-0687",
   email: "suryaatmuri57@gmail.com",
   linkedin: "https://www.linkedin.com/in/surya-atmuri/",
   github: "https://github.com/suryaatm21",
